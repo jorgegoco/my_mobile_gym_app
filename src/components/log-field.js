@@ -1,6 +1,13 @@
 import { esc } from '../dom.js';
 import { todayKey } from '../program.js';
-import { getEntry, saveEntry, lastEntryBefore, formatShortDate, formatStamp } from '../logs.js';
+import {
+  getEntry,
+  saveEntry,
+  lastEntryBefore,
+  formatShortDate,
+  formatStamp,
+  logKey
+} from '../logs.js';
 
 const SAVE_DELAY = 500;
 
@@ -35,18 +42,22 @@ function setStamp(wrap, entry) {
   stamp.textContent = entry ? formatStamp(entry.updatedAt) : '';
 }
 
-async function commit(code, text, wrap) {
-  pending.delete(code);
-  const entry = await saveEntry(code, todayKey(), text);
+// History rows carry a fixed date; today's field has none and resolves at save
+// time, so an app left open past midnight still files under the right day.
+const dateFor = (wrap) => wrap.dataset.date || todayKey();
+
+async function commit(key, code, date, text, wrap) {
+  pending.delete(key);
+  const entry = await saveEntry(code, date, text);
   if (wrap.isConnected) setStamp(wrap, entry);
 }
 
 export function flushPending() {
   const writes = [];
-  for (const [code, { text, wrap }] of pending) {
-    clearTimeout(timers.get(code));
-    timers.delete(code);
-    writes.push(commit(code, text, wrap));
+  for (const [key, { code, date, text, wrap }] of pending) {
+    clearTimeout(timers.get(key));
+    timers.delete(key);
+    writes.push(commit(key, code, date, text, wrap));
   }
   return Promise.all(writes);
 }
@@ -54,17 +65,19 @@ export function flushPending() {
 export function handleLogInput(textarea) {
   const wrap = textarea.closest('[data-log]');
   const code = wrap.dataset.log;
+  const date = dateFor(wrap);
+  const key = logKey(code, date);
 
   textarea.dataset.hydrated = 'true';
   autoGrow(textarea);
-  pending.set(code, { text: textarea.value, wrap });
+  pending.set(key, { code, date, text: textarea.value, wrap });
 
-  clearTimeout(timers.get(code));
+  clearTimeout(timers.get(key));
   timers.set(
-    code,
+    key,
     setTimeout(() => {
-      timers.delete(code);
-      commit(code, textarea.value, wrap);
+      timers.delete(key);
+      commit(key, code, date, textarea.value, wrap);
     }, SAVE_DELAY)
   );
 }
