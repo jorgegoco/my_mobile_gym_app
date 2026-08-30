@@ -111,6 +111,17 @@ receive data. Two devices would keep two independent logs.
 - The blob URL for the download is revoked on the **next frame**, not synchronously — revoking
   immediately can cancel the download.
 
+## Reads stay scoped to one exercise
+
+Log keys are `"<CODE>:<YYYY-MM-DD>"`, so every entry for one exercise is a contiguous, date-ordered
+key range. `dbByCode` and `dbLastBefore` in `src/db.js` use `IDBKeyRange` over that range; the cursor
+runs backwards and stops at the first hit.
+
+**Never go back to `dbAll()` + filter for per-exercise reads.** It was 6 full scans per tab render -
+18,720 objects and 82 ms against 5 years of history, growing forever. The range read is 6 objects and
+1.4 ms, and is constant regardless of history size. `dbAll()` is correct only for export and import,
+which genuinely need every entry.
+
 ## Deployed
 
 Live at https://jorgegoco.github.io/my_mobile_gym_app/ via `.github/workflows/deploy.yml` (build,
