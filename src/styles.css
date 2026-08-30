@@ -1,0 +1,646 @@
+:root {
+  /* program.theme.colors, used verbatim - this is the printed guide's palette. */
+  --navy: #16233a;
+  --accent: #38bdf8;
+  --blue: #1d4ed8;
+  --badge-key-bg: #dbeafe;
+  --badge-updated-bg: #fef3c7;
+  --badge-updated-text: #b45309;
+  --reps-text: #dc2626;
+  --surface: #f8fafc;
+  --border: #e2e8f0;
+  --text: #1f2937;
+  --text-muted: #475569;
+  --teal: #0f766e;
+
+  --card: #ffffff;
+  --band: #f1f5f9;
+  --tint-cool: #eff6ff;
+  --tint-warm: #ecfdf5;
+  --radius: 10px;
+  --tap: 44px;
+  --tabs-h: 60px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--surface);
+}
+
+body {
+  margin: 0;
+  padding: 0 12px calc(var(--tabs-h) + 24px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.3;
+}
+
+p {
+  margin: 0;
+}
+
+/* ---------- banner (PDF page 1 header) ---------- */
+
+.banner {
+  margin: 12px -12px 20px;
+  padding: 20px 16px calc(20px + env(safe-area-inset-top));
+  padding-top: calc(20px + env(safe-area-inset-top));
+  background: var(--navy);
+  color: #fff;
+}
+
+.banner h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.banner-version {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.banner-sub {
+  margin-top: 6px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.banner-highlights {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.banner-highlights div {
+  min-width: 0;
+}
+
+.banner-highlights dt {
+  color: #94a3b8;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.banner-highlights dd {
+  margin: 3px 0 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+/* ---------- section headings (navy bar + uppercase) ---------- */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 26px 0 12px;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.section-title::before {
+  content: "";
+  flex: none;
+  width: 4px;
+  align-self: stretch;
+  min-height: 1.1em;
+  background: var(--navy);
+  border-radius: 2px;
+}
+
+.view-head {
+  padding-top: calc(14px + env(safe-area-inset-top));
+}
+
+.view-head .section-title {
+  margin-top: 8px;
+}
+
+.section-sub {
+  margin: 0 0 4px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+/* ---------- exercise card (PDF pages 2-3) ---------- */
+
+.exercises {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.card-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  grid-column: 2 / -1;
+}
+
+.chip {
+  flex: none;
+  min-width: 30px;
+  padding: 4px 7px;
+  border-radius: 5px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-title {
+  min-width: 0;
+  padding-top: 1px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.reps {
+  padding: 5px 10px;
+  border: 1px solid var(--reps-text);
+  border-radius: 6px;
+  color: var(--reps-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge {
+  padding: 3px 7px;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.badge-key {
+  background: var(--badge-key-bg);
+  color: var(--blue);
+}
+
+.badge-updated {
+  background: var(--badge-updated-bg);
+  color: var(--badge-updated-text);
+}
+
+.meta-band {
+  display: grid;
+  gap: 4px;
+  padding: 9px 14px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--band);
+}
+
+.meta-cell {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.meta-key {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.cues {
+  margin: 0;
+  padding: 12px 14px 12px 30px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.cues li + li {
+  margin-top: 5px;
+}
+
+.cues::marker,
+.cues li::marker {
+  color: var(--blue);
+}
+
+/* ---------- per-exercise actions + log ---------- */
+
+.card-actions:empty {
+  display: none;
+}
+
+.watch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--tap);
+  margin: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--tint-cool);
+  color: var(--blue);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.log {
+  position: relative;
+  padding: 12px 14px 14px;
+}
+
+.log-last {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.log-label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--navy);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.log-input {
+  display: block;
+  width: 100%;
+  min-height: var(--tap);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.45;
+  resize: none;
+  overflow: hidden;
+}
+
+.log-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+.log-saved {
+  position: absolute;
+  right: 16px;
+  bottom: 20px;
+  color: var(--teal);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+/* ---------- guide: tables, notes, rules, matrix ---------- */
+
+.table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+
+/* Under 700px the 3-column table stacks into labelled blocks rather than
+   scrolling sideways - a horizontal scroll inside a phone page is a trap. */
+@media (max-width: 699px) {
+  .grid thead {
+    display: none;
+  }
+
+  .grid tr {
+    display: block;
+    padding: 12px 14px;
+  }
+
+  .grid tr + tr {
+    border-top: 1px solid var(--border);
+  }
+
+  .grid td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .grid .col-strategy {
+    margin-top: 6px;
+  }
+
+  /* A time and a title need no label; only the strategy column does. */
+  .grid .col-time::before,
+  .grid .col-activity::before {
+    display: none;
+  }
+
+  .grid .col-strategy::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    color: var(--blue);
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .col-time {
+    white-space: normal;
+    font-size: 0.875rem;
+  }
+
+  .col-activity {
+    margin-top: 1px;
+    font-size: 0.9375rem;
+  }
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.grid th {
+  padding: 9px 12px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  text-align: left;
+}
+
+.grid td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+
+.col-time {
+  white-space: nowrap;
+  color: var(--navy);
+}
+
+.col-activity {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.option-tag {
+  display: block;
+  color: var(--reps-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.note {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--blue);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--tint-cool);
+}
+
+.note h3 {
+  margin-bottom: 6px;
+  color: var(--blue);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.note p,
+.note li {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.note ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.note li + li {
+  margin-top: 5px;
+}
+
+.note-warm {
+  border-left-color: var(--teal);
+  background: var(--tint-warm);
+}
+
+.note-warm h3 {
+  color: var(--teal);
+}
+
+.rule {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--navy);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--card);
+}
+
+.rule h3 {
+  margin-bottom: 5px;
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.rule p {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.matrix-lead {
+  margin: 16px 0 10px;
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.tier-title {
+  margin: 14px 0 6px;
+  color: var(--navy);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.tier {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.tier li + li {
+  margin-top: 6px;
+}
+
+.tier strong {
+  color: var(--navy);
+}
+
+.tier li::marker {
+  color: var(--blue);
+}
+
+.golden {
+  margin: 16px 0 12px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.8125rem;
+}
+
+.golden-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.note-summary {
+  margin-top: 18px;
+}
+
+/* ---------- bottom tab bar ---------- */
+
+.tabs {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 10;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--tabs-h);
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.tab-mark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--band);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.tab-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+.tab-active {
+  color: var(--navy);
+}
+
+.tab-active .tab-mark {
+  background: var(--navy);
+  color: #fff;
+}
+
+.boot-error {
+  margin-top: 12vh;
+  padding: 18px;
+  border: 1px solid var(--reps-text);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.boot-error h1 {
+  color: var(--reps-text);
+  font-size: 1.0625rem;
+}
+
+.boot-error p {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+@media (min-width: 480px) {
+  .meta-band {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+}
+
+@media (min-width: 700px) {
+  body {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .grid td::before {
+    display: none;
+  }
+}
