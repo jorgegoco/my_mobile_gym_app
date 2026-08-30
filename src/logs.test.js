@@ -14,7 +14,8 @@ import {
   backupFilename,
   parseBackup,
   formatStamp,
-  stampText
+  stampText,
+  deleteEntry
 } from './logs.js';
 import { dbAll, dbDel } from './db.js';
 
@@ -194,6 +195,42 @@ describe('per-exercise reads stay scoped to one exercise', () => {
     await saveEntry('A1', '2026-08-30', 'something');
     expect(await lastEntryBefore('A6', '2026-08-30')).toBeNull();
     expect(await historyFor('A6')).toEqual([]);
+  });
+});
+
+describe('editing and deleting past sessions', () => {
+  beforeEach(clear);
+
+  it('deletes one entry and leaves the rest of that exercise intact', async () => {
+    await saveEntry('B1', '2026-08-10', 'first');
+    await saveEntry('B1', '2026-08-20', 'second');
+    await saveEntry('B1', '2026-08-30', 'third');
+
+    await deleteEntry('B1', '2026-08-20');
+
+    expect((await historyFor('B1')).map((e) => e.date)).toEqual(['2026-08-30', '2026-08-10']);
+    expect(await getEntry('B1', '2026-08-20')).toBeNull();
+  });
+
+  it('does not touch other exercises', async () => {
+    await saveEntry('B1', '2026-08-20', 'b1');
+    await saveEntry('B5', '2026-08-20', 'b5');
+    await deleteEntry('B1', '2026-08-20');
+    expect((await getEntry('B5', '2026-08-20')).text).toBe('b5');
+  });
+
+  it('is harmless when the entry does not exist', async () => {
+    await expect(deleteEntry('A3', '2020-01-01')).resolves.not.toThrow();
+  });
+
+  it('editing a past entry leaves today alone', async () => {
+    await saveEntry('B1', '2026-08-22', 'old value');
+    await saveEntry('B1', '2026-08-31', 'todays value');
+
+    await saveEntry('B1', '2026-08-22', 'corrected value');
+
+    expect((await getEntry('B1', '2026-08-22')).text).toBe('corrected value');
+    expect((await getEntry('B1', '2026-08-31')).text).toBe('todays value');
   });
 });
 

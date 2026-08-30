@@ -51,6 +51,9 @@ export const getWorkout = (id) => program.workouts.find((w) => w.id === id) ?? n
 export const getExercise = (code) =>
   program.workouts.flatMap((w) => w.exercises).find((ex) => ex.code === code) ?? null;
 
+export const getWorkoutForExercise = (code) =>
+  program.workouts.find((w) => w.exercises.some((ex) => ex.code === code)) ?? null;
+
 export const metaLine = (ex) => ex.tempo ?? ex.benefit ?? ex.grip ?? null;
 
 export function todayKey(date = new Date()) {

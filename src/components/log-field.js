@@ -92,9 +92,12 @@ export async function hydrateLogFields(root) {
     [...root.querySelectorAll('[data-log]')].map(async (wrap) => {
       const code = wrap.dataset.log;
       const textarea = wrap.querySelector('.log-input');
+      // A history row is pinned to its own date and has no "last session"
+      // reference; today's field looks up the previous entry as well.
+      const dated = Boolean(wrap.dataset.date);
       const [entry, previous] = await Promise.all([
-        getEntry(code, today),
-        lastEntryBefore(code, today)
+        getEntry(code, dated ? wrap.dataset.date : today),
+        dated ? null : lastEntryBefore(code, today)
       ]);
 
       if (!wrap.isConnected) return;

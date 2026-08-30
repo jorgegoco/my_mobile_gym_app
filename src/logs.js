@@ -99,6 +99,8 @@ export async function saveEntry(code, date, text) {
   return entry;
 }
 
+export const deleteEntry = (code, date) => dbDel(logKey(code, date));
+
 export async function historyFor(code) {
   const entries = await dbByCode(code);
   return entries.sort((a, b) => b.date.localeCompare(a.date));

@@ -145,6 +145,17 @@ p {
   font-size: 0.8125rem;
 }
 
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  margin-left: -2px;
+  color: var(--blue);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
 /* ---------- exercise card (PDF pages 2-3) ---------- */
 
 .exercises {
@@ -304,6 +315,81 @@ p {
 :root[data-offline="true"] .watch-label::after {
   content: " - needs signal";
   font-weight: 600;
+}
+
+.history-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  margin: 8px 14px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* ---------- history view ---------- */
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.entry-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--band);
+}
+
+.entry-date {
+  color: var(--navy);
+  font-size: 0.8125rem;
+  font-weight: 800;
+}
+
+.entry-delete {
+  flex: none;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--reps-text);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.entry-delete:disabled {
+  opacity: 0.5;
+}
+
+.entries-empty {
+  padding: 18px 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 .log {

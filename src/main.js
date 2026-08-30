@@ -1,18 +1,40 @@
 import './styles.css';
-import { ProgramError, getWorkout, validateProgram } from './program.js';
+import {
+  ProgramError,
+  getWorkout,
+  getExercise,
+  getWorkoutForExercise,
+  validateProgram
+} from './program.js';
 import { workoutView } from './views/workout.js';
 import { guideView } from './views/guide.js';
+import { historyView } from './views/history.js';
 import { tabBar, TABS } from './components/tab-bar.js';
 import { flushPending, handleLogInput, hydrateLogFields, copyLastInto } from './components/log-field.js';
 import { runExport, runImport } from './components/data-tools.js';
+import { deleteEntry } from './logs.js';
 
 const app = document.getElementById('app');
 const LAST_TAB = 'lastTab';
 
+// History belongs to a workout, so that tab stays lit while viewing it.
+const tabForHash = (hash) => {
+  const code = historyCode(hash);
+  return code ? `#/${getWorkoutForExercise(code).id}` : hash;
+};
+
 const scrollByHash = new Map();
 let currentHash = null;
 
-const isKnown = (hash) => TABS.some((tab) => tab.hash === hash);
+const isTab = (hash) => TABS.some((tab) => tab.hash === hash);
+
+// "#/history/B5" - valid only when the code resolves to a real exercise.
+const historyCode = (hash) => {
+  const match = /^#\/history\/([A-Za-z0-9]+)$/.exec(hash ?? '');
+  return match && getExercise(match[1]) ? match[1] : null;
+};
+
+const isKnown = (hash) => isTab(hash) || Boolean(historyCode(hash));
 
 function resolveHash() {
   if (isKnown(location.hash)) return location.hash;
@@ -22,10 +44,12 @@ function resolveHash() {
   } catch {
     remembered = null;
   }
-  return isKnown(remembered) ? remembered : TABS[0].hash;
+  return isTab(remembered) ? remembered : TABS[0].hash;
 }
 
-function viewFor(hash) {
+async function viewFor(hash) {
+  const code = historyCode(hash);
+  if (code) return historyView(code);
   if (hash === '#/guide') return guideView();
   return workoutView(getWorkout(hash === '#/workout-b' ? 'workout-b' : 'workout-a'));
 }
@@ -41,10 +65,10 @@ async function render() {
 
   if (currentHash && currentHash !== hash) scrollByHash.set(currentHash, window.scrollY);
 
-  app.innerHTML = viewFor(hash) + tabBar(hash);
+  app.innerHTML = (await viewFor(hash)) + tabBar(tabForHash(hash));
   currentHash = hash;
   try {
-    localStorage.setItem(LAST_TAB, hash);
+    if (isTab(hash)) localStorage.setItem(LAST_TAB, hash);
   } catch {
     /* private mode: the tab just won't be remembered */
   }
@@ -53,6 +77,16 @@ async function render() {
   requestAnimationFrame(() => window.scrollTo(0, target));
 
   hydrateLogFields(app);
+}
+
+// Removes the row in place rather than re-rendering, so scroll position and
+// any other in-progress edit survive.
+async function removeEntry(button) {
+  const row = button.closest('[data-entry]');
+  const code = row.querySelector('[data-log]').dataset.log;
+  button.disabled = true;
+  await deleteEntry(code, button.dataset.delete);
+  row.remove();
 }
 
 function showBootError(error) {
@@ -80,6 +114,12 @@ app.addEventListener('change', (event) => {
 });
 
 app.addEventListener('click', (event) => {
+  const del = event.target.closest('[data-delete]');
+  if (del) {
+    removeEntry(del);
+    return;
+  }
+
   if (event.target.closest('[data-export]')) {
     runExport(app);
     return;
