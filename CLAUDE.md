@@ -96,6 +96,37 @@ The spec was written before the PDF was available. Where they disagree, this fil
     npm test          # vitest run
     npm run build     # budget: under 50 kB gzipped
 
+## One pending queue, keyed by entry
+
+`src/components/log-field.js` keys its debounce and flush maps by **storage key** (`"B5:2026-08-30"`),
+not by exercise code. History rows are editable and carry their own date, so a code-keyed queue would
+collide. The date comes from `wrap.dataset.date || todayKey()` - today's field resolves at save time
+so an app left open past midnight still files correctly.
+
+**Never add a second write queue.** `render()` awaits `flushPending()` before replacing
+`#app.innerHTML`; anything outside that queue loses edits when the view swaps.
+
+`hydrateLogFields` handles both shapes: a row with `data-date` loads that date's entry and shows no
+"last session" reference; today's field also looks up the previous entry.
+
+## History view
+
+`#/history/<CODE>` is a route, not an overlay, so Android's back gesture closes it. `resolveHash()`
+accepts it only when `getExercise(code)` resolves, and a history hash is never remembered as the last
+tab. The parent workout tab stays lit via `getWorkoutForExercise`.
+
+Delete removes the row in place rather than re-rendering, so scroll position and any other
+in-progress edit survive.
+
+## Wake lock
+
+Held only on the workout tabs; released on the guide, on history, and when the page is hidden.
+**The browser releases the lock itself when the page is hidden**, so `wake-lock.js` listens for the
+sentinel's `release` event, clears its reference, and re-requests on `visibilitychange` when visible
+again. Without that it silently stops working after the first phone call. Every call is guarded -
+`request()` rejects when unsupported, hidden, or refused by battery saver, and a failure must never
+break logging.
+
 ## Backup
 
 Logs live only in the phone's IndexedDB. Nothing syncs; GitHub Pages is a static host and cannot
