@@ -4,11 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light" />
+    <!-- Personal app: keep it out of search results. A robots.txt would not
+         work here - that is only honoured at the origin root, which belongs to
+         the jorgegoco.github.io user site, not this project path. -->
+    <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#16233A" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./favicon.png" sizes="32x32" />
     <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Chest &amp; Arms" />
     <title>Chest &amp; Arms Program</title>
   </head>
