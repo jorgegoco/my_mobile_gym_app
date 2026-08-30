@@ -36,6 +36,34 @@ export function mergeEntries(existing, incoming) {
   return { entries: [...byKey.values()], imported, updated };
 }
 
+export function backupFilename(date = new Date()) {
+  const pad = (n) => String(n).padStart(2, '0');
+  return `workout-log-${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}.json`;
+}
+
+export function parseBackup(text) {
+  let payload;
+  try {
+    payload = JSON.parse(text);
+  } catch {
+    throw new Error('That file is not valid JSON.');
+  }
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    throw new Error('That does not look like a workout backup.');
+  }
+  if (!Array.isArray(payload.entries)) {
+    throw new Error('No entries found in that file. Is it a workout backup?');
+  }
+  const theirs = String(payload.schemaVersion ?? '').split('.')[0];
+  const ours = String(program.schemaVersion).split('.')[0];
+  if (payload.schemaVersion && theirs !== ours) {
+    throw new Error(
+      `That backup uses program schema ${payload.schemaVersion}, but this app expects ${ours}.x.`
+    );
+  }
+  return payload;
+}
+
 export const getEntry = (code, date) => dbGet(logKey(code, date)).then((entry) => entry ?? null);
 
 export async function saveEntry(code, date, text) {

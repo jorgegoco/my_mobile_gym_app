@@ -387,6 +387,64 @@ p {
   opacity: 0.5;
 }
 
+.data-tools {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.data-note {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.data-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.data-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 0 12px;
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  background: var(--tint-cool);
+  color: var(--blue);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.data-status:empty {
+  display: none;
+}
+
+.data-status {
+  margin-top: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.data-status[data-kind='ok'] {
+  color: var(--teal);
+}
+
+.data-status[data-kind='warn'] {
+  color: var(--badge-updated-text);
+}
+
+.data-status[data-kind='error'] {
+  color: var(--reps-text);
+}
+
 /* ---------- guide: tables, notes, rules, matrix ---------- */
 
 .table-wrap {

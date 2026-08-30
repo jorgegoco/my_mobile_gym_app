@@ -10,7 +10,9 @@ import {
   historyFor,
   lastEntryBefore,
   exportAll,
-  importAll
+  importAll,
+  backupFilename,
+  parseBackup
 } from './logs.js';
 import { dbAll, dbDel } from './db.js';
 
@@ -75,6 +77,44 @@ describe('mergeEntries', () => {
   it('skips malformed rows', () => {
     const result = mergeEntries([], [{ key: 'X' }, null, { text: 'no key' }]);
     expect(result.entries).toHaveLength(0);
+  });
+});
+
+describe('backupFilename', () => {
+  it('names the file by local date', () => {
+    expect(backupFilename(new Date(2026, 7, 30))).toBe('workout-log-2026-08-30.json');
+    expect(backupFilename(new Date(2026, 0, 5))).toBe('workout-log-2026-01-05.json');
+  });
+});
+
+describe('parseBackup', () => {
+  const good = JSON.stringify({ schemaVersion: '1.0', entries: [] });
+
+  it('accepts a well-formed backup', () => {
+    expect(parseBackup(good).entries).toEqual([]);
+  });
+
+  it('accepts a payload with no schemaVersion', () => {
+    expect(parseBackup(JSON.stringify({ entries: [] })).entries).toEqual([]);
+  });
+
+  it('rejects invalid JSON', () => {
+    expect(() => parseBackup('{ not json')).toThrow(/not valid JSON/);
+  });
+
+  it('rejects a payload that is not an object', () => {
+    expect(() => parseBackup('[]')).toThrow(/does not look like/);
+    expect(() => parseBackup('42')).toThrow(/does not look like/);
+  });
+
+  it('rejects a payload with no entries array', () => {
+    expect(() => parseBackup(JSON.stringify({ schemaVersion: '1.0' }))).toThrow(/No entries/);
+  });
+
+  it('refuses a backup from a different schema major', () => {
+    expect(() => parseBackup(JSON.stringify({ schemaVersion: '2.0', entries: [] }))).toThrow(
+      /schema 2\.0/
+    );
   });
 });
 

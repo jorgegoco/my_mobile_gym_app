@@ -4,6 +4,7 @@ import { workoutView } from './views/workout.js';
 import { guideView } from './views/guide.js';
 import { tabBar, TABS } from './components/tab-bar.js';
 import { flushPending, handleLogInput, hydrateLogFields, copyLastInto } from './components/log-field.js';
+import { runExport, runImport } from './components/data-tools.js';
 
 const app = document.getElementById('app');
 const LAST_TAB = 'lastTab';
@@ -74,7 +75,16 @@ app.addEventListener('blur', (event) => {
   if (event.target.classList.contains('log-input')) flushPending();
 }, true);
 
+app.addEventListener('change', (event) => {
+  if (event.target.matches('[data-import]')) runImport(app, event.target);
+});
+
 app.addEventListener('click', (event) => {
+  if (event.target.closest('[data-export]')) {
+    runExport(app);
+    return;
+  }
+
   const install = event.target.closest('[data-install]');
   if (install) {
     runInstallPrompt(install);
@@ -123,6 +133,16 @@ async function runInstallPrompt(button) {
   delete document.documentElement.dataset.installable;
 }
 
+// Without this the browser treats our data as evictable under storage pressure.
+async function requestPersistentStorage() {
+  try {
+    if (!navigator.storage?.persist || (await navigator.storage.persisted())) return;
+    await navigator.storage.persist();
+  } catch {
+    /* not supported everywhere; the app works either way */
+  }
+}
+
 function trackConnectivity() {
   const apply = () => {
     document.documentElement.dataset.offline = navigator.onLine ? '' : 'true';
@@ -144,6 +164,7 @@ try {
   trackConnectivity();
   trackInstallability();
   registerServiceWorker();
+  requestPersistentStorage();
   render();
 } catch (error) {
   if (error instanceof ProgramError) showBootError(error);

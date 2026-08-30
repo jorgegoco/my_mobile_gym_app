@@ -1,5 +1,6 @@
 import { esc } from '../dom.js';
 import { program } from '../program.js';
+import { dataTools } from '../components/data-tools.js';
 
 const range = ([a, b]) => `${a}–${b}`;
 
@@ -119,6 +120,7 @@ export function guideView() {
   return `
     ${banner()}
     <button class="install" type="button" data-install>Install app on this phone</button>
+    ${dataTools()}
     ${protocol()}
     ${bookends()}
     ${rules()}
