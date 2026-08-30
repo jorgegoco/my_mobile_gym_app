@@ -1,0 +1,16 @@
+{
+  "name": "Chest & Arms Hypertrophy Program",
+  "short_name": "Chest & Arms",
+  "description": "Two-day chest and arms hypertrophy program with per-exercise logging.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#16233A",
+  "background_color": "#F8FAFC",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
