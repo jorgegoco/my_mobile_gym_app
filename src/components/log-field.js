@@ -1,6 +1,6 @@
 import { esc } from '../dom.js';
 import { todayKey } from '../program.js';
-import { getEntry, saveEntry, lastEntryBefore, formatShortDate } from '../logs.js';
+import { getEntry, saveEntry, lastEntryBefore, formatShortDate, formatStamp } from '../logs.js';
 
 const SAVE_DELAY = 500;
 
@@ -19,7 +19,7 @@ export function logField(ex) {
         enterkeyhint="done"
         placeholder="60kg x8,8,7 - felt strong"
       ></textarea>
-      <span class="log-saved" data-saved aria-live="polite"></span>
+      <span class="log-stamp" data-stamp aria-live="polite"></span>
     </div>
   `;
 }
@@ -29,22 +29,16 @@ function autoGrow(textarea) {
   textarea.style.height = `${textarea.scrollHeight}px`;
 }
 
-function markSaved(wrap) {
-  const flag = wrap.querySelector('[data-saved]');
-  flag.textContent = 'Saved';
-  clearTimeout(timers.get(`${wrap.dataset.log}:flag`));
-  timers.set(
-    `${wrap.dataset.log}:flag`,
-    setTimeout(() => {
-      flag.textContent = '';
-    }, 1500)
-  );
+function setStamp(wrap, entry) {
+  const stamp = wrap.querySelector('[data-stamp]');
+  if (!stamp) return;
+  stamp.textContent = entry ? formatStamp(entry.updatedAt) : '';
 }
 
 async function commit(code, text, wrap) {
   pending.delete(code);
-  await saveEntry(code, todayKey(), text);
-  if (wrap.isConnected) markSaved(wrap);
+  const entry = await saveEntry(code, todayKey(), text);
+  if (wrap.isConnected) setStamp(wrap, entry);
 }
 
 export function flushPending() {
@@ -93,6 +87,8 @@ export async function hydrateLogFields(root) {
         textarea.value = entry.text;
         autoGrow(textarea);
       }
+
+      if (entry) setStamp(wrap, entry);
 
       if (previous) {
         const last = wrap.querySelector('[data-last]');

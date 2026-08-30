@@ -12,7 +12,8 @@ import {
   exportAll,
   importAll,
   backupFilename,
-  parseBackup
+  parseBackup,
+  formatStamp
 } from './logs.js';
 import { dbAll, dbDel } from './db.js';
 
@@ -115,6 +116,61 @@ describe('parseBackup', () => {
     expect(() => parseBackup(JSON.stringify({ schemaVersion: '2.0', entries: [] }))).toThrow(
       /schema 2\.0/
     );
+  });
+});
+
+describe('formatStamp', () => {
+  const now = new Date(2026, 7, 30, 20, 0);
+
+  it('says "today" for an entry made today', () => {
+    expect(formatStamp(new Date(2026, 7, 30, 18, 42).getTime(), now)).toBe('Saved today - 18:42');
+  });
+
+  it('names the day for an older entry', () => {
+    expect(formatStamp(new Date(2026, 7, 22, 9, 5).getTime(), now)).toBe('Saved Aug 22 - 09:05');
+  });
+
+  it('returns empty for a bad timestamp', () => {
+    expect(formatStamp(undefined, now)).toBe('');
+  });
+});
+
+describe('per-exercise reads stay scoped to one exercise', () => {
+  beforeEach(clear);
+
+  it('history returns only that code, newest first', async () => {
+    await saveEntry('A1', '2026-08-10', 'a1 old');
+    await saveEntry('A1', '2026-08-20', 'a1 new');
+    await saveEntry('A2', '2026-08-15', 'a2 should not appear');
+    await saveEntry('B1', '2026-08-15', 'b1 should not appear');
+
+    const history = await historyFor('A1');
+    expect(history.map((e) => e.text)).toEqual(['a1 new', 'a1 old']);
+  });
+
+  it('does not bleed across codes that share a prefix', async () => {
+    await saveEntry('B1', '2026-08-10', 'b1');
+    await saveEntry('B5', '2026-08-10', 'b5');
+    expect((await historyFor('B1')).map((e) => e.text)).toEqual(['b1']);
+    expect((await historyFor('B5')).map((e) => e.text)).toEqual(['b5']);
+  });
+
+  it('finds the most recent entry strictly before a date', async () => {
+    await saveEntry('B1', '2026-08-01', 'oldest');
+    await saveEntry('B1', '2026-08-22', 'previous');
+    await saveEntry('B1', '2026-08-30', 'today');
+    expect((await lastEntryBefore('B1', '2026-08-30')).text).toBe('previous');
+  });
+
+  it('excludes the given date itself', async () => {
+    await saveEntry('B1', '2026-08-30', 'today only');
+    expect(await lastEntryBefore('B1', '2026-08-30')).toBeNull();
+  });
+
+  it('returns null for an exercise with no history', async () => {
+    await saveEntry('A1', '2026-08-30', 'something');
+    expect(await lastEntryBefore('A6', '2026-08-30')).toBeNull();
+    expect(await historyFor('A6')).toEqual([]);
   });
 });
 

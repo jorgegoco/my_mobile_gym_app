@@ -312,6 +312,10 @@ p {
 }
 
 .log-last {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   margin-bottom: 8px;
   padding: 8px 10px;
   border: 1px dashed var(--border);
@@ -354,10 +358,13 @@ p {
   border-color: var(--accent);
 }
 
-.log-saved {
-  position: absolute;
-  right: 16px;
-  bottom: 20px;
+.log-stamp:empty {
+  display: none;
+}
+
+.log-stamp {
+  display: block;
+  margin-top: 6px;
   color: var(--teal);
   font-size: 0.6875rem;
   font-weight: 700;

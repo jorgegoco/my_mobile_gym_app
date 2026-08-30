@@ -1,4 +1,4 @@
-import { dbGet, dbSet, dbDel, dbAll } from './db.js';
+import { dbGet, dbSet, dbDel, dbAll, dbByCode, dbLastBefore } from './db.js';
 import { program } from './program.js';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -9,6 +9,20 @@ export function formatShortDate(date) {
   const [year, month, day] = date.split('-').map(Number);
   if (!year || !month || !day) return date;
   return `${MONTHS[month - 1]} ${day}`;
+}
+
+// "Aug 30 - 18:42": the date answers "is this today's entry?", the time
+// answers "is this the set I just typed?".
+export function formatStamp(updatedAt, now = new Date()) {
+  const d = new Date(updatedAt);
+  if (Number.isNaN(d.getTime())) return '';
+  const pad = (n) => String(n).padStart(2, '0');
+  const sameDay =
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate();
+  const day = sameDay ? 'today' : `${MONTHS[d.getMonth()]} ${d.getDate()}`;
+  return `Saved ${day} - ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 export function parseTopWeight(text) {
@@ -78,14 +92,11 @@ export async function saveEntry(code, date, text) {
 }
 
 export async function historyFor(code) {
-  const all = await dbAll();
-  return all.filter((entry) => entry.code === code).sort((a, b) => b.date.localeCompare(a.date));
+  const entries = await dbByCode(code);
+  return entries.sort((a, b) => b.date.localeCompare(a.date));
 }
 
-export async function lastEntryBefore(code, date) {
-  const history = await historyFor(code);
-  return history.find((entry) => entry.date < date) ?? null;
-}
+export const lastEntryBefore = (code, date) => dbLastBefore(code, date);
 
 export async function exportAll() {
   const entries = await dbAll();
