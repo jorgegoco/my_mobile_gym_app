@@ -1,4 +1,7 @@
-# Chest & Arms Hypertrophy Program — App Data Package (v5.1)
+# Data contract — `program.json`
+
+> The `program.json` schema. For what the app is and how to run it, see the
+> [README](../README.md).
 
 `program.json` is the single source of truth for building a workout app from the *Chest & Arms Hypertrophy Program* guide. It is plain JSON (no comments, UTF-8, ASCII-safe punctuation) so it can be imported directly, served from an API, or seeded into a database.
 

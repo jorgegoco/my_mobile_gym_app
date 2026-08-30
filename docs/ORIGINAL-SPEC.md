@@ -1,3 +1,23 @@
+> ## ⚠️ Historical record — not current documentation
+>
+> This is the **original brief**, written before the app existed and before the printed guide was
+> available. It is kept because it explains *why* the app is shaped the way it is, but several of its
+> decisions were reversed during the build. **Where this file and the app disagree, the app is right.**
+>
+> | This document says | What was actually built |
+> | :-- | :-- |
+> | Dark theme by default (§3.5) | **Light**, matching the printed guide, whose palette *is* `program.theme.colors` |
+> | A Week screen driven by `weeklySchedule` (§3.2) | **Dropped.** Sessions rotate with a ~2-day gap, so a fixed weekday calendar was meaningless. Three tabs instead: Workout A, Workout B, Guide |
+> | Local `public/media/*.mp4`, ffmpeg pipeline, `MEDIA.md` (§3.4) | **Dropped.** Exercise videos are external YouTube links in `media.json`. Linking avoids re-hosting other people's clips |
+> | Cues collapsed behind a toggle (§3.2) | **Always visible**, as bullets, per the printed guide |
+> | Wake lock "nice-to-have, after Phase 3" (§3.5) | **Built** |
+> | Export/import in Phase 5 (§3.7) | **Built**, plus a per-exercise history view that was never specified |
+>
+> For what the app actually does, see the [README](../README.md). For the conventions that govern the
+> code, see [CLAUDE.md](../CLAUDE.md). For the `program.json` contract, see [DATA.md](DATA.md).
+
+---
+
 # Kickoff prompt — Workout Trainer PWA
 
 Drop `program.json`, `README.md` (the schema doc) and this file into an empty repo, open it in VS Code, start Claude Code and paste the **Kickoff prompt** below. Everything after it is the spec Claude Code should read from disk rather than from your message.
