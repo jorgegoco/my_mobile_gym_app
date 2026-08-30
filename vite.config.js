@@ -53,17 +53,22 @@ self.addEventListener('fetch', (event) => {
   // through, and caching them is neither possible nor wanted.
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
 
-  // Any in-app navigation resolves to the cached shell, so a cold start on a
-  // deep hash route works with no network.
-  if (request.mode === 'navigate') {
-    event.respondWith(
-      caches.match('./', { ignoreSearch: true }).then((cached) => cached || fetch(request))
-    );
-    return;
-  }
-
   event.respondWith(
-    caches.match(request, { ignoreSearch: true }).then((cached) => cached || fetch(request))
+    (async () => {
+      // Only ever read from THIS version's cache. The global caches.match()
+      // searches every generation, which during an update can pair an old
+      // shell with a new cache (or vice versa).
+      const cache = await caches.open(CACHE);
+
+      // Any in-app navigation resolves to the cached shell, so a cold start on
+      // a deep hash route works with no network.
+      const cached =
+        request.mode === 'navigate'
+          ? await cache.match('./')
+          : await cache.match(request, { ignoreSearch: true });
+
+      return cached || fetch(request);
+    })()
   );
 });
 `
