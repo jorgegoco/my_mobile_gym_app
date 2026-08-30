@@ -13,6 +13,7 @@ import { tabBar, TABS } from './components/tab-bar.js';
 import { flushPending, handleLogInput, hydrateLogFields, copyLastInto } from './components/log-field.js';
 import { runExport, runImport } from './components/data-tools.js';
 import { deleteEntry } from './logs.js';
+import { setWakeLockWanted, watchWakeLock } from './wake-lock.js';
 
 const app = document.getElementById('app');
 const LAST_TAB = 'lastTab';
@@ -72,6 +73,10 @@ async function render() {
   } catch {
     /* private mode: the tab just won't be remembered */
   }
+
+  // Only the workout screens keep the screen awake; the guide and history are
+  // reading, and holding it there would just burn battery.
+  setWakeLockWanted(isTab(hash) && hash !== '#/guide');
 
   const target = scrollByHash.get(hash) ?? 0;
   requestAnimationFrame(() => window.scrollTo(0, target));
@@ -205,6 +210,7 @@ try {
   trackInstallability();
   registerServiceWorker();
   requestPersistentStorage();
+  watchWakeLock();
   render();
 } catch (error) {
   if (error instanceof ProgramError) showBootError(error);
