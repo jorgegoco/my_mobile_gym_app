@@ -4,8 +4,17 @@ Vanilla JS (ES modules) + Vite. No frameworks, no runtime network calls, no CDN.
 Offline-first, installed to an Android home screen and used in the gym.
 
 `Chest_and_Arms_Workout_Guide.pdf` in the repo root is the **design reference** — the app is meant to
-look like that document. `README.md` documents the `program.json` schema; `APP_PROJECT_PROMPT.md` is
-the original spec, with the deviations below.
+look like that document.
+
+| Document | What it is |
+| :-- | :-- |
+| `README.md` | The public landing page: what the app is, how to run and deploy it |
+| `docs/DATA.md` | The `program.json` contract |
+| `docs/ORIGINAL-SPEC.md` | The original brief. **Historical** — several decisions were reversed; see the banner at its top |
+| `CLAUDE.md` | This file: conventions, and the reasoning behind the sharp edges |
+| `LICENSE` | MIT |
+
+The deviations from the original spec are below; where that spec and this file disagree, this wins.
 
 ## Deviations from APP_PROJECT_PROMPT.md
 
@@ -60,7 +69,7 @@ The spec was written before the PDF was available. Where they disagree, this fil
   No router library.
 - Scroll position is kept per tab in a module-level map.
 - The last tab is persisted in `localStorage` — a deliberate exception to "UI state is not persisted",
-  because a PWA cold-starts with no hash and should reopen where he left off. Every access is wrapped
+  because a PWA cold-starts with no hash and should reopen on the last tab used. Every access is wrapped
   in try/catch; private mode just forgets.
 - The Guide's 3-column protocol table stacks into labelled blocks under 700 px. Never let a table
   scroll sideways inside a phone page.
