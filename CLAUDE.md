@@ -66,6 +66,29 @@ The spec was written before the PDF was available. Where they disagree, this fil
   scroll sideways inside a phone page.
 - Unit-test pure logic in `logs.js` only (`src/logs.test.js`, Vitest + fake-indexeddb). No e2e suite.
 
+## Offline and installability
+
+- **Service worker is hand-rolled, no Workbox.** A plugin in `vite.config.js` emits `sw.js` at build
+  time with the hashed asset URLs inlined, plus a version hash of that list — which is what makes the
+  browser treat the file as new and refetch the shell after a redeploy.
+- **Public assets are listed explicitly** in `PUBLIC_ASSETS` in `vite.config.js`. They are copied
+  verbatim from `public/` and never enter the bundle graph, so the plugin cannot discover them. Add an
+  icon, add it to that list or it will not be cached.
+- `index.html` is *not* in the precache list — Vite emits it after `generateBundle`. `./` is cached
+  instead, and the navigate handler always serves it, which is what makes a cold start on a deep hash
+  route (`#/guide`) work offline.
+- **The fetch handler ignores cross-origin requests entirely.** YouTube must pass straight through.
+- **No `skipWaiting()`.** A new version activates on the next cold start, never swapping assets
+  mid-session. Redeploys land the next time the app is opened.
+- Registration is `import.meta.env.PROD`-only, so the dev server is never shadowed by a stale cache.
+- Icons come from `tools/make-icons.py` (Pillow), committed with their output so they are
+  reproducible. The maskable icon keeps the glyph inside the central 80% safe zone because Android
+  crops to a circle or squircle.
+- Video links are external and offline-aware: `document.documentElement.dataset.offline` drives the
+  greyed "needs signal" state, and `main.js` also `preventDefault`s the click. Chrome DevTools
+  offline emulation does **not** flip `navigator.onLine`, so test that path by dispatching the
+  `offline` event, not by throttling the network.
+
 ## Commands
 
     npm install
@@ -75,7 +98,6 @@ The spec was written before the PDF was available. Where they disagree, this fil
 
 ## Still to do
 
-Service worker, manifest and icons (nothing works offline yet — that is Phase 4); export/import UI
-(the `logs.js` functions exist and are tested, the buttons do not); per-exercise history sheet;
-wake lock. `program.json` states the athlete's age, so a private repo is the safer default when
-GitHub Pages hosting comes up.
+Export/import UI (the `logs.js` functions exist and are tested, the buttons do not); per-exercise
+history sheet; wake lock. `program.json` states the athlete's age, so a private repo is the safer
+default when GitHub Pages hosting comes up.
