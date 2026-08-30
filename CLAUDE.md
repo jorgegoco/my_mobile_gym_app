@@ -96,8 +96,27 @@ The spec was written before the PDF was available. Where they disagree, this fil
     npm test          # vitest run
     npm run build     # budget: under 50 kB gzipped
 
+## Backup
+
+Logs live only in the phone's IndexedDB. Nothing syncs; GitHub Pages is a static host and cannot
+receive data. Two devices would keep two independent logs.
+
+- **Export/import in the Guide tab** is therefore the only protection against a cleared cache or an
+  uninstall. Export writes a JSON file to the phone's Downloads, which "clear site data" does not
+  touch; import merges by key with newest `updatedAt` winning.
+- `parseBackup()` refuses a file from a different `schemaVersion` major and reports every failure in
+  plain language. A rejected import must never modify stored data.
+- `requestPersistentStorage()` asks the browser to mark the data non-evictable. Without it, storage
+  is "best effort" and can be reclaimed under pressure.
+- The blob URL for the download is revoked on the **next frame**, not synchronously — revoking
+  immediately can cancel the download.
+
+## Deployed
+
+Live at https://jorgegoco.github.io/my_mobile_gym_app/ via `.github/workflows/deploy.yml` (build,
+test, publish on push to `main`). The repo is public, which is what GitHub Pages requires on the free
+tier.
+
 ## Still to do
 
-Export/import UI (the `logs.js` functions exist and are tested, the buttons do not); per-exercise
-history sheet; wake lock. `program.json` states the athlete's age, so a private repo is the safer
-default when GitHub Pages hosting comes up.
+Per-exercise history sheet; wake lock.
