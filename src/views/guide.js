@@ -118,6 +118,7 @@ function matrix() {
 export function guideView() {
   return `
     ${banner()}
+    <button class="install" type="button" data-install>Install app on this phone</button>
     ${protocol()}
     ${bookends()}
     ${rules()}
