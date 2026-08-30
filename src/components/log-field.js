@@ -5,7 +5,7 @@ import {
   saveEntry,
   lastEntryBefore,
   formatShortDate,
-  formatStamp,
+  stampText,
   logKey
 } from '../logs.js';
 
@@ -36,10 +36,10 @@ function autoGrow(textarea) {
   textarea.style.height = `${textarea.scrollHeight}px`;
 }
 
-function setStamp(wrap, entry) {
+function setStamp(wrap, entry, previous = null) {
   const stamp = wrap.querySelector('[data-stamp]');
   if (!stamp) return;
-  stamp.textContent = entry ? formatStamp(entry.updatedAt) : '';
+  stamp.textContent = stampText(entry, previous);
 }
 
 // History rows carry a fixed date; today's field has none and resolves at save
@@ -49,7 +49,10 @@ const dateFor = (wrap) => wrap.dataset.date || todayKey();
 async function commit(key, code, date, text, wrap) {
   pending.delete(key);
   const entry = await saveEntry(code, date, text);
-  if (wrap.isConnected) setStamp(wrap, entry);
+  // Clearing today's box must fall back to the previous session, not to
+  // "Not logged yet" - stampText only needs its date.
+  const previous = wrap.dataset.prevDate ? { date: wrap.dataset.prevDate } : null;
+  if (wrap.isConnected) setStamp(wrap, entry, previous);
 }
 
 export function flushPending() {
@@ -101,9 +104,10 @@ export async function hydrateLogFields(root) {
         autoGrow(textarea);
       }
 
-      if (entry) setStamp(wrap, entry);
+      setStamp(wrap, entry, previous);
 
       if (previous) {
+        wrap.dataset.prevDate = previous.date;
         const last = wrap.querySelector('[data-last]');
         last.textContent = `Last (${formatShortDate(previous.date)}): ${previous.text}`;
         last.dataset.text = previous.text;

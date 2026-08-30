@@ -25,6 +25,14 @@ export function formatStamp(updatedAt, now = new Date()) {
   return `Saved ${day} - ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+// Every log box always says when it was last written to. Silence reads as a
+// bug; "Not logged yet" reads as an answer.
+export function stampText(entry, previous, now = new Date()) {
+  if (entry) return formatStamp(entry.updatedAt, now);
+  if (previous) return `Last saved ${formatShortDate(previous.date)}`;
+  return 'Not logged yet';
+}
+
 export function parseTopWeight(text) {
   const match = /(\d+(?:[.,]\d+)?)\s?kg/i.exec(text ?? '');
   return match ? Number(match[1].replace(',', '.')) : null;

@@ -13,7 +13,8 @@ import {
   importAll,
   backupFilename,
   parseBackup,
-  formatStamp
+  formatStamp,
+  stampText
 } from './logs.js';
 import { dbAll, dbDel } from './db.js';
 
@@ -132,6 +133,28 @@ describe('formatStamp', () => {
 
   it('returns empty for a bad timestamp', () => {
     expect(formatStamp(undefined, now)).toBe('');
+  });
+});
+
+describe('stampText', () => {
+  const now = new Date(2026, 7, 31, 10, 0);
+  const today = { updatedAt: new Date(2026, 7, 31, 6, 45).getTime() };
+  const previous = { date: '2026-08-30' };
+
+  it('reports today\'s save with the time', () => {
+    expect(stampText(today, previous, now)).toBe('Saved today - 06:45');
+  });
+
+  it('falls back to the last session when nothing is logged today', () => {
+    expect(stampText(null, previous, now)).toBe('Last saved Aug 30');
+  });
+
+  it('says so when the exercise has never been logged', () => {
+    expect(stampText(null, null, now)).toBe('Not logged yet');
+  });
+
+  it('prefers today over the previous session', () => {
+    expect(stampText(today, previous, now)).not.toContain('Aug 30');
   });
 });
 
