@@ -75,9 +75,62 @@ app.addEventListener('blur', (event) => {
 }, true);
 
 app.addEventListener('click', (event) => {
+  const install = event.target.closest('[data-install]');
+  if (install) {
+    runInstallPrompt(install);
+    return;
+  }
+
+  const watch = event.target.closest('.watch');
+  if (watch && !navigator.onLine) {
+    event.preventDefault();
+    return;
+  }
+
   const last = event.target.closest('[data-last]');
   if (last) copyLastInto(last);
 });
+
+let installPrompt = null;
+
+function registerServiceWorker() {
+  if (!import.meta.env.PROD || !('serviceWorker' in navigator)) return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {
+      /* offline support is a bonus; never block the app on it */
+    });
+  });
+}
+
+function trackInstallability() {
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installPrompt = event;
+    document.documentElement.dataset.installable = 'true';
+  });
+  window.addEventListener('appinstalled', () => {
+    installPrompt = null;
+    delete document.documentElement.dataset.installable;
+  });
+}
+
+async function runInstallPrompt(button) {
+  if (!installPrompt) return;
+  button.disabled = true;
+  installPrompt.prompt();
+  await installPrompt.userChoice;
+  installPrompt = null;
+  delete document.documentElement.dataset.installable;
+}
+
+function trackConnectivity() {
+  const apply = () => {
+    document.documentElement.dataset.offline = navigator.onLine ? '' : 'true';
+  };
+  window.addEventListener('online', apply);
+  window.addEventListener('offline', apply);
+  apply();
+}
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flushPending();
@@ -88,6 +141,9 @@ window.addEventListener('hashchange', render);
 
 try {
   validateProgram();
+  trackConnectivity();
+  trackInstallability();
+  registerServiceWorker();
   render();
 } catch (error) {
   if (error instanceof ProgramError) showBootError(error);

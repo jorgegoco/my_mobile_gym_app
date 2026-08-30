@@ -282,6 +282,30 @@ p {
   text-decoration: none;
 }
 
+.watch-where {
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
+/* Offline the link would only open a dead tab, so it is visibly inert.
+   main.js also preventDefaults the click. */
+:root[data-offline="true"] .watch {
+  background: var(--surface);
+  border-style: dashed;
+  color: var(--text-muted);
+  cursor: default;
+}
+
+:root[data-offline="true"] .watch-where {
+  display: none;
+}
+
+:root[data-offline="true"] .watch-label::after {
+  content: " - needs signal";
+  font-weight: 600;
+}
+
 .log {
   position: relative;
   padding: 12px 14px 14px;
@@ -337,6 +361,30 @@ p {
   color: var(--teal);
   font-size: 0.6875rem;
   font-weight: 700;
+}
+
+/* Only shown once the browser reports the app is installable. */
+.install {
+  display: none;
+  width: 100%;
+  min-height: var(--tap);
+  margin-bottom: 4px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+:root[data-installable="true"] .install {
+  display: block;
+}
+
+.install:disabled {
+  opacity: 0.5;
 }
 
 /* ---------- guide: tables, notes, rules, matrix ---------- */

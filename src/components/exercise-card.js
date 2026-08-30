@@ -45,7 +45,10 @@ export function exerciseCard(ex) {
       <div class="card-actions">
         ${
           video
-            ? `<a class="watch" href="${esc(video)}" target="_blank" rel="noopener noreferrer">▶ Watch form video</a>`
+            ? `<a class="watch" href="${esc(video)}" target="_blank" rel="noopener noreferrer">
+                 <span class="watch-label">▶ Watch form video</span>
+                 <span class="watch-where">↗ YouTube</span>
+               </a>`
             : ''
         }
       </div>
