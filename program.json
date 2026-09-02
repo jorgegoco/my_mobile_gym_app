@@ -4,17 +4,32 @@
   "program": {
     "id": "chest-arms-hypertrophy",
     "title": "Chest & Arms Hypertrophy Program",
-    "version": "5.1",
-    "updatedAt": "2026-08-29",
-    "subtitle": "Barbell Bench Edition & Anatomical Guide | Swimmer Program (Age 56)",
+    "version": "6.0",
+    "updatedAt": "2026-09-02",
+    "subtitle": "Post-Swim Micro-Session Edition & Anatomical Guide | Swimmer Program (Age 56)",
     "athlete": { "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection" },
     "highlights": [
-      { "label": "Fasted Swim", "value": "2,300m (7:00 AM)" },
-      { "label": "Gym Frequency", "value": "2 Days / Week" },
-      { "label": "Primary Lifts", "value": "Incline & Flat BB Press" },
+      { "label": "Fasted Swim", "value": "2,300m (07:00-08:30)" },
+      { "label": "Gym Frequency", "value": "3 Days / Week" },
+      { "label": "Session Length", "value": "20-25 min Micro-Session" },
       { "label": "Joint Safety", "value": "Rotator Cuff Focus" }
     ],
     "changelog": [
+      {
+        "version": "6.0",
+        "date": "2026-09-02",
+        "changes": [
+          "Restructured from a 2-day split into a 3-day micro-session split of 3-4 exercises each. All 10 original exercises are retained.",
+          "Gym moved to 08:35-09:00, immediately after the swim; the afternoon/back-to-back timing options are gone.",
+          "New Locker-Room Transition Fuel protocol at 08:30 (Leche Desnatada Omega-3 + Miel Pura).",
+          "Rowing machine ergometer warm-up removed entirely - the 2,300m swim is the warm-up.",
+          "Passive bar dead hangs kept and made mandatory: 1 set of 60 seconds at the end of every session.",
+          "B2 rep range 10-12 -> 8-10; B3 rep range 12-15 -> 10-12.",
+          "B2 absorbs the seated cable row (A2) as its named alternative.",
+          "Swapping matrix rewritten for 3-4 exercise sessions and the 25-minute window.",
+          "Leg training explicitly out of scope in the gym."
+        ]
+      },
       {
         "version": "5.1",
         "date": "2026-08-29",
@@ -32,82 +47,72 @@
 
   "dailyProtocol": [
     { "id": "pre-swim", "timeWindow": "06:45", "activity": "Pre-Swim Prep", "strategy": "Hydrate with 500ml water + electrolytes. Swim is kept 100% fasted.", "optionGroup": null },
-    { "id": "swim", "timeWindow": "07:00-08:00", "activity": "2,300m Swim Session", "strategy": "Maintain steady cadence. 1,500m Freestyle pulls heavy on internal rotators; 800m Backstroke counters chest tightness.", "optionGroup": null },
-    { "id": "break-fast", "timeWindow": "08:30", "activity": "Post-Swim Break-Fast", "strategy": "35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or whey smoothie). Stops muscle breakdown post-swim.", "optionGroup": null },
-    { "id": "gym-option-a", "timeWindow": "16:30", "activity": "Gym Workout (2x/week, e.g., Tue & Fri)", "strategy": "Allows 8+ hours between swim and gym. Pre-workout snack 45 mins prior. Maximizes barbell pressing strength and CNS recovery.", "optionGroup": "gym", "recommended": true },
-    { "id": "gym-option-b", "timeWindow": "09:15", "activity": "Gym Workout (2x/week, immediate post-swim)", "strategy": "Consume a quick protein shake + fast carbs immediately after the swim before starting gym warm-up.", "optionGroup": "gym", "recommended": false }
+    { "id": "swim", "timeWindow": "07:00-08:30", "activity": "2,300m Fasted Swim (90 mins)", "strategy": "Maintain steady cadence. 1,500m Freestyle pulls heavy on internal rotators; 800m Backstroke counters chest tightness. Doubles as the full thermal and joint warm-up for the gym.", "optionGroup": null },
+    { "id": "locker-fuel", "timeWindow": "08:30-08:35", "activity": "Locker-Room Transition Fuel", "strategy": "200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura (+ optional pinch of salt). Drink it while changing - it restores blood glucose without sitting heavy in the stomach.", "optionGroup": null },
+    { "id": "gym", "timeWindow": "08:35-09:00", "activity": "Gym Micro-Session (20-25 mins max)", "strategy": "3 to 4 exercises only. One light prep set, then straight into the first lift. Finish with the mandatory 60-second dead hang.", "optionGroup": null },
+    { "id": "breakfast", "timeWindow": "09:15", "activity": "Post-Workout Breakfast", "strategy": "Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done.", "optionGroup": null }
   ],
 
+  "fuel": {
+    "title": "Locker-Room Transition Fuel",
+    "timeWindow": "08:30",
+    "recipe": "200-250ml (0.20-0.25 L) Leche Desnatada Omega-3 + 1 tbsp Miel Pura, plus an optional pinch of salt.",
+    "why": "Restores blood glucose and halts muscle breakdown immediately following 90 minutes of fasted swimming. Small enough to drink in the five minutes it takes to change, so there is no stomach sloshing or heaviness under a loaded bar minutes later."
+  },
+
   "warmUp": {
-    "title": "Warm-Up Protocol - Rowing Machine Ergometer",
-    "durationMinutes": [5, 8],
-    "execution": "Smooth 20-22 stroke/min pace. Lubricates shoulder joints and activates upper back (rhomboids & rear delts) to prepare for heavy barbell bench pressing. Follow with dynamic band pull-aparts and arm circles."
+    "title": "Warm-Up Protocol - The 2,300m Swim Is the Warm-Up",
+    "durationMinutes": null,
+    "execution": "The 5-8 minute rowing machine ergometer warm-up is removed. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight."
   },
 
   "coolDown": {
     "title": "Cool-Down & Spinal Decompression - Passive Bar Dead Hangs",
-    "timing": "End of the session (ideal).",
+    "timing": "End of every gym session (mandatory).",
     "why": "Heavy pressing and rowing compress the spine and tighten the upper back and shoulders. A dead hang reverses that compression, relaxes tight muscles, and resets posture.",
-    "prescription": { "sets": [2, 3], "durationSeconds": [30, 60], "note": "Keep it passive - relax and let gravity pull the hips down." }
+    "prescription": { "sets": [1, 1], "durationSeconds": [60, 60], "note": "Keep it passive - relax and let gravity pull the hips down. This is the one part of the session that is never skipped for time." }
   },
 
   "rules": [
     { "id": "rule-1", "title": "The 3-Second Eccentric Rule (Controlled Barbell Lowering)", "body": "At age 56, lowering heavy barbell weight uncontrollably increases shoulder and elbow tendon wear without extra muscle gain. Lower every bench press and curl over 3 slow seconds to maximize mechanical muscle tension while keeping joints completely safe." },
     { "id": "rule-2", "title": "Barbell Pressing Path & Scapular Retraction", "body": "Never press with flared elbows (90 degrees). On both the Flat and Incline Barbell Bench Press, tuck elbows to a 45-60 degree angle to the torso and keep shoulder blades pinched tightly together into the bench. This isolates the pecs and protects the rotator cuffs from swimmer's impingement." },
-    { "id": "rule-3", "title": "Keep 1 to 2 Reps in Reserve (RPE 8 Training Threshold)", "body": "Do not train to absolute muscle failure on barbell presses. End the set when 1 or 2 more clean reps are still possible. This preserves central nervous system recovery for the 7:00 AM daily swims." },
+    { "id": "rule-3", "title": "Keep 1 to 2 Reps in Reserve (RPE 8 Training Threshold)", "body": "Do not train to absolute muscle failure on barbell presses. End the set when 1 or 2 more clean reps are still possible. This preserves central nervous system recovery for the 7:00 AM daily swims - and inside a 25-minute window, a set taken to failure costs more rest time than the extra rep is worth." },
     { "id": "rule-4", "title": "Posterior Shoulder Counter-Balance", "body": "Freestyle swimming and barbell chest pressing both tighten internal rotators (pectoralis major & lats). Never skip Rear Delt Flyes or Seated Rows - they pull the shoulder heads back into optimal joint alignment." }
   ],
 
+  "legTraining": {
+    "title": "Leg Training Is Deliberately Omitted",
+    "body": "No leg exercises are performed in the gym. Lower-body volume is already fully covered by daily swim kicks, running and tennis. Adding squats or leg presses to a 25-minute post-swim window would compete directly with recovery for the next morning's 2,300m swim, which is the foundation the whole program is built on."
+  },
+
   "workouts": [
     {
-      "id": "workout-a",
-      "code": "A",
-      "name": "Workout A: Upper Chest Barbell, Mid-Back & Arm Peak",
-      "focus": "Incline barbell chest, mid-back, biceps, outer tricep",
+      "id": "day-1",
+      "code": "1",
+      "name": "Day 1: Flat Chest Mass & Push Focus",
+      "focus": "Flat barbell chest, machine press volume, outer tricep, rear delts",
       "exercises": [
         {
-          "code": "A1", "name": "Incline Barbell Bench Press", "tags": ["key-compound"],
-          "target": "Upper Chest / Clavicular Pecs & Front Delts",
+          "code": "B1", "name": "Flat Barbell Bench Press", "tags": ["key-compound"],
+          "target": "Overall Chest / Sternal Pecs, Delts & Triceps",
           "sets": 3, "repRange": [6, 8], "prescription": "3 Sets x 6-8 Reps",
-          "tempo": "3s Lower | 1s Touch | 1s Press", "benefit": null,
-          "equipment": ["barbell", "incline-bench", "rack"], "priority": "high",
+          "tempo": "3s Lower | 1s Pause | Explosive Press", "benefit": null,
+          "equipment": ["barbell", "flat-bench", "rack"], "priority": "high",
           "cues": [
-            "Set bench angle strictly to 30 degrees (minimizes front shoulder strain).",
-            "Tuck elbows at 45 to 60 degrees to body; do not flare out to 90 degrees.",
-            "Touch bar to upper collarbone/sternum area without bouncing off chest."
-          ]
-        },
-        {
-          "code": "A2", "name": "Seated Cable Row (Neutral Grip)", "tags": [],
-          "target": "Rhomboids & Mid-Traps",
-          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
-          "tempo": "1s Pull | 2s Squeeze | 2s Return", "benefit": null,
-          "equipment": ["cable-row-station"], "priority": "high",
-          "cues": [
-            "Crucial shoulder counter-balance for freestyle swim pulls.",
-            "Pull handle to belly button while driving shoulder blades together."
+            "Lock in scapular retraction (pinch shoulder blades down & back into bench).",
+            "Lower bar to mid-lower sternum; press upward in slight arc toward eye level.",
+            "Keep 45 degree elbow tuck to protect swimmer's rotator cuff joints."
           ]
         },
         {
           "code": "A3", "name": "Flat Machine Chest Press", "tags": [],
           "target": "Main Chest / Sternal Pecs",
           "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
-          "tempo": "2s Lower | 1s Controlled Press", "benefit": null,
+          "tempo": "2s Lower | 1s Controlled Squeeze", "benefit": null,
           "equipment": ["chest-press-machine"], "priority": "medium",
           "cues": [
             "Provides safe hyper-isolation volume following heavy barbell benching.",
             "Focus on squeezing inner chest together without locking elbows hard."
-          ]
-        },
-        {
-          "code": "A4", "name": "Standing Supinating Dumbbell Curls", "tags": [],
-          "target": "Biceps Brachii (Peak Zone)",
-          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
-          "tempo": "Smooth Curl | 2s Descent", "benefit": null,
-          "equipment": ["dumbbells"], "priority": "swappable",
-          "cues": [
-            "Keep elbows stationary at your sides; turn palm outward at peak contraction.",
-            "Avoid body swing to keep tension strictly on biceps."
           ]
         },
         {
@@ -116,7 +121,10 @@
           "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
           "tempo": "Dynamic | 1s Split Hold", "benefit": null,
           "equipment": ["cable-station", "rope-attachment"], "priority": "swappable",
-          "cues": ["Pin elbows tight to torso; pull rope handles apart at bottom lockout."]
+          "cues": [
+            "Pin elbows tight to torso; pull rope handles apart at bottom lockout.",
+            "Never do this before the pressing work - fresh triceps are what hold up the bench press."
+          ]
         },
         {
           "code": "A6", "name": "Reverse Pec Deck (Rear Delt Fly)", "tags": [],
@@ -132,44 +140,33 @@
       ]
     },
     {
-      "id": "workout-b",
-      "code": "B",
-      "name": "Workout B: Flat Barbell Chest Mass, Brachialis & Tricep Long Head",
-      "focus": "Flat barbell chest, upper back, brachialis, tricep long head",
+      "id": "day-2",
+      "code": "2",
+      "name": "Day 2: Upper Back & Biceps Peak",
+      "focus": "Upper back thickness, biceps peak, brachialis",
       "exercises": [
         {
-          "code": "B1", "name": "Flat Barbell Bench Press", "tags": ["key-compound"],
-          "target": "Overall Chest / Sternal Pecs, Delts & Triceps",
-          "sets": 3, "repRange": [6, 8], "prescription": "3 Sets x 6-8 Reps",
-          "tempo": "3s Lower | 1s Pause | Explosive Press", "benefit": null,
-          "equipment": ["barbell", "flat-bench", "rack"], "priority": "high",
-          "cues": [
-            "Lock in scapular retraction (pinch shoulder blades down & back into bench).",
-            "Lower bar to mid-lower sternum; press upward in slight arc toward eye level.",
-            "Keep 45 degree elbow tuck to protect swimmer's rotator cuff joints."
-          ]
-        },
-        {
-          "code": "B2", "name": "Chest-Supported Machine Row", "tags": [],
+          "code": "B2", "name": "Chest-Supported Machine Row (or Seated Cable Row)", "tags": ["updated"],
           "target": "Upper Back & Rear Shoulders",
-          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
+          "sets": 3, "repRange": [8, 10], "prescription": "3 Sets x 8-10 Reps",
           "tempo": null, "benefit": "Zero lower back strain; 100% upper back",
-          "equipment": ["chest-supported-row-machine"], "priority": "high",
+          "equipment": ["chest-supported-row-machine", "cable-row-station"], "priority": "high",
           "cues": [
             "Drive elbows outward wide to balance heavy swim pulling forces.",
-            "Keep chest firmly pressed against pad throughout entire set."
+            "Keep chest firmly pressed against pad throughout entire set.",
+            "If the machine is taken, use the seated cable row with a neutral grip: pull the handle to the belly button while driving the shoulder blades together.",
+            "Heavier 8-10 range in v6.0 - this is now the only compound pull of the week."
           ]
         },
         {
-          "code": "B3", "name": "Pec Deck Machine Fly", "tags": [],
-          "target": "Inner Sternal Chest / Mid Pecs",
-          "sets": 3, "repRange": [12, 15], "prescription": "3 Sets x 12-15 Reps",
-          "tempo": "2s Stretch | 1s Squeeze | 2s Return", "benefit": null,
-          "equipment": ["pec-deck-machine"], "priority": "medium",
+          "code": "A4", "name": "Standing Supinating Dumbbell Curls", "tags": [],
+          "target": "Biceps Brachii (Peak Zone)",
+          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
+          "tempo": "Smooth Curl | 2s Descent", "benefit": null,
+          "equipment": ["dumbbells"], "priority": "swappable",
           "cues": [
-            "Sit facing away from the machine; adjust seat height so handles align directly with mid-chest.",
-            "Maintain a slight, rigid flex in elbows; drive handles together in front of sternum, squeezing hard for 1 second at peak contraction.",
-            "Provides smooth, continuous mechanical tension across pecs with zero lower back or wrist instability."
+            "Keep elbows stationary at your sides; turn palm outward at peak contraction.",
+            "Avoid body swing to keep tension strictly on biceps."
           ]
         },
         {
@@ -182,14 +179,45 @@
             "Pushes biceps upward for thicker overall arm appearance.",
             "Avoid swinging; lower under complete control (2-3 seconds)."
           ]
+        }
+      ]
+    },
+    {
+      "id": "day-3",
+      "code": "3",
+      "name": "Day 3: Upper Chest, Triceps & Posterior Shoulder",
+      "focus": "Incline barbell chest, inner chest, tricep long head, posterior delts",
+      "exercises": [
+        {
+          "code": "A1", "name": "Incline Barbell Bench Press", "tags": ["key-compound"],
+          "target": "Upper Chest / Clavicular Pecs & Front Delts",
+          "sets": 3, "repRange": [6, 8], "prescription": "3 Sets x 6-8 Reps",
+          "tempo": "3s Lower | 1s Touch | 1s Press", "benefit": null,
+          "equipment": ["barbell", "incline-bench", "rack"], "priority": "high",
+          "cues": [
+            "Set bench angle strictly to 30 degrees (minimizes front shoulder strain).",
+            "Tuck elbows at 45 to 60 degrees to body; do not flare out to 90 degrees.",
+            "Touch bar to upper collarbone/sternum area without bouncing off chest."
+          ]
         },
         {
-          "code": "B5", "name": "Seated DB Overhead Tricep Extension", "tags": ["updated"],
+          "code": "B3", "name": "Pec Deck Machine Fly", "tags": ["updated"],
+          "target": "Inner Sternal Chest / Mid Pecs",
+          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
+          "tempo": "2s Stretch | 1s Squeeze | 2s Return", "benefit": null,
+          "equipment": ["pec-deck-machine"], "priority": "medium",
+          "cues": [
+            "Sit facing away from the machine; adjust seat height so handles align directly with mid-chest.",
+            "Maintain a slight, rigid flex in elbows; drive handles together in front of sternum, squeezing hard for 1 second at peak contraction.",
+            "Provides smooth, continuous mechanical tension across pecs with zero lower back or wrist instability."
+          ]
+        },
+        {
+          "code": "B5", "name": "Seated DB Overhead Tricep Extension", "tags": [],
           "target": "Triceps Long Head",
           "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
           "tempo": null, "benefit": "Maximum long-head stretch with zero cable setup",
           "equipment": ["dumbbell", "backed-bench"], "priority": "swappable",
-          "replaces": "Overhead Cable Tricep Extension (v5.0)",
           "cues": [
             "Sit on a backed bench; cup one dumbbell overhead with both hands, elbows pointing forward.",
             "Lower behind head until the long head is fully stretched (3 seconds), then press up cleanly.",
@@ -197,12 +225,11 @@
           ]
         },
         {
-          "code": "B6", "name": "Reverse Pec Deck (Machine Rear Delt Fly)", "tags": ["updated"],
+          "code": "B6", "name": "Reverse Pec Deck (Machine Rear Delt Fly)", "tags": [],
           "target": "Posterior Deltoids & Rotator Cuff",
           "sets": 2, "repRange": [12, 15], "prescription": "2 Sets x 12-15 Reps",
-          "tempo": null, "benefit": "Maximum stability, zero cable hassle",
+          "tempo": null, "benefit": "Posterior delt shield against swim strain",
           "equipment": ["pec-deck-machine"], "priority": "swappable",
-          "replaces": "Standing Cable Rear Delt Crossover Flyes (v5.0)",
           "cues": [
             "Sit facing the chest pad; keep chest against the pad and shoulder blades stable.",
             "Drive handles backward wide using the rear shoulders to shield rotator cuffs against swim strain."
@@ -213,44 +240,44 @@
   ],
 
   "swappingMatrix": {
-    "anchorNote": "A1 (Incline Barbell Bench Press) and B1 (Flat Barbell Bench Press) are non-negotiable anchor lifts to be done first. Because they use heavy loads in the 6-8 rep range, doing them late in the session after chest, shoulders and triceps are fatigued increases injury risk and degrades strength gains.",
+    "anchorNote": "B1 (Flat Barbell Bench Press, Day 1) and A1 (Incline Barbell Bench Press, Day 3) are non-negotiable anchor lifts to be done first. Because they use heavy loads in the 6-8 rep range, doing them late in a 25-minute session after the chest and triceps are fatigued increases injury risk and degrades strength gains.",
     "tiers": [
       {
-        "priority": "high", "label": "High Priority (Do 1st or 2nd)",
+        "priority": "high", "label": "High Priority (Do 1st)",
         "items": [
-          { "codes": ["A1", "B1"], "note": "Always try to secure the bench rack first while the central nervous system is fresh." },
-          { "codes": ["A2", "B2"], "note": "Heavy pulling movements. If the bench is taken, do the row first. Swapping A1/B1 with A2/B2 as the opener is fine and provides a good shoulder warm-up." }
+          { "codes": ["B1", "A1"], "note": "Always secure the bench rack first, while the central nervous system is still fresh from the swim." },
+          { "codes": ["B2"], "note": "Day 2's only compound pull, so it opens the session. If the chest-supported machine is occupied, switch to the seated cable row - same 8-10 prescription, no waiting." }
         ]
       },
       {
         "priority": "medium", "label": "Medium Priority (Flexible Middle Moves)",
         "items": [
-          { "codes": ["A3", "B3"], "note": "Higher-rep (10-15) chest isolation and volume builders. If busy, skip ahead to rear delts or biceps and come back without ruining strength progression." }
+          { "codes": ["A3", "B3"], "note": "Machine chest volume in the 10-12 range. If the machine is busy, move to that day's tricep or rear delt work and come back - the strength progression lives on the barbell, not here." }
         ]
       },
       {
         "priority": "swappable", "label": "Fully Swappable (Do Anywhere Near the End)",
         "items": [
-          { "codes": ["A4", "B4"], "note": "Pure arm isolation. Can be done in any empty space with dumbbells during the second half of the workout." },
-          { "codes": ["A5", "B5"], "note": "B5 now needs only a dumbbell and a backed bench, so it never depends on a free cable station. Golden rule: never do tricep isolation before the bench press (A1/B1) or machine press (A3)." },
-          { "codes": ["A6", "B6"], "note": "Both days use the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot late in the workout; if the machine is taken, substitute a bench-supported dumbbell rear delt fly." }
+          { "codes": ["A5", "B5"], "note": "A5 is the only exercise left that needs a free cable station and rope; B5 needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3)." },
+          { "codes": ["A4", "B4"], "note": "Pure arm isolation. Can be done in any empty space with dumbbells during the second half of Day 2." },
+          { "codes": ["A6", "B6"], "note": "Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly." }
         ]
       }
     ],
-    "goldenRule": "If a rack for A1/B1 isn't open, jump straight to the row (A2/B2) or the rear delts (A6/B6) to get moving - just hold off on tricep isolation until the main pushing lifts are completed."
+    "goldenRule": "In a 25-minute window there is no time to queue for a machine. If the rack is not open for B1/A1, start with that day's machine work or rear delts and come back to the bar - just hold off on tricep isolation until the pressing is done."
   },
 
   "weeklySchedule": [
-    { "day": "Monday", "morning": "2,300m Swim (Fasted)", "afternoon": "Rest / Light Mobility", "workoutId": null, "focus": "Aerobic Recovery & Base Swim" },
-    { "day": "Tuesday", "morning": "2,300m Swim (Fasted)", "afternoon": "GYM: WORKOUT A", "workoutId": "workout-a", "focus": "Incline Barbell Chest, Mid-Back, Biceps, Outer Tricep" },
-    { "day": "Wednesday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Thursday", "morning": "2,300m Swim (Fasted)", "afternoon": "Rest / Active Recovery", "workoutId": null, "focus": "Aerobic Recovery & Base Swim" },
-    { "day": "Friday", "morning": "2,300m Swim (Fasted)", "afternoon": "GYM: WORKOUT B", "workoutId": "workout-b", "focus": "Flat Barbell Chest, Upper Back, Brachialis, Tricep Long Head" },
+    { "day": "Monday", "morning": "2,300m Swim (Fasted) + GYM: DAY 1", "afternoon": "Rest / Light Mobility", "workoutId": "day-1", "focus": "Flat Barbell Chest, Machine Press Volume, Outer Tricep, Rear Delts" },
+    { "day": "Tuesday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
+    { "day": "Wednesday", "morning": "2,300m Swim (Fasted) + GYM: DAY 2", "afternoon": "Rest / Light Mobility", "workoutId": "day-2", "focus": "Upper Back Thickness, Biceps Peak, Brachialis" },
+    { "day": "Thursday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
+    { "day": "Friday", "morning": "2,300m Swim (Fasted) + GYM: DAY 3", "afternoon": "Rest / Light Mobility", "workoutId": "day-3", "focus": "Upper Chest, Inner Chest, Tricep Long Head, Posterior Delts" },
     { "day": "Saturday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
     { "day": "Sunday", "morning": "2,300m Swim (Fasted)", "afternoon": "Full Rest & Reset", "workoutId": null, "focus": "Systemic Recovery & Repair" }
   ],
 
-  "summaryStrategy": "The 7 AM swim is the untouchable physical and mental foundation. The 2 gym days feature heavy compound barbell pressing for upper body mass paired with strict upper back pulling, posterior shoulder isolation, and passive bar dead hangs to keep joints healthy for life.",
+  "summaryStrategy": "The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all ten exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.",
 
   "theme": {
     "colors": {
