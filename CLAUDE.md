@@ -10,6 +10,7 @@ predates the v6.0 three-day restructure, so `program.json` is the authority on t
 | Document | What it is |
 | :-- | :-- |
 | `README.md` | The public landing page: what the app is, how to run and deploy it |
+| `docs/PROGRAM.md` | The whole programme in readable form. **Generated** by `tools/make-program-doc.py` from `program.json` — never hand-edit it, edit the JSON and re-run |
 | `docs/DATA.md` | The `program.json` contract |
 | `docs/ORIGINAL-SPEC.md` | The original brief. **Historical** — several decisions were reversed; see the banner at its top |
 | `CLAUDE.md` | This file: conventions, and the reasoning behind the sharp edges |

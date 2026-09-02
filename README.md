@@ -23,7 +23,8 @@ building a small offline PWA without a framework.
 - **Per-exercise history** — every past session, editable and deletable.
 - **Backup** to a JSON file and back, because the data lives in exactly one place.
 - **Keeps the screen awake** while a workout is open, so the phone does not lock between sets.
-- The programme itself — rules, post-swim fuel, cool-down, equipment-swapping matrix — is on a Guide tab.
+- The programme itself — rules, post-swim fuel, cool-down, equipment-swapping matrix — is on a Guide tab,
+  and written out in full in [docs/PROGRAM.md](docs/PROGRAM.md).
 
 ## Privacy
 
