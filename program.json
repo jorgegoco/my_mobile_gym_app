@@ -1,5 +1,5 @@
 {
-  "$schema": "./README.md",
+  "$schema": "./docs/DATA.md",
   "schemaVersion": "1.0",
   "program": {
     "id": "chest-arms-hypertrophy",

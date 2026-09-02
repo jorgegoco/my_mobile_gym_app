@@ -175,4 +175,4 @@ tier.
 
 ## Still to do
 
-Per-exercise history sheet; wake lock.
+Nothing tracked right now - the per-exercise history sheet and the wake lock both shipped.
