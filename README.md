@@ -1,4 +1,4 @@
-# Chest & Arms — Workout PWA
+# Swim & Lift — Workout PWA
 
 An offline-first workout app for a three-day chest and arms programme. It installs to an Android home
 screen, works with no signal in a basement gym, and keeps a free-text log of every set on the phone

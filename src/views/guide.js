@@ -106,7 +106,7 @@ function bookends() {
 
 function rules() {
   return `
-    <h2 class="section-title">Rules of Hypertrophy &amp; Joint Safety (Age ${esc(program.program.athlete.age)})</h2>
+    <h2 class="section-title">Rules of Training &amp; Joint Safety (Age ${esc(program.program.athlete.age)})</h2>
     ${program.rules
       .map(
         (rule) => `

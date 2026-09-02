@@ -2,11 +2,11 @@
   "$schema": "./docs/DATA.md",
   "schemaVersion": "1.0",
   "program": {
-    "id": "chest-arms-hypertrophy",
-    "title": "Chest & Arms Hypertrophy Program",
+    "id": "swim-and-lift",
+    "title": "Swim & Lift",
     "version": "6.0",
     "updatedAt": "2026-09-02",
-    "subtitle": "Post-Swim Micro-Session Edition & Anatomical Guide | Swimmer Program (Age 56)",
+    "subtitle": "Chest & Arms Micro-Sessions | Swimmer Program (Age 56)",
     "athlete": { "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection" },
     "highlights": [
       { "label": "Fasted Swim", "value": "2,300m (07:00-08:30)" },

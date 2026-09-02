@@ -1,4 +1,4 @@
-# Workout PWA
+# Swim & Lift — Workout PWA
 
 Vanilla JS (ES modules) + Vite. No frameworks, no runtime network calls, no CDN.
 Offline-first, installed to an Android home screen and used in the gym.
