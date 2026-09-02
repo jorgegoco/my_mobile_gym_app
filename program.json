@@ -4,8 +4,8 @@
   "program": {
     "id": "swim-and-lift",
     "title": "Swim & Lift",
-    "version": "6.0",
-    "updatedAt": "2026-09-02",
+    "version": "6.1",
+    "updatedAt": "2026-09-03",
     "subtitle": "Chest & Arms Micro-Sessions | Swimmer Program (Age 56)",
     "athlete": { "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection" },
     "highlights": [
@@ -15,6 +15,16 @@
       { "label": "Joint Safety", "value": "Rotator Cuff Focus" }
     ],
     "changelog": [
+      {
+        "version": "6.1",
+        "date": "2026-09-03",
+        "changes": [
+          "Renamed: 'Chest & Arms Hypertrophy Program' -> 'Swim & Lift'. The old name described the body parts; the new one describes the routine.",
+          "'Rules of Hypertrophy & Joint Safety' heading renamed to 'Rules of Training & Joint Safety'.",
+          "'Updated' badges removed from B2 and B3 - they had served their purpose from the v6.0 rep-range changes.",
+          "Programme content is unchanged: same three days, same eleven exercises, same prescriptions."
+        ]
+      },
       {
         "version": "6.0",
         "date": "2026-09-02",
