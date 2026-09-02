@@ -3,9 +3,10 @@
 Vanilla JS (ES modules) + Vite. No frameworks, no runtime network calls, no CDN.
 Offline-first, installed to an Android home screen and used in the gym.
 
-`Chest_and_Arms_Workout_Guide.pdf` in the repo root is the **design reference** — the app is meant to
-look like that document. It is a **v5.1** artefact: the visual language still holds, but its content
-predates the v6.0 three-day restructure, so `program.json` is the authority on the programme itself.
+The app's own Guide tab is the **design reference** — see `docs/screenshots/` for how it should look.
+A v5.1 PDF (`Chest_and_Arms_Workout_Guide.pdf`) held that role until v6.1; it was deleted once its
+content went a major version stale, and it is recoverable from git history if the visual language is
+ever needed again.
 
 | Document | What it is |
 | :-- | :-- |
