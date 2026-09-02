@@ -146,7 +146,7 @@
       "focus": "Upper back thickness, biceps peak, brachialis",
       "exercises": [
         {
-          "code": "B2", "name": "Chest-Supported Machine Row (or Seated Cable Row)", "tags": ["updated"],
+          "code": "B2", "name": "Chest-Supported Machine Row (or Seated Cable Row)", "tags": [],
           "target": "Upper Back & Rear Shoulders",
           "sets": 3, "repRange": [8, 10], "prescription": "3 Sets x 8-10 Reps",
           "tempo": null, "benefit": "Zero lower back strain; 100% upper back",
@@ -201,7 +201,7 @@
           ]
         },
         {
-          "code": "B3", "name": "Pec Deck Machine Fly", "tags": ["updated"],
+          "code": "B3", "name": "Pec Deck Machine Fly", "tags": [],
           "target": "Inner Sternal Chest / Mid Pecs",
           "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
           "tempo": "2s Stretch | 1s Squeeze | 2s Return", "benefit": null,
