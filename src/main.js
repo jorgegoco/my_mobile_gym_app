@@ -52,7 +52,8 @@ async function viewFor(hash) {
   const code = historyCode(hash);
   if (code) return historyView(code);
   if (hash === '#/guide') return guideView();
-  return workoutView(getWorkout(hash === '#/workout-b' ? 'workout-b' : 'workout-a'));
+  // Every non-guide tab hash is a workout id: '#/day-1' -> 'day-1'.
+  return workoutView(getWorkout(hash.slice(2)));
 }
 
 async function render() {

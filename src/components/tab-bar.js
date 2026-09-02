@@ -1,8 +1,16 @@
 import { esc } from '../dom.js';
+import { program } from '../program.js';
 
+// One tab per gym day in program order, then the guide. The tab hash IS the
+// workout id, which is what lets main.js resolve a route by lookup.
+// `?? []` because this runs at module load, before validateProgram() - a
+// program with no workouts must reach that check to get a readable error.
 export const TABS = [
-  { hash: '#/workout-a', label: 'Workout A', short: 'A' },
-  { hash: '#/workout-b', label: 'Workout B', short: 'B' },
+  ...(program.workouts ?? []).map((workout) => ({
+    hash: `#/${workout.id}`,
+    label: workout.name.split(':')[0],
+    short: workout.code
+  })),
   { hash: '#/guide', label: 'Guide', short: 'i' }
 ];
 
