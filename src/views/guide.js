@@ -2,7 +2,10 @@ import { esc } from '../dom.js';
 import { program } from '../program.js';
 import { dataTools } from '../components/data-tools.js';
 
-const range = ([a, b]) => `${a}–${b}`;
+// A range whose ends are equal is a single value: [1, 1] is "1", not "1–1".
+const range = ([a, b]) => (a === b ? `${a}` : `${a}–${b}`);
+// Takes the already-formatted range string: "1" -> "1 set", "2–3" -> "2–3 sets".
+const plural = (n, word) => `${n} ${Number(n) === 1 ? word : `${word}s`}`;
 
 function banner() {
   const { title, version, subtitle, highlights } = program.program;
@@ -51,12 +54,39 @@ function protocol() {
   `;
 }
 
+function fuel() {
+  const protocolFuel = program.fuel;
+  if (!protocolFuel) return '';
+  return `
+    <div class="note note-fuel">
+      <h3>${esc(protocolFuel.title)} (${esc(protocolFuel.timeWindow)})</h3>
+      <ul>
+        <li><strong>Recipe:</strong> ${esc(protocolFuel.recipe)}</li>
+        <li><strong>Why:</strong> ${esc(protocolFuel.why)}</li>
+      </ul>
+    </div>
+  `;
+}
+
+function legNote() {
+  const legs = program.legTraining;
+  if (!legs) return '';
+  return `
+    <div class="note note-legs">
+      <h3>${esc(legs.title)}</h3>
+      <p>${esc(legs.body)}</p>
+    </div>
+  `;
+}
+
 function bookends() {
   const { warmUp, coolDown } = program;
+  // No duration when there is no separate warm-up to time.
+  const duration = warmUp.durationMinutes ? ` (${range(warmUp.durationMinutes)} mins)` : '';
   return `
     <h2 class="section-title">Warm-Up &amp; Cool-Down Protocols</h2>
     <div class="note note-warm">
-      <h3>${esc(warmUp.title)} (${range(warmUp.durationMinutes)} mins)</h3>
+      <h3>${esc(warmUp.title)}${duration}</h3>
       <p><strong>Execution:</strong> ${esc(warmUp.execution)}</p>
     </div>
     <div class="note note-cool">
@@ -66,7 +96,7 @@ function bookends() {
         <li><strong>Why:</strong> ${esc(coolDown.why)}</li>
         <li>
           <strong>How to do it:</strong>
-          ${range(coolDown.prescription.sets)} sets of ${range(coolDown.prescription.durationSeconds)} seconds.
+          ${plural(range(coolDown.prescription.sets), 'set')} of ${range(coolDown.prescription.durationSeconds)} seconds.
           ${esc(coolDown.prescription.note)}
         </li>
       </ul>
@@ -122,9 +152,11 @@ export function guideView() {
     <button class="install" type="button" data-install>Install app on this phone</button>
     ${dataTools()}
     ${protocol()}
+    ${fuel()}
     ${bookends()}
     ${rules()}
     ${matrix()}
+    ${legNote()}
     <div class="note note-summary">
       <h3>Summary Strategy</h3>
       <p>${esc(program.summaryStrategy)}</p>
