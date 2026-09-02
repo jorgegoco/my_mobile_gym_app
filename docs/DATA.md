@@ -28,7 +28,7 @@ const dayTwo = program.workouts.find(w => w.id === 'day-2');
 | `swappingMatrix` | object | Ordering logic when equipment is occupied. |
 | `weeklySchedule` | array | 7 rows, Monday-first, linked to workouts by `workoutId`. |
 | `summaryStrategy` | string | One-paragraph program rationale. |
-| `theme` | object | Hex palette taken from the PDF, for consistent UI styling. |
+| `theme` | object | Hex palette taken from the original printed guide, used verbatim by the app. |
 
 ---
 
@@ -40,7 +40,7 @@ The core entity of the app. Every exercise object:
 | :---- | :---- | :---- |
 | `code` | string | Stable id inside the program: `A1`, `A3`…`A6`, `B1`…`B6`. Use as React key / DB key. Assigned in v5.x and preserved through the v6.0 restructure, so the letter no longer indicates a day. `A2` is retired. |
 | `name` | string | Display name. |
-| `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge. Empty array = no badge. |
+| `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge, meaning "changed in the last revision". Empty array = no badge. As of v6.1 only B1 and A1 are tagged; the amber badge is unused until the next change. |
 | `target` | string | Muscles worked (shown under the title). |
 | `sets` | number | Working sets. |
 | `repRange` | [number, number] | Min/max reps — use for rep pickers and logging validation. |
@@ -52,7 +52,7 @@ The core entity of the app. Every exercise object:
 | `priority` | `"high"` \| `"medium"` \| `"swappable"` | Matches `swappingMatrix.tiers[].priority`. |
 | `cues` | string[] | Bullet-point execution cues, in display order. |
 
-Render rule used by the PDF: the right-hand meta column shows `tempo` if present, otherwise `benefit`, otherwise `grip`.
+Render rule, shared by the app and `docs/PROGRAM.md`: the meta line shows `tempo` if present, otherwise `benefit`, otherwise `grip`. See `metaLine()` in `src/program.js`.
 
 ## `swappingMatrix`
 
@@ -61,6 +61,16 @@ Render rule used by the PDF: the right-hand meta column shows `tempo` if present
 ## `weeklySchedule`
 
 `workoutId` is `null` on non-gym days and otherwise points at `workouts[].id`, so a calendar view can join without string matching on the label.
+
+---
+
+## What changed in v6.1
+
+No programme content changed - same three days, same eleven exercises, same prescriptions. Only naming and presentation:
+
+- `program.title` is now **Swim & Lift** and `program.id` is `swim-and-lift`. The subtitle keeps "Chest & Arms" as the descriptive line.
+- The `"updated"` tags came off B2 and B3.
+- `docs/PROGRAM.md` was added: the whole programme in readable form, generated from this file by `tools/make-program-doc.py`. Regenerate it whenever you change `program.json`.
 
 ---
 
@@ -76,7 +86,7 @@ The programme moved from two 6-exercise sessions to **three micro-sessions of 3�
 
 Codes were deliberately **not** renumbered: they key the IndexedDB log, so renumbering would orphan every set ever logged.
 
-Everything else that moved: `dailyProtocol` is now one linear timeline (the OPTION A / OPTION B gym rows are gone and `optionGroup` is `null` on every row); the new `fuel` object holds the 08:30 locker-room protocol; `warmUp` keeps its key but `durationMinutes` is `null` now the rowing ergometer is retired; `coolDown` is 1 × 60 s and mandatory; `legTraining` records why the gym has no leg work; B2 moved to 8–10 reps and B3 to 10–12, and both carry the `"updated"` badge; `A2` left the rotation, with the seated cable row surviving as the alternative named on the B2 card. See `program.changelog` in the JSON.
+Everything else that moved: `dailyProtocol` is now one linear timeline (the OPTION A / OPTION B gym rows are gone and `optionGroup` is `null` on every row); the new `fuel` object holds the 08:30 locker-room protocol; `warmUp` keeps its key but `durationMinutes` is `null` now the rowing ergometer is retired; `coolDown` is 1 × 60 s and mandatory; `legTraining` records why the gym has no leg work; B2 moved to 8–10 reps and B3 to 10–12 (both carried the `"updated"` badge until v6.1); `A2` left the rotation, with the seated cable row surviving as the alternative named on the B2 card. See `program.changelog` in the JSON.
 
 ---
 
