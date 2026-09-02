@@ -1,6 +1,6 @@
 # Chest & Arms — Workout PWA
 
-An offline-first workout app for a two-day chest and arms programme. It installs to an Android home
+An offline-first workout app for a three-day chest and arms programme. It installs to an Android home
 screen, works with no signal in a basement gym, and keeps a free-text log of every set on the phone
 itself — no account, no server, no sync.
 
@@ -23,7 +23,7 @@ building a small offline PWA without a framework.
 - **Per-exercise history** — every past session, editable and deletable.
 - **Backup** to a JSON file and back, because the data lives in exactly one place.
 - **Keeps the screen awake** while a workout is open, so the phone does not lock between sets.
-- The programme itself — rules, warm-up, cool-down, equipment-swapping matrix — is on a Guide tab.
+- The programme itself — rules, post-swim fuel, cool-down, equipment-swapping matrix — is on a Guide tab.
 
 ## Privacy
 

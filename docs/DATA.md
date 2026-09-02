@@ -8,7 +8,7 @@
 ```js
 import program from './program.json';
 
-const workoutB = program.workouts.find(w => w.id === 'workout-b');
+const dayTwo = program.workouts.find(w => w.id === 'day-2');
 ```
 
 ---
@@ -20,9 +20,11 @@ const workoutB = program.workouts.find(w => w.id === 'workout-b');
 | `schemaVersion` | string | Version of *this* data contract (`"1.0"`). Bump on breaking shape changes. |
 | `program` | object | Identity, athlete context, header highlights, changelog. |
 | `dailyProtocol` | array | Timeline of the training day (swim, food, gym windows). |
-| `warmUp` / `coolDown` | object | Session bookends with prescriptions. |
+| `warmUp` / `coolDown` | object | Session bookends with prescriptions. `warmUp.durationMinutes` is `null` from v6.0 — the swim is the warm-up, so there is no separate block to time. |
+| `fuel` | object | The 08:30 locker-room transition fuel protocol (`title`, `timeWindow`, `recipe`, `why`). Added in v6.0; renderers should tolerate its absence. |
+| `legTraining` | object | Why no leg work happens in the gym (`title`, `body`). Added in v6.0; optional. |
 | `rules` | array | The four hypertrophy / joint-safety rules. |
-| `workouts` | array | The two gym sessions and their exercises. |
+| `workouts` | array | The three gym micro-sessions and their exercises. |
 | `swappingMatrix` | object | Ordering logic when equipment is occupied. |
 | `weeklySchedule` | array | 7 rows, Monday-first, linked to workouts by `workoutId`. |
 | `summaryStrategy` | string | One-paragraph program rationale. |
@@ -36,7 +38,7 @@ The core entity of the app. Every exercise object:
 
 | Field | Type | Notes |
 | :---- | :---- | :---- |
-| `code` | string | Stable id inside the program: `A1`…`A6`, `B1`…`B6`. Use as React key / DB key. |
+| `code` | string | Stable id inside the program: `A1`, `A3`…`A6`, `B1`…`B6`. Use as React key / DB key. Assigned in v5.x and preserved through the v6.0 restructure, so the letter no longer indicates a day. `A2` is retired. |
 | `name` | string | Display name. |
 | `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge. Empty array = no badge. |
 | `target` | string | Muscles worked (shown under the title). |
@@ -48,14 +50,13 @@ The core entity of the app. Every exercise object:
 | `grip` | string | Present only on B4. Treat as optional. |
 | `equipment` | string[] | Slugs for filtering ("what can I do if the cable station is busy?"). |
 | `priority` | `"high"` \| `"medium"` \| `"swappable"` | Matches `swappingMatrix.tiers[].priority`. |
-| `replaces` | string | Present only on exercises changed in v5.1 (B5, B6). |
 | `cues` | string[] | Bullet-point execution cues, in display order. |
 
 Render rule used by the PDF: the right-hand meta column shows `tempo` if present, otherwise `benefit`, otherwise `grip`.
 
 ## `swappingMatrix`
 
-`tiers[].items[].codes` reference exercise `code`s, so a UI can highlight the affected cards directly. `goldenRule` is the emphasised call-out. The invariant the app should enforce when reordering a session: **no exercise tagged as tricep isolation (A5/B5) may be scheduled before A1/B1/A3.**
+`tiers[].items[].codes` reference exercise `code`s, so a UI can highlight the affected cards directly. `goldenRule` is the emphasised call-out. The invariant the app should enforce when reordering a session: **no tricep isolation (A5/B5) may be scheduled before that day's pressing — B1/A3 on Day 1, A1 on Day 3.**
 
 ## `weeklySchedule`
 
@@ -63,16 +64,19 @@ Render rule used by the PDF: the right-hand meta column shows `tempo` if present
 
 ---
 
-## What changed in v5.1
+## What changed in v6.0
 
-Two exercises in Workout B were replaced; everything else is unchanged.
+The programme moved from two 6-exercise sessions to **three micro-sessions of 3–4 exercises**, sized for the 20–25 minute window between the post-swim shower and breakfast. All 10 distinct exercises were kept; only the distribution changed.
 
-| Code | v5.0 | v5.1 |
+| Day | `id` | Exercises |
 | :---- | :---- | :---- |
-| B5 | Overhead Cable Tricep Extension | **Seated DB Overhead Tricep Extension** — dumbbell + backed bench, no cable station |
-| B6 | Standing Cable Rear Delt Crossover Flyes | **Reverse Pec Deck (Machine Rear Delt Fly)** — same machine as A6 |
+| Day 1 — Flat Chest Mass & Push Focus | `day-1` | B1, A3, A5, A6 |
+| Day 2 — Upper Back & Biceps Peak | `day-2` | B2, A4, B4 |
+| Day 3 — Upper Chest, Triceps & Posterior Shoulder | `day-3` | A1, B3, B5, B6 |
 
-Knock-on edits: the B3 cue now specifies sitting *facing away from* the machine, the "updated" badges moved from B3/B6 onto B5/B6, and the swapping matrix rows for A5/B5 and A6/B6 were rewritten for the new equipment needs. See `program.changelog` in the JSON.
+Codes were deliberately **not** renumbered: they key the IndexedDB log, so renumbering would orphan every set ever logged.
+
+Everything else that moved: `dailyProtocol` is now one linear timeline (the OPTION A / OPTION B gym rows are gone and `optionGroup` is `null` on every row); the new `fuel` object holds the 08:30 locker-room protocol; `warmUp` keeps its key but `durationMinutes` is `null` now the rowing ergometer is retired; `coolDown` is 1 × 60 s and mandatory; `legTraining` records why the gym has no leg work; B2 moved to 8–10 reps and B3 to 10–12, and both carry the `"updated"` badge; `A2` left the rotation, with the seated cable row surviving as the alternative named on the B2 card. See `program.changelog` in the JSON.
 
 ---
 

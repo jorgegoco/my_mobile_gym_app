@@ -4,7 +4,8 @@ Vanilla JS (ES modules) + Vite. No frameworks, no runtime network calls, no CDN.
 Offline-first, installed to an Android home screen and used in the gym.
 
 `Chest_and_Arms_Workout_Guide.pdf` in the repo root is the **design reference** — the app is meant to
-look like that document.
+look like that document. It is a **v5.1** artefact: the visual language still holds, but its content
+predates the v6.0 three-day restructure, so `program.json` is the authority on the programme itself.
 
 | Document | What it is |
 | :-- | :-- |
@@ -54,7 +55,9 @@ The spec was written before the PDF was available. Where they disagree, this fil
   date is a day behind between midnight and 02:00, which would file a session under the wrong day.
   See `todayKey()` in `src/program.js`.
 - Exercise codes `A1..B6` are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
-  delegation attributes.
+  delegation attributes. v6.0 redistributed them across three days **without renumbering**, because they
+  key the IndexedDB log — so the letter no longer indicates a day, and `A2` is retired (its logs survive
+  in an export but are unreachable in the UI).
 - Saves flush on `input` (debounced 500 ms), `blur`, `visibilitychange` and `pagehide` — Android kills
   backgrounded tabs and an unsaved set is a bug.
 - Validation refuses to boot on an unknown `schemaVersion` major and shows a readable message.
@@ -65,8 +68,10 @@ The spec was written before the PDF was available. Where they disagree, this fil
 
 - Views and components are pure functions returning HTML strings; `main.js` owns the single
   `innerHTML` assignment and all event delegation on `#app`. No per-node listeners.
-- Routing is `location.hash` + a `render()` switch: `#/workout-a`, `#/workout-b`, `#/guide`.
-  No router library.
+- Routing is `location.hash` + a `render()` switch: `#/day-1`, `#/day-2`, `#/day-3`, `#/guide`.
+  No router library. A non-guide tab hash **is** a workout id, which is what lets `viewFor()` resolve it
+  with a plain `getWorkout(hash.slice(2))`; `TABS` is derived from `program.workouts`, so adding a fourth
+  day to `program.json` is enough to get a fourth tab.
 - Scroll position is kept per tab in a module-level map.
 - The last tab is persisted in `localStorage` — a deliberate exception to "UI state is not persisted",
   because a PWA cold-starts with no hash and should reopen on the last tab used. Every access is wrapped
