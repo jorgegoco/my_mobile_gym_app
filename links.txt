@@ -1,25 +1,35 @@
-LINKS TO SAMPLE EXERCISES:
+LINKS TO SAMPLE EXERCISES
+
+Source list behind media.json. Codes match program.json.
 
 
-WORKOUT A
----------
+DAY 1 - Flat Chest Mass & Push Focus
+------------------------------------
+
+B1  Flat Barbell Bench Press => https://www.youtube.com/shorts/_FkbD0FhgVE
+A3  Flat Machine Chest Press => https://www.youtube.com/shorts/IF4ar_sFRYU
+A5  Cable Rope Tricep Pushdown => https://www.youtube.com/shorts/1FjkhpZsaxc
+A6  Reverse Pec Deck (Rear Delt Fly) => https://www.youtube.com/shorts/7tgx6QHB0-A
+
+DAY 2 - Upper Back & Biceps Peak
+--------------------------------
+
+B2  Chest-Supported Machine Row (or Seated Cable Row) => https://www.youtube.com/shorts/FTwvmczf7bE
+A2  Seated Cable Row (Neutral Grip) - alternative for B2 => https://www.youtube.com/shorts/nAL6iRjQT6Y
+A4  Standing Supinating Dumbbell Curls => https://www.youtube.com/shorts/MKWBV29S6c0
+B4  Dumbbell Hammer Curls => https://www.youtube.com/shorts/jdYGDzCuGE4
+
+DAY 3 - Upper Chest, Triceps & Posterior Shoulder
+-------------------------------------------------
+
+A1  Incline Barbell Bench Press => https://www.youtube.com/shorts/98HWfiRonkE
+B3  Pec Deck Machine Fly => https://www.youtube.com/shorts/a9vQ_hwIksU
+B5  Seated DB Overhead Tricep Extension => https://www.youtube.com/shorts/b_r_LW4HEcM
+B6  Reverse Pec Deck (Machine Rear Delt Fly) => https://www.youtube.com/shorts/7tgx6QHB0-A
 
 
-Incline Barbell Bench Press => https://www.youtube.com/shorts/98HWfiRonkE
-Seated Cable Row (Neutral Grip) => https://www.youtube.com/shorts/nAL6iRjQT6Y
-Flat Machine Chest Press => https://www.youtube.com/shorts/IF4ar_sFRYU
-Standing Supinating Dumbbell Curls => https://www.youtube.com/shorts/MKWBV29S6c0
-Cable Rope Tricep Pushdown => https://www.youtube.com/shorts/1FjkhpZsaxc
-Reverse Pec Deck (Rear Delt Fly) => https://www.youtube.com/shorts/7tgx6QHB0-A
+NOTES
+-----
 
-
-WORKOUT B
----------
-
-
-Flat Barbell Bench Press => https://www.youtube.com/shorts/_FkbD0FhgVE
-Chest-Supported Machine Row => https://www.youtube.com/shorts/FTwvmczf7bE
-Pec Deck Machine Fly => https://www.youtube.com/shorts/a9vQ_hwIksU
-Dumbbell Hammer Curls => https://www.youtube.com/shorts/jdYGDzCuGE4
-Seated DB Overhead Tricep Extension => https://www.youtube.com/shorts/b_r_LW4HEcM
-Reverse Pec Deck (Rear Delt Fly) => https://www.youtube.com/shorts/7tgx6QHB0-A
+A6 and B6 are the same machine on two different days, so they share one clip.
+A2 left the rotation in v6.0; the link stays because the movement survives as B2's alternative.
