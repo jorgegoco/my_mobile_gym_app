@@ -71,7 +71,11 @@ npm run dev      # http://localhost:5173
 npm test         # 46 unit tests over the log/backup logic
 npm run build    # production build into dist/
 npm run preview  # serve the build — needed to exercise the service worker
+npm run docs     # regenerate docs/PROGRAM.md, SWIM.md, GYM.md from program.json
 ```
+
+After cloning, run `git config core.hooksPath .githooks` once. The pre-commit hook then refuses a
+commit where `program.json` and the generated documents have drifted apart.
 
 The service worker only registers in a production build, so `npm run dev` is never shadowed by a
 stale cache.
@@ -91,7 +95,7 @@ GitHub Pages. To point it at your own repo:
 
 `program.json` is the single read-only source of truth — exercises, sets, rep ranges, cues, the swim
 routines, the daily protocol and the colour palette. The app never writes to it; you change the
-programme by editing that file and redeploying, then run `python3 tools/make-program-doc.py` to
+programme by editing that file and redeploying, then run `npm run docs` to
 regenerate the documents in `docs/`. `media.json` maps each exercise code to a reference video URL,
 or to a list of labelled ones.
 

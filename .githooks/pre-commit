@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Refuse a commit whose generated programme documents do not match
+# program.json. Catches both ways they drift apart: program.json edited without
+# regenerating, and a hand edit to one of the generated docs.
+#
+# Enabled per clone with:  git config core.hooksPath .githooks
+set -uo pipefail
+
+watched='^(program\.json|tools/make-program-doc\.py|docs/(PROGRAM|SWIM|GYM)\.md)$'
+git diff --cached --name-only | grep -qE "$watched" || exit 0
+
+if ! python3 tools/make-program-doc.py --check; then
+  cat >&2 <<'MSG'
+
+  program.json and the generated docs are out of sync.
+
+    npm run docs
+    git add docs/PROGRAM.md docs/SWIM.md docs/GYM.md
+
+  then commit again. Never edit those three files by hand - edit
+  program.json and regenerate. (To bypass once: git commit --no-verify)
+
+MSG
+  exit 1
+fi

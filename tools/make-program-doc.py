@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Generate the readable programme documents from program.json.
 
-    python3 tools/make-program-doc.py
+    python3 tools/make-program-doc.py            (or: npm run docs)
+    python3 tools/make-program-doc.py --check    exit 1 if any doc is stale
 
 Writes three files, all committed so a normal checkout needs no tooling:
 
@@ -22,6 +23,7 @@ Deliberately omitted: media.json video links, the `equipment` slugs and the
 """
 
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -281,7 +283,18 @@ def build(data):
 
 def main():
     data = json.loads(SOURCE.read_text(encoding="utf-8"))
-    for name, text in build(data).items():
+    docs = build(data)
+
+    # --check writes nothing: it fails when a committed doc no longer matches
+    # program.json, which is what the pre-commit hook runs.
+    if "--check" in sys.argv:
+        stale = [name for name, text in docs.items()
+                 if not (DOCS / name).exists() or (DOCS / name).read_text(encoding="utf-8") != text]
+        for name in stale:
+            print(f"out of date: docs/{name}", file=sys.stderr)
+        sys.exit(1 if stale else 0)
+
+    for name, text in docs.items():
         out = DOCS / name
         out.write_text(text, encoding="utf-8")
         print(f"wrote {out.relative_to(ROOT)} ({out.stat().st_size} bytes)")
