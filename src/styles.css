@@ -412,6 +412,12 @@ p {
   cursor: pointer;
 }
 
+/* The display above would otherwise beat the hidden attribute and leave an
+   empty dashed box on an exercise with no previous session. */
+.log-last[hidden] {
+  display: none;
+}
+
 .log-label {
   display: block;
   margin-bottom: 5px;
