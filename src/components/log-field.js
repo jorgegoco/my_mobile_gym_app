@@ -42,17 +42,40 @@ function setStamp(wrap, entry, previous = null) {
   stamp.textContent = stampText(entry, previous);
 }
 
+// The stamp is the only sign a save happened, so every edit moves it through
+// saving -> saved. The time alone has minute resolution: a second edit inside
+// the same minute would leave it unchanged and look like nothing was written.
+function showSave(wrap, state, text) {
+  const stamp = wrap.querySelector('[data-stamp]');
+  if (!stamp) return;
+  stamp.textContent = text;
+  delete stamp.dataset.save;
+  // Reading layout between the two writes restarts the flash animation.
+  void stamp.offsetWidth;
+  stamp.dataset.save = state;
+}
+
 // History rows carry a fixed date; today's field has none and resolves at save
 // time, so an app left open past midnight still files under the right day.
 const dateFor = (wrap) => wrap.dataset.date || todayKey();
 
 async function commit(key, code, date, text, wrap) {
   pending.delete(key);
-  const entry = await saveEntry(code, date, text);
+  let entry;
+  try {
+    entry = await saveEntry(code, date, text);
+  } catch {
+    // Keep it queued so the next flush (blur, tab switch, backgrounding) retries.
+    if (!pending.has(key)) pending.set(key, { code, date, text, wrap });
+    if (wrap.isConnected) showSave(wrap, 'error', 'Not saved - will retry');
+    return;
+  }
+  // Typing continued while this write ran: that newer save owns the stamp.
+  if (pending.has(key) || !wrap.isConnected) return;
   // Clearing today's box must fall back to the previous session, not to
   // "Not logged yet" - stampText only needs its date.
   const previous = wrap.dataset.prevDate ? { date: wrap.dataset.prevDate } : null;
-  if (wrap.isConnected) setStamp(wrap, entry, previous);
+  showSave(wrap, 'saved', stampText(entry, previous));
 }
 
 export function flushPending() {
@@ -74,6 +97,7 @@ export function handleLogInput(textarea) {
   textarea.dataset.hydrated = 'true';
   autoGrow(textarea);
   pending.set(key, { code, date, text: textarea.value, wrap });
+  showSave(wrap, 'saving', 'Saving...');
 
   clearTimeout(timers.get(key));
   timers.set(

@@ -456,10 +456,48 @@ p {
 
 .log-stamp {
   display: block;
-  margin-top: 6px;
+  width: fit-content;
+  margin: 4px 0 0 -6px;
+  padding: 2px 6px;
+  border-radius: 999px;
   color: var(--teal);
   font-size: 0.6875rem;
   font-weight: 700;
+}
+
+.log-stamp[data-save='saving'] {
+  color: var(--text-muted);
+}
+
+.log-stamp[data-save='saved']::before {
+  content: "\2713  ";
+}
+
+/* A flash on every landed write, so a same-minute edit is still confirmed. */
+.log-stamp[data-save='saved'] {
+  animation: saved-flash 1.6s ease-out;
+}
+
+.log-stamp[data-save='error'] {
+  color: var(--reps-text);
+}
+
+@keyframes saved-flash {
+  0%,
+  35% {
+    background: var(--tint-warm);
+    box-shadow: 0 0 0 1px var(--teal);
+  }
+  100% {
+    background: transparent;
+    box-shadow: 0 0 0 1px transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .log-stamp[data-save='saved'] {
+    animation: none;
+  }
 }
 
 /* Only shown once the browser reports the app is installable. */
