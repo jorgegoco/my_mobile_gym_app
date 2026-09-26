@@ -4,12 +4,14 @@ import {
   getWorkout,
   getExercise,
   getWorkoutForExercise,
-  validateProgram
+  validateProgram,
+  SWIM_LOG
 } from './program.js';
 import { workoutView } from './views/workout.js';
 import { guideView } from './views/guide.js';
+import { swimView } from './views/swim.js';
 import { historyView } from './views/history.js';
-import { tabBar, TABS } from './components/tab-bar.js';
+import { tabBar, TABS, SWIM_HASH } from './components/tab-bar.js';
 import { flushPending, handleLogInput, hydrateLogFields, copyLastInto } from './components/log-field.js';
 import { runExport, runImport } from './components/data-tools.js';
 import { deleteEntry, migrateSharedLogs } from './logs.js';
@@ -18,10 +20,11 @@ import { setWakeLockWanted, watchWakeLock } from './wake-lock.js';
 const app = document.getElementById('app');
 const LAST_TAB = 'lastTab';
 
-// History belongs to a workout, so that tab stays lit while viewing it.
+// History belongs to a workout (or the swim), so that tab stays lit while viewing it.
 const tabForHash = (hash) => {
   const code = historyCode(hash);
-  return code ? `#/${getWorkoutForExercise(code).id}` : hash;
+  if (!code) return hash;
+  return code === SWIM_LOG ? SWIM_HASH : `#/${getWorkoutForExercise(code).id}`;
 };
 
 const scrollByHash = new Map();
@@ -29,10 +32,12 @@ let currentHash = null;
 
 const isTab = (hash) => TABS.some((tab) => tab.hash === hash);
 
-// "#/history/B5" - valid only when the code resolves to a real exercise.
+// "#/history/B5" - valid only when the code resolves to a real exercise, or
+// is the swim log.
 const historyCode = (hash) => {
   const match = /^#\/history\/([A-Za-z0-9]+)$/.exec(hash ?? '');
-  return match && getExercise(match[1]) ? match[1] : null;
+  if (!match) return null;
+  return match[1] === SWIM_LOG || getExercise(match[1]) ? match[1] : null;
 };
 
 const isKnown = (hash) => isTab(hash) || Boolean(historyCode(hash));
@@ -52,7 +57,8 @@ async function viewFor(hash) {
   const code = historyCode(hash);
   if (code) return historyView(code);
   if (hash === '#/guide') return guideView();
-  // Every non-guide tab hash is a workout id: '#/day-1' -> 'day-1'.
+  if (hash === SWIM_HASH) return swimView();
+  // Every other tab hash is a workout id: '#/day-1' -> 'day-1'.
   return workoutView(getWorkout(hash.slice(2)));
 }
 
@@ -75,9 +81,10 @@ async function render() {
     /* private mode: the tab just won't be remembered */
   }
 
-  // Only the workout screens keep the screen awake; the guide and history are
-  // reading, and holding it there would just burn battery.
-  setWakeLockWanted(isTab(hash) && hash !== '#/guide');
+  // Only the gym screens keep the screen awake; the guide, the swim and history
+  // are reading - the phone is in the locker during the swim - and holding it
+  // there would just burn battery.
+  setWakeLockWanted(isTab(hash) && hash !== '#/guide' && hash !== SWIM_HASH);
 
   const target = scrollByHash.get(hash) ?? 0;
   requestAnimationFrame(() => window.scrollTo(0, target));

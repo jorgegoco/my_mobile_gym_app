@@ -25,7 +25,7 @@ function sharedNote(ex) {
 
 // data-log carries the code that owns the log, which for B6 is A6. The DOM id
 // keeps the card's own code so both cards stay unique.
-export function logField(ex) {
+export function logField(ex, placeholder = '60kg x8,8,7 - felt strong') {
   return `
     <div class="log" data-log="${esc(logCodeFor(ex.code))}">
       <p class="log-last" data-last hidden></p>
@@ -35,7 +35,7 @@ export function logField(ex) {
         class="log-input"
         rows="2"
         enterkeyhint="done"
-        placeholder="60kg x8,8,7 - felt strong"
+        placeholder="${esc(placeholder)}"
       ></textarea>
       <span class="log-stamp" data-stamp aria-live="polite"></span>
     </div>

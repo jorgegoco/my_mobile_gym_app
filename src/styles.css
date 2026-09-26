@@ -812,6 +812,154 @@ p {
   margin-top: 18px;
 }
 
+/* ---------- swim tab ---------- */
+
+.swim-today {
+  padding-top: 12px;
+}
+
+.swim-objective,
+.swim-rounds {
+  margin: 0 14px 10px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.swim-rounds {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.swim-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 14px 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.swim-block {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+  background: var(--card);
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.swim-block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 10px;
+  margin-bottom: 4px;
+}
+
+.swim-block h4 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.swim-dist {
+  color: var(--reps-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.swim-points {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.swim-rest {
+  margin-top: 4px;
+  color: var(--teal);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.swim-today .history-link {
+  margin-bottom: 14px;
+}
+
+/* On the row, not the cells: stacked rows have padding the cells do not cover. */
+.grid .row-today {
+  background: var(--tint-cool);
+}
+
+.grid .row-today .col-time strong::after {
+  content: " - today";
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.swim-routine {
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.swim-routine summary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--tap);
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.swim-routine[open] summary {
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.swim-routine-name {
+  color: var(--navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.swim-routine-days {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.swim-intro,
+.swim-footnote {
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.swim-footnote {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+/* The express blocks sit on the page, not inside a card. */
+.section-title + .swim-intro + .swim-blocks {
+  margin: 0 0 12px;
+}
+
+.swim-steps {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.swim-steps li + li {
+  margin-top: 5px;
+}
+
 /* ---------- bottom tab bar ---------- */
 
 .tabs {

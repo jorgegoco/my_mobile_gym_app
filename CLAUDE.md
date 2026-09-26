@@ -76,8 +76,9 @@ The spec was written before the PDF was available. Where they disagree, this fil
 
 - Views and components are pure functions returning HTML strings; `main.js` owns the single
   `innerHTML` assignment and all event delegation on `#app`. No per-node listeners.
-- Routing is `location.hash` + a `render()` switch: `#/day-1`, `#/day-2`, `#/day-3`, `#/guide`.
-  No router library. A non-guide tab hash **is** a workout id, which is what lets `viewFor()` resolve it
+- Routing is `location.hash` + a `render()` switch: `#/swim`, `#/day-1`, `#/day-2`, `#/day-3`, `#/guide`.
+  No router library. Swim comes first because it starts every morning, which also makes it the cold-start
+  default. Every other non-guide tab hash **is** a workout id, which is what lets `viewFor()` resolve it
   with a plain `getWorkout(hash.slice(2))`; `TABS` is derived from `program.workouts`, so adding a fourth
   day to `program.json` is enough to get a fourth tab.
 - Scroll position is kept per tab in a module-level map.
@@ -131,18 +132,31 @@ so an app left open past midnight still files correctly.
 `hydrateLogFields` handles both shapes: a row with `data-date` loads that date's entry and shows no
 "last session" reference; today's field also looks up the previous entry.
 
+## Swim tab
+
+`program.swim` holds four routines, a weekday rotation, the Express set and the technique notes. Unlike
+the gym, the swim **is** tied to the weekday, so `swimForDate()` picks today's routine from `getDay()`.
+
+- Lengths and Express times are **derived, never stored**: lengths from `poolMeters`, minutes from the
+  real session pace (`sessionMeters` in `sessionMinutes`). The source PDF's 15/25/35-minute Express labels
+  implied twice that pace, so they were replaced.
+- `validateSwim()` refuses to boot if a routine does not add up to `sessionMeters`, a block is not a
+  whole number of lengths, a weekday is missing, or an Express total is wrong.
+- The swim is logged once per day under the reserved code `SWIM` (`SWIM:<date>`), through the same
+  pending queue as every exercise. No exercise may use that code.
+
 ## History view
 
 `#/history/<CODE>` is a route, not an overlay, so Android's back gesture closes it. `resolveHash()`
-accepts it only when `getExercise(code)` resolves, and a history hash is never remembered as the last
-tab. The parent workout tab stays lit via `getWorkoutForExercise`.
+accepts it only when `getExercise(code)` resolves or the code is `SWIM`, and a history hash is never
+remembered as the last tab. The parent tab stays lit via `getWorkoutForExercise`, or Swim for `SWIM`.
 
 Delete removes the row in place rather than re-rendering, so scroll position and any other
 in-progress edit survive.
 
 ## Wake lock
 
-Held only on the workout tabs; released on the guide, on history, and when the page is hidden.
+Held only on the gym tabs; released on the swim tab (the phone is in the locker), the guide, history, and when the page is hidden.
 **The browser releases the lock itself when the page is hidden**, so `wake-lock.js` listens for the
 sentinel's `release` event, clears its reference, and re-requests on `visibilitychange` when visible
 again. Without that it silently stops working after the first phone call. Every call is guarded -

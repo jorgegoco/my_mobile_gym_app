@@ -57,6 +57,61 @@ def table(header, rows):
     return out
 
 
+def swim_section(swim):
+    """Lengths and Express times are derived exactly as the app derives them."""
+    pool = swim["poolMeters"]
+
+    def dist(meters):
+        return f"{meters:,}m / {meters // pool} lengths"
+
+    def blocks(items):
+        out = []
+        for b in items:
+            out += [f"- **{b['title']} ({dist(b['meters'])}):** {b['detail']}"]
+            out += [f"    - {pt}" for pt in b.get("points", [])]
+            if b.get("rest"):
+                out += [f"    - *Rest: {b['rest']}*"]
+        return out
+
+    names = {r["id"]: r["name"] for r in swim["routines"]}
+    L = ["", "---", "", f"## {swim['title']}", "",
+         f"*{swim['subtitle']}* - every session is {dist(swim['sessionMeters'])} "
+         f"in a {pool}m pool, fixed to the weekday.", "", "### Weekly Rotation", ""]
+    L += table(["Day", "Routine", "Primary Training Objective"],
+               [[r["day"], names[r["routineId"]], r["objective"]] for r in swim["schedule"]])
+
+    for r in swim["routines"]:
+        days = [row["day"] for row in swim["schedule"] if row["routineId"] == r["id"]]
+        L += ["", f"### {r['name']} ({', '.join(days)})", "", f"*Target: {r['target']}*", ""]
+        if r.get("rounds", 1) > 1:
+            per_round = sum(b["meters"] for b in r["blocks"])
+            L += [f"{r['rounds']} rounds of this {per_round:,}m block:", ""]
+        L += blocks(r["blocks"])
+
+    ex = swim.get("express")
+    if ex:
+        L += ["", f"### {ex['title']}", "", ex["intro"], ""]
+        L += blocks([ex["warmUp"], ex["mainBlock"], ex["coolDown"]])
+        L += ["", "**Time options** (estimated from the real pace, "
+              f"{swim['sessionMeters']:,}m in {swim['sessionMinutes']} minutes, rests included):", ""]
+        for i, opt in enumerate(ex["options"], 1):
+            meters = ex["warmUp"]["meters"] + opt["mainBlocks"] * ex["mainBlock"]["meters"] + ex["coolDown"]["meters"]
+            minutes = round(meters * swim["sessionMinutes"] / swim["sessionMeters"] / 5) * 5
+            label = plural(str(opt["mainBlocks"]), "Main Block")
+            L += [f"{i}. **About {minutes} min - {dist(meters)}:** Warm-Up + {label} + Cool-Down."]
+        L += ["", f"*{ex['note']}*"]
+
+    br, turn, missed = swim["breathing"], swim["openTurn"], swim["missedSessions"]
+    L += ["", f"### {br['title']}", ""]
+    L += [f"- **{pt['label']}:** {pt['text']}" for pt in br["points"]]
+    L += ["", f"### {turn['title']}", "", turn["intro"], ""]
+    L += table(["Step", "Phase", "Action & Biomechanical Cue"],
+               [[i, s["phase"], s["action"]] for i, s in enumerate(turn["steps"], 1)])
+    L += ["", f"### {missed['title']}", ""]
+    L += [f"- **{pt['label']}:** {pt['text']}" for pt in missed["points"]]
+    return L
+
+
 def build(data) -> str:
     p = data["program"]
     L = [
@@ -79,6 +134,9 @@ def build(data) -> str:
     if fuel := data.get("fuel"):
         L += ["", "---", "", f"## {fuel['title']} ({fuel['timeWindow']})", "",
               f"**Recipe:** {fuel['recipe']}", "", f"**Why:** {fuel['why']}"]
+
+    if swim := data.get("swim"):
+        L += swim_section(swim)
 
     warm, cool = data["warmUp"], data["coolDown"]
     duration = f" ({rng(warm['durationMinutes'])} mins)" if warm.get("durationMinutes") else ""

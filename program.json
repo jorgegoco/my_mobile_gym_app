@@ -1,20 +1,34 @@
 {
   "$schema": "./docs/DATA.md",
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "program": {
     "id": "swim-and-lift",
     "title": "Swim & Lift",
-    "version": "6.1",
-    "updatedAt": "2026-09-03",
+    "version": "7.0",
+    "updatedAt": "2026-09-26",
     "subtitle": "Chest & Arms Micro-Sessions | Swimmer Program (Age 56)",
     "athlete": { "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection" },
     "highlights": [
-      { "label": "Fasted Swim", "value": "2,300m (07:00-08:30)" },
+      { "label": "Fasted Swim", "value": "2,500m (07:00-08:30)" },
       { "label": "Gym Frequency", "value": "3 Days / Week" },
       { "label": "Session Length", "value": "20-25 min Micro-Session" },
       { "label": "Joint Safety", "value": "Rotator Cuff Focus" }
     ],
     "changelog": [
+      {
+        "version": "7.0",
+        "date": "2026-09-26",
+        "changes": [
+          "Swim raised from 2,300m to 2,500m (100 lengths of a 25m pool), with four routines rotating by weekday: Interleaved Circuit, Gear Shift / Pace Set, Descending Pyramid, Technique & Distance Cruise.",
+          "New Swim tab: today's routine, the weekly rotation, a Modular Express Set for short days, and the breathing, open-turn and missed-session rules. Swim sessions get their own log.",
+          "Express Set time windows re-estimated from the real session pace (2,500m in 90 minutes): about 30, 45 and 60 minutes. The source sheet said 15, 25 and 35, roughly twice that pace.",
+          "A5 replaced: Cable Rope Tricep Pushdown -> Seated Triceps Pressdown Machine; the rope stays as Plan B.",
+          "C1 added to Day 2: Machine Preacher Curl OR Machine Shrug, one per session. Day 2 is now 4 exercises.",
+          "B2 and B3 cue lists trimmed; swapping matrix notes for A5/B5 and A4/B4/C1 rewritten.",
+          "A6 and B6 now share one log - the same reverse pec deck on Day 1 and Day 3.",
+          "Transition fuel: the pinch of salt is part of the recipe, no longer optional. Afternoon sports are tennis and basketball."
+        ]
+      },
       {
         "version": "6.1",
         "date": "2026-09-03",
@@ -57,21 +71,22 @@
 
   "dailyProtocol": [
     { "id": "pre-swim", "timeWindow": "06:45", "activity": "Pre-Swim Prep", "strategy": "Hydrate with 500ml water + electrolytes. Swim is kept 100% fasted.", "optionGroup": null },
-    { "id": "swim", "timeWindow": "07:00-08:30", "activity": "2,300m Fasted Swim (90 mins)", "strategy": "Maintain steady cadence. 1,500m Freestyle pulls heavy on internal rotators; 800m Backstroke counters chest tightness. Doubles as the full thermal and joint warm-up for the gym.", "optionGroup": null },
-    { "id": "locker-fuel", "timeWindow": "08:30-08:35", "activity": "Locker-Room Transition Fuel", "strategy": "200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura (+ optional pinch of salt). Drink it while changing - it restores blood glucose without sitting heavy in the stomach.", "optionGroup": null },
+    { "id": "swim", "timeWindow": "07:00-08:30", "activity": "2,500m Fasted Swim (90 mins)", "strategy": "Today's routine from the Swim tab: 100 lengths of a 25m pool, 2-stroke alternating breathing, floor-free open turns. Doubles as the full thermal and joint warm-up for the gym.", "optionGroup": null },
+    { "id": "locker-fuel", "timeWindow": "08:30-08:35", "activity": "Locker-Room Transition Fuel", "strategy": "200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt. Drink it while changing - it restores blood glucose without sitting heavy in the stomach.", "optionGroup": null },
     { "id": "gym", "timeWindow": "08:35-09:00", "activity": "Gym Micro-Session (20-25 mins max)", "strategy": "3 to 4 exercises only. One light prep set, then straight into the first lift. Finish with the mandatory 60-second dead hang.", "optionGroup": null },
-    { "id": "breakfast", "timeWindow": "09:15", "activity": "Post-Workout Breakfast", "strategy": "Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done.", "optionGroup": null }
+    { "id": "breakfast", "timeWindow": "09:15", "activity": "Post-Workout Breakfast", "strategy": "Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done.", "optionGroup": null },
+    { "id": "work", "timeWindow": "10:00+", "activity": "Work / Afternoon Sports", "strategy": "Remote programming work. Afternoons reserved for tennis, basketball, or rest.", "optionGroup": null }
   ],
 
   "fuel": {
     "title": "Locker-Room Transition Fuel",
     "timeWindow": "08:30",
-    "recipe": "200-250ml (0.20-0.25 L) Leche Desnatada Omega-3 + 1 tbsp Miel Pura, plus an optional pinch of salt.",
+    "recipe": "200-250ml (0.20-0.25 L) Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt.",
     "why": "Restores blood glucose and halts muscle breakdown immediately following 90 minutes of fasted swimming. Small enough to drink in the five minutes it takes to change, so there is no stomach sloshing or heaviness under a loaded bar minutes later."
   },
 
   "warmUp": {
-    "title": "Warm-Up Protocol - The 2,300m Swim Is the Warm-Up",
+    "title": "Warm-Up Protocol - The 2,500m Swim Is the Warm-Up",
     "durationMinutes": null,
     "execution": "The 5-8 minute rowing machine ergometer warm-up is removed. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight."
   },
@@ -92,7 +107,7 @@
 
   "legTraining": {
     "title": "Leg Training Is Deliberately Omitted",
-    "body": "No leg exercises are performed in the gym. Lower-body volume is already fully covered by daily swim kicks, running and tennis. Adding squats or leg presses to a 25-minute post-swim window would compete directly with recovery for the next morning's 2,300m swim, which is the foundation the whole program is built on."
+    "body": "No leg exercises are performed in the gym. Lower-body volume is already fully covered by daily swim kicks, tennis and basketball. Adding squats or leg presses to a 25-minute post-swim window would compete directly with recovery for the next morning's 2,500m swim, which is the foundation the whole program is built on."
   },
 
   "workouts": [
@@ -287,14 +302,127 @@
     "goldenRule": "In a 25-minute window there is no time to queue for a machine. If the rack is not open for B1/A1, start with that day's machine work or rear delts and come back to the bar - just hold off on tricep isolation until the pressing is done."
   },
 
+  "swim": {
+    "title": "Master Swim Program",
+    "subtitle": "2,500m Daily Routine & Efficiency Guide",
+    "poolMeters": 25,
+    "sessionMeters": 2500,
+    "sessionMinutes": 90,
+
+    "schedule": [
+      { "day": "Monday", "routineId": "interleaved", "objective": "Active chest opening & shoulder alignment; prevents rotator impingement." },
+      { "day": "Tuesday", "routineId": "gear-shift", "objective": "Aerobic threshold conditioning & speed control via 10x100m intervals." },
+      { "day": "Wednesday", "routineId": "pyramid", "objective": "Mental engagement & progressive block pacing (700m down to 300m)." },
+      { "day": "Thursday", "routineId": "interleaved", "objective": "Mid-week active joint recovery & external rotation balancing." },
+      { "day": "Friday", "routineId": "gear-shift", "objective": "Distance-per-stroke maintenance under controlled aerobic fatigue." },
+      { "day": "Saturday", "routineId": "cruise", "objective": "Sustained endurance & stroke count tracking across 1,500m Free block." },
+      { "day": "Sunday", "routineId": "pyramid", "objective": "Volume endurance with shrinking block structure." }
+    ],
+
+    "routines": [
+      {
+        "id": "interleaved", "name": "The Interleaved Circuit",
+        "target": "Shoulder rotator balance & active posture reset",
+        "rounds": 5,
+        "blocks": [
+          { "title": "Freestyle", "meters": 300, "detail": "Steady cruise pace. 2-stroke breathing, alternating side per length.", "rest": "10 seconds at wall." },
+          { "title": "Breaststroke", "meters": 100, "detail": "Smooth glide pace; active upper-body rest.", "rest": "10 seconds at wall." },
+          { "title": "Backstroke", "meters": 100, "detail": "Active chest opener to stretch pectorals and reset shoulders.", "rest": "30 seconds at wall before starting next round." }
+        ]
+      },
+      {
+        "id": "gear-shift", "name": "The Gear Shift / Pace Set",
+        "target": "Aerobic conditioning & tempo variation",
+        "rounds": 1,
+        "blocks": [
+          { "title": "Block 1 - Warm-Up", "meters": 500, "detail": "300m Free + 10s rest + 200m Back.", "rest": "45s at wall." },
+          {
+            "title": "Block 2 - Main Pace Interval", "meters": 1000, "detail": "10 x 100m Freestyle (4 lengths each).",
+            "points": [
+              "Rest: exactly 15 seconds at wall after each 100m.",
+              "Pacing: sets 1, 3, 5, 7, 9 = Cruise pace. Sets 2, 4, 6, 8, 10 = Brisk pace (effort 7-8/10)."
+            ],
+            "rest": "60 seconds at wall after set 10."
+          },
+          { "title": "Block 3 - Active Recovery", "meters": 500, "detail": "500m Breaststroke continuous glide.", "rest": "30s at wall." },
+          { "title": "Block 4 - Cool-Down", "meters": 500, "detail": "500m Backstroke continuous relaxed pace." }
+        ]
+      },
+      {
+        "id": "pyramid", "name": "The Descending Pyramid Set",
+        "target": "Progressive block reduction & pacing",
+        "rounds": 1,
+        "blocks": [
+          { "title": "Block 1", "meters": 700, "detail": "400m Free, 10s rest, 150m Breast, 10s rest, 150m Back.", "rest": "30s at wall." },
+          { "title": "Block 2", "meters": 600, "detail": "300m Free, 10s rest, 150m Breast, 10s rest, 150m Back.", "rest": "30s at wall." },
+          { "title": "Block 3", "meters": 500, "detail": "200m Free, 10s rest, 150m Breast, 10s rest, 150m Back.", "rest": "25s at wall." },
+          { "title": "Block 4", "meters": 400, "detail": "100m Free, 10s rest, 150m Breast, 10s rest, 150m Back.", "rest": "20s at wall." },
+          { "title": "Block 5 - Cool-Down", "meters": 300, "detail": "100m Free, 100m Breast, 100m Back continuous." }
+        ]
+      },
+      {
+        "id": "cruise", "name": "Technique & Distance Cruise",
+        "target": "Sustained aerobic efficiency & stroke tracking",
+        "rounds": 1,
+        "blocks": [
+          { "title": "Block 1 - Long Freestyle Block", "meters": 1500, "detail": "Continuous swim at steady cruise pace. Count strokes on length 10, length 30 and length 50 to verify stroke length consistency.", "rest": "60s at wall." },
+          { "title": "Block 2 - Breaststroke Block", "meters": 500, "detail": "Continuous swim focusing on maximum kick propulsion and glide distance per stroke.", "rest": "30s at wall." },
+          { "title": "Block 3 - Backstroke Cool-Down", "meters": 500, "detail": "Continuous relaxed backstroke to open chest and decompress shoulders." }
+        ]
+      }
+    ],
+
+    "express": {
+      "title": "Emergency Backup Routine: Modular Express Set",
+      "intro": "For days when work or life limits pool time. A flexible 400m main block scales to the time available.",
+      "warmUp": { "title": "Warm-Up", "meters": 200, "detail": "100m Free + 100m Back continuous.", "rest": "30s." },
+      "mainBlock": { "title": "Modular Main Block", "meters": 400, "detail": "4 x 100m (50m Freestyle Brisk Pace + 50m Breast or Back Recovery Pace). Take 15 seconds rest at wall after each 100m." },
+      "coolDown": { "title": "Cool-Down", "meters": 200, "detail": "100m Breast + 100m Back continuous." },
+      "options": [
+        { "mainBlocks": 1, "meters": 800 },
+        { "mainBlocks": 2, "meters": 1200 },
+        { "mainBlocks": 3, "meters": 1600 }
+      ],
+      "note": "You are free to swap Breaststroke and Backstroke during recovery lengths whenever your shoulders or knees need a change."
+    },
+
+    "breathing": {
+      "title": "Breathing Protocol & Oxygenation",
+      "points": [
+        { "label": "2-Stroke Alternating Pattern", "text": "Breathe every 2 strokes, alternating your breathing side every 25m length (e.g., breathe right going down, breathe left coming back)." },
+        { "label": "Neuromuscular & Joint Balance", "text": "Alternating sides per length prevents asymmetrical neck/shoulder strain while maintaining distance-per-stroke symmetry." },
+        { "label": "Why Not 3-Stroke", "text": "Breathing every 2 strokes maintains steady, high oxygen saturation. Bilateral 3-stroke breathing reduces breathing frequency by 33%, causing air starvation during longer blocks. Stick strictly to 2-stroke alternating." }
+      ]
+    },
+
+    "openTurn": {
+      "title": "Open Turn Technique (Floor-Free Pivot)",
+      "intro": "Never step or stand on the pool floor during turns. Stepping causes sudden joint impact on ankles and knees, breaks forward momentum, and places torsional stress on the lower back.",
+      "steps": [
+        { "phase": "The Touch", "action": "Touch wall with one hand (Free/Back) or both hands (Breast) at surface level without grabbing edge." },
+        { "phase": "Tuck & Pivot", "action": "Allow momentum to bring hips toward wall. Tuck knees tightly to chest underwater (no floor contact)." },
+        { "phase": "The Plant", "action": "Rotate body sideways and plant both feet flat against wall, 30-50cm below surface." },
+        { "phase": "Streamline Push", "action": "Push off horizontally in full streamline position (arms locked overhead, hands stacked) before rotating into stroke." }
+      ]
+    },
+
+    "missedSessions": {
+      "title": "Missed Session Policy",
+      "points": [
+        { "label": "Immediate Resumption", "text": "If you miss one or several days, resume immediately on the workout scheduled for the day you return. Never attempt to make up missed volume or stack workouts." },
+        { "label": "Extended Absences (>5 Days)", "text": "Keep intensity at 70% effort for the first two sessions upon return to allow shoulder internal/external rotators to re-acclimate safely." }
+      ]
+    }
+  },
+
   "weeklySchedule": [
-    { "day": "Monday", "morning": "2,300m Swim (Fasted) + GYM: DAY 1", "afternoon": "Rest / Light Mobility", "workoutId": "day-1", "focus": "Flat Barbell Chest, Machine Press Volume, Outer Tricep, Rear Delts" },
-    { "day": "Tuesday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Wednesday", "morning": "2,300m Swim (Fasted) + GYM: DAY 2", "afternoon": "Rest / Light Mobility", "workoutId": "day-2", "focus": "Upper Back Thickness, Biceps Peak, Brachialis" },
-    { "day": "Thursday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Friday", "morning": "2,300m Swim (Fasted) + GYM: DAY 3", "afternoon": "Rest / Light Mobility", "workoutId": "day-3", "focus": "Upper Chest, Inner Chest, Tricep Long Head, Posterior Delts" },
-    { "day": "Saturday", "morning": "2,300m Swim (Fasted)", "afternoon": "Optional Tennis / Run", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Sunday", "morning": "2,300m Swim (Fasted)", "afternoon": "Full Rest & Reset", "workoutId": null, "focus": "Systemic Recovery & Repair" }
+    { "day": "Monday", "morning": "2,500m Swim (Fasted) + GYM: DAY 1", "afternoon": "Rest / Light Mobility", "workoutId": "day-1", "focus": "Flat Barbell Chest, Machine Press Volume, Outer Tricep, Rear Delts" },
+    { "day": "Tuesday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
+    { "day": "Wednesday", "morning": "2,500m Swim (Fasted) + GYM: DAY 2", "afternoon": "Rest / Light Mobility", "workoutId": "day-2", "focus": "Upper Back Thickness, Biceps Peak, Brachialis" },
+    { "day": "Thursday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
+    { "day": "Friday", "morning": "2,500m Swim (Fasted) + GYM: DAY 3", "afternoon": "Rest / Light Mobility", "workoutId": "day-3", "focus": "Upper Chest, Inner Chest, Tricep Long Head, Posterior Delts" },
+    { "day": "Saturday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
+    { "day": "Sunday", "morning": "2,500m Swim (Fasted)", "afternoon": "Full Rest & Reset", "workoutId": null, "focus": "Systemic Recovery & Repair" }
   ],
 
   "summaryStrategy": "The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.",

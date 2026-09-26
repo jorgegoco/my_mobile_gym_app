@@ -1,8 +1,6 @@
 import { esc } from '../dom.js';
-import { getExercise, getWorkoutForExercise, logCodeFor, todayKey } from '../program.js';
+import { getExercise, getWorkoutForExercise, logCodeFor, todayKey, WEEKDAYS, SWIM_LOG } from '../program.js';
 import { historyFor, formatShortDate } from '../logs.js';
-
-const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function heading(date, today) {
   const [y, m, d] = date.split('-').map(Number);
@@ -32,21 +30,31 @@ function row(entry, today) {
   `;
 }
 
-export async function historyView(code) {
-  const exercise = getExercise(code);
+// What the history belongs to: its title and where "back" goes.
+function subject(code) {
+  if (code === SWIM_LOG) return { title: 'Swim Sessions', backHash: '#/swim', backLabel: 'Swim' };
   const workout = getWorkoutForExercise(code);
+  return {
+    title: getExercise(code).name,
+    backHash: `#/${workout.id}`,
+    backLabel: workout.name.split(':')[0]
+  };
+}
+
+export async function historyView(code) {
+  const { title, backHash, backLabel } = subject(code);
   // B6's history is A6's: the route keeps B6 so "back" returns to Day 3.
   const entries = await historyFor(logCodeFor(code));
   const today = todayKey();
 
   const body = entries.length
     ? `<ul class="entries">${entries.map((entry) => row(entry, today)).join('')}</ul>`
-    : `<p class="entries-empty">No sessions logged yet for this exercise.</p>`;
+    : `<p class="entries-empty">No sessions logged yet.</p>`;
 
   return `
     <header class="view-head">
-      <a class="back" href="#/${esc(workout.id)}">&lsaquo; ${esc(workout.name.split(':')[0])}</a>
-      <h2 class="section-title">${esc(exercise.name)}</h2>
+      <a class="back" href="${esc(backHash)}">&lsaquo; ${esc(backLabel)}</a>
+      <h2 class="section-title">${esc(title)}</h2>
       <p class="section-sub">
         ${entries.length} ${entries.length === 1 ? 'session' : 'sessions'} logged &middot; newest first
       </p>

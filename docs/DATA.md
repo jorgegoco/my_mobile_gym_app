@@ -17,7 +17,7 @@ const dayTwo = program.workouts.find(w => w.id === 'day-2');
 
 | Key | Type | What it holds |
 | :---- | :---- | :---- |
-| `schemaVersion` | string | Version of *this* data contract (`"1.0"`). Bump on breaking shape changes. |
+| `schemaVersion` | string | Version of *this* data contract (`"1.1"`). Major = breaking shape change (the app refuses to boot); minor = additive. |
 | `program` | object | Identity, athlete context, header highlights, changelog. |
 | `dailyProtocol` | array | Timeline of the training day (swim, food, gym windows). |
 | `warmUp` / `coolDown` | object | Session bookends with prescriptions. `warmUp.durationMinutes` is `null` from v6.0 — the swim is the warm-up, so there is no separate block to time. |
@@ -26,6 +26,7 @@ const dayTwo = program.workouts.find(w => w.id === 'day-2');
 | `rules` | array | The four hypertrophy / joint-safety rules. |
 | `workouts` | array | The three gym micro-sessions and their exercises. |
 | `swappingMatrix` | object | Ordering logic when equipment is occupied. |
+| `swim` | object | The swim programme: routines, weekday rotation, Express set, technique. Added in v7.0 (schema 1.1); optional. See below. |
 | `weeklySchedule` | array | 7 rows, Monday-first, linked to workouts by `workoutId`. |
 | `summaryStrategy` | string | One-paragraph program rationale. |
 | `theme` | object | Hex palette taken from the original printed guide, used verbatim by the app. |
@@ -59,11 +60,32 @@ Render rule, shared by the app and `docs/PROGRAM.md`: the meta line shows `tempo
 
 `tiers[].items[].codes` reference exercise `code`s, so a UI can highlight the affected cards directly. `goldenRule` is the emphasised call-out. The invariant the app should enforce when reordering a session: **no tricep isolation (A5/B5) may be scheduled before that day's pressing — B1/A3 on Day 1, A1 on Day 3.**
 
+## `swim`
+
+| Field | Type | Notes |
+| :---- | :---- | :---- |
+| `poolMeters` / `sessionMeters` / `sessionMinutes` | number | 25, 2500, 90. Lengths are `meters / poolMeters`; Express times are estimated from `sessionMeters` in `sessionMinutes`. Neither is stored. |
+| `schedule` | array | 7 rows `{ day, routineId, objective }`, Monday-first. Every weekday must be present. |
+| `routines` | array | `{ id, name, target, rounds, blocks }`. Each block is `{ title, meters, detail, points?, rest? }`. `sum(blocks.meters) x rounds` must equal `sessionMeters`. |
+| `express` | object | `warmUp`, `mainBlock`, `coolDown` (blocks as above) and `options[] { mainBlocks, meters }`, where `meters` must equal warm-up + n main blocks + cool-down. |
+| `breathing` / `missedSessions` | object | `{ title, points[] { label, text } }`. |
+| `openTurn` | object | `{ title, intro, steps[] { phase, action } }`, in order. |
+
+The app validates every distance at boot and refuses to start on a mismatch, because a typo in a block
+length is otherwise invisible until you are in the water.
+
 ## `weeklySchedule`
 
 `workoutId` is `null` on non-gym days and otherwise points at `workouts[].id`, so a calendar view can join without string matching on the label.
 
 ---
+
+## What changed in v7.0
+
+- The swim went from 2,300m to **2,500m** and gained its own programme in the new `swim` object; the app renders it on a Swim tab. Schema is now `1.1` - additive, so a `1.0` backup still imports.
+- **A5** is the Seated Triceps Pressdown Machine (rope kept as Plan B); **C1** (Machine Preacher Curl or Machine Shrug) joins Day 2. Both carry `"updated"`.
+- B6 gained `"logAs": "A6"`.
+- `dailyProtocol` gained a `10:00+` work row; the fuel's pinch of salt is no longer optional.
 
 ## What changed in v6.1
 
