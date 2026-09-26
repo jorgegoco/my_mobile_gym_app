@@ -6,6 +6,9 @@ import { dataTools } from '../components/data-tools.js';
 const range = ([a, b]) => (a === b ? `${a}` : `${a}–${b}`);
 // Takes the already-formatted range string: "1" -> "1 set", "2–3" -> "2–3 sets".
 const plural = (n, word) => `${n} ${Number(n) === 1 ? word : `${word}s`}`;
+// ["A4", "B4", "C1"] -> "A4, B4 & C1".
+const codeList = (codes) =>
+  codes.length < 2 ? codes.join('') : `${codes.slice(0, -1).join(', ')} & ${codes.at(-1)}`;
 
 function banner() {
   const { title, version, subtitle, highlights } = program.program;
@@ -133,7 +136,7 @@ function matrix() {
         ${tier.items
           .map(
             (item) =>
-              `<li><strong>${esc(item.codes.join(' & '))}:</strong> ${esc(item.note)}</li>`
+              `<li><strong>${esc(codeList(item.codes))}:</strong> ${esc(item.note)}</li>`
           )
           .join('')}
       </ul>`

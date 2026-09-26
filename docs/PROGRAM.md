@@ -97,13 +97,14 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
     - Provides safe hyper-isolation volume following heavy barbell benching.
     - Focus on squeezing inner chest together without locking elbows hard.
 
-**A5 - Cable Rope Tricep Pushdown**
+**A5 - Seated Triceps Pressdown Machine**
 
 - **Prescription:** 3 Sets x 10-12 Reps
 - **Target:** Triceps Lateral / Outer Head
-- **Tempo:** Dynamic | 1s Split Hold
+- **Tempo:** 2s Lower | 1s Squeeze
 - **Cues:**
-    - Pin elbows tight to torso; pull rope handles apart at bottom lockout.
+    - Keep torso locked against the pad and push down through the heels of your hands.
+    - Backup (Plan B): If occupied, immediately swap to the Cable Rope Tricep Pushdown to avoid queuing.
     - Never do this before the pressing work - fresh triceps are what hold up the bench press.
 
 **A6 - Reverse Pec Deck (Rear Delt Fly)**
@@ -127,8 +128,6 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 - **Cues:**
     - Drive elbows outward wide to balance heavy swim pulling forces.
     - Keep chest firmly pressed against pad throughout entire set.
-    - If the machine is taken, use the seated cable row with a neutral grip: pull the handle to the belly button while driving the shoulder blades together.
-    - Heavier 8-10 range in v6.0 - this is now the only compound pull of the week.
 
 **A4 - Standing Supinating Dumbbell Curls**
 
@@ -147,6 +146,16 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 - **Cues:**
     - Pushes biceps upward for thicker overall arm appearance.
     - Avoid swinging; lower under complete control (2-3 seconds).
+
+**C1 - Machine Preacher Curl OR Machine Shrug**
+
+- **Prescription:** 3 Sets x 10-12 Reps
+- **Target:** Biceps Brachii (Preacher) OR Upper Trapezius (Shrug)
+- **Benefit:** Choose one per session
+- **Cues:**
+    - Execute only one of these machines to keep the session at a strict 4 exercises and stay within the 25-minute window.
+    - If Preacher Curl: Lock armpits securely into the pad to eliminate all momentum and isolate the biceps.
+    - If Machine Shrug: Elevate shoulders straight up toward the ears with zero shoulder rotation to safely build upper back thickness.
 
 ### Day 3: Upper Chest, Triceps & Posterior Shoulder
 
@@ -170,7 +179,6 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 - **Cues:**
     - Sit facing away from the machine; adjust seat height so handles align directly with mid-chest.
     - Maintain a slight, rigid flex in elbows; drive handles together in front of sternum, squeezing hard for 1 second at peak contraction.
-    - Provides smooth, continuous mechanical tension across pecs with zero lower back or wrist instability.
 
 **B5 - Seated DB Overhead Tricep Extension**
 
@@ -208,8 +216,8 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 
 **3. Fully Swappable (Do Anywhere Near the End)**
 
-- **A5 & B5:** A5 is the only exercise left that needs a free cable station and rope; B5 needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3).
-- **A4 & B4:** Pure arm isolation. Can be done in any empty space with dumbbells during the second half of Day 2.
+- **A5 & B5:** For Day 1 (A5), use the Triceps Pressdown Machine as Plan A, or immediately swap to the rope if occupied. For Day 3 (B5), it needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3).
+- **A4, B4 & C1:** Pure arm/back isolation. These can be done in any sequence during the second half of Day 2.
 - **A6 & B6:** Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly.
 
 > **The Golden Rule:** In a 25-minute window there is no time to queue for a machine. If the rack is not open for B1/A1, start with that day's machine work or rear delts and come back to the bar - just hold off on tricep isolation until the pressing is done.
@@ -232,4 +240,4 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 
 ## Summary Strategy
 
-The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all ten exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.
+The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.

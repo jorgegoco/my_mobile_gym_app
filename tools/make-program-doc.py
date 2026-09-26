@@ -37,6 +37,11 @@ def plural(count: str, word: str) -> str:
     return f"{count} {word}" if count == "1" else f"{count} {word}s"
 
 
+def code_list(codes) -> str:
+    """["A4", "B4", "C1"] -> "A4, B4 & C1", matching the app."""
+    return codes[0] if len(codes) < 2 else f"{', '.join(codes[:-1])} & {codes[-1]}"
+
+
 def meta(ex):
     """Same rule the app and the PDF use: tempo, else benefit, else grip."""
     for label, key in (("Tempo", "tempo"), ("Benefit", "benefit"), ("Grip", "grip")):
@@ -114,7 +119,7 @@ def build(data) -> str:
           f"> {matrix['anchorNote']}", ""]
     for i, tier in enumerate(matrix["tiers"], 1):
         L += [f"**{i}. {tier['label']}**", ""]
-        L += [f"- **{' & '.join(item['codes'])}:** {item['note']}" for item in tier["items"]]
+        L += [f"- **{code_list(item['codes'])}:** {item['note']}" for item in tier["items"]]
         L += [""]
     L += [f"> **The Golden Rule:** {matrix['goldenRule']}", ""]
 

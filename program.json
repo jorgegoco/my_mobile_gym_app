@@ -126,13 +126,14 @@
           ]
         },
         {
-          "code": "A5", "name": "Cable Rope Tricep Pushdown", "tags": [],
+          "code": "A5", "name": "Seated Triceps Pressdown Machine", "tags": ["updated"],
           "target": "Triceps Lateral / Outer Head",
           "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
-          "tempo": "Dynamic | 1s Split Hold", "benefit": null,
-          "equipment": ["cable-station", "rope-attachment"], "priority": "swappable",
+          "tempo": "2s Lower | 1s Squeeze", "benefit": null,
+          "equipment": ["triceps-pressdown-machine", "cable-station", "rope-attachment"], "priority": "swappable",
           "cues": [
-            "Pin elbows tight to torso; pull rope handles apart at bottom lockout.",
+            "Keep torso locked against the pad and push down through the heels of your hands.",
+            "Backup (Plan B): If occupied, immediately swap to the Cable Rope Tricep Pushdown to avoid queuing.",
             "Never do this before the pressing work - fresh triceps are what hold up the bench press."
           ]
         },
@@ -163,9 +164,7 @@
           "equipment": ["chest-supported-row-machine", "cable-row-station"], "priority": "high",
           "cues": [
             "Drive elbows outward wide to balance heavy swim pulling forces.",
-            "Keep chest firmly pressed against pad throughout entire set.",
-            "If the machine is taken, use the seated cable row with a neutral grip: pull the handle to the belly button while driving the shoulder blades together.",
-            "Heavier 8-10 range in v6.0 - this is now the only compound pull of the week."
+            "Keep chest firmly pressed against pad throughout entire set."
           ]
         },
         {
@@ -188,6 +187,18 @@
           "cues": [
             "Pushes biceps upward for thicker overall arm appearance.",
             "Avoid swinging; lower under complete control (2-3 seconds)."
+          ]
+        },
+        {
+          "code": "C1", "name": "Machine Preacher Curl OR Machine Shrug", "tags": ["updated"],
+          "target": "Biceps Brachii (Preacher) OR Upper Trapezius (Shrug)",
+          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
+          "tempo": null, "benefit": "Choose one per session",
+          "equipment": ["preacher-curl-machine", "shrug-machine"], "priority": "swappable",
+          "cues": [
+            "Execute only one of these machines to keep the session at a strict 4 exercises and stay within the 25-minute window.",
+            "If Preacher Curl: Lock armpits securely into the pad to eliminate all momentum and isolate the biceps.",
+            "If Machine Shrug: Elevate shoulders straight up toward the ears with zero shoulder rotation to safely build upper back thickness."
           ]
         }
       ]
@@ -218,8 +229,7 @@
           "equipment": ["pec-deck-machine"], "priority": "medium",
           "cues": [
             "Sit facing away from the machine; adjust seat height so handles align directly with mid-chest.",
-            "Maintain a slight, rigid flex in elbows; drive handles together in front of sternum, squeezing hard for 1 second at peak contraction.",
-            "Provides smooth, continuous mechanical tension across pecs with zero lower back or wrist instability."
+            "Maintain a slight, rigid flex in elbows; drive handles together in front of sternum, squeezing hard for 1 second at peak contraction."
           ]
         },
         {
@@ -268,8 +278,8 @@
       {
         "priority": "swappable", "label": "Fully Swappable (Do Anywhere Near the End)",
         "items": [
-          { "codes": ["A5", "B5"], "note": "A5 is the only exercise left that needs a free cable station and rope; B5 needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3)." },
-          { "codes": ["A4", "B4"], "note": "Pure arm isolation. Can be done in any empty space with dumbbells during the second half of Day 2." },
+          { "codes": ["A5", "B5"], "note": "For Day 1 (A5), use the Triceps Pressdown Machine as Plan A, or immediately swap to the rope if occupied. For Day 3 (B5), it needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3)." },
+          { "codes": ["A4", "B4", "C1"], "note": "Pure arm/back isolation. These can be done in any sequence during the second half of Day 2." },
           { "codes": ["A6", "B6"], "note": "Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly." }
         ]
       }
@@ -287,7 +297,7 @@
     { "day": "Sunday", "morning": "2,300m Swim (Fasted)", "afternoon": "Full Rest & Reset", "workoutId": null, "focus": "Systemic Recovery & Repair" }
   ],
 
-  "summaryStrategy": "The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all ten exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.",
+  "summaryStrategy": "The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.",
 
   "theme": {
     "colors": {

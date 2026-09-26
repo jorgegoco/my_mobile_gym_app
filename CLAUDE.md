@@ -38,7 +38,8 @@ The spec was written before the PDF was available. Where they disagree, this fil
   editing the file and redeploying — never in-app.
 - It is a **bundled import**, not a runtime fetch: no request on the critical path, nothing extra for
   a service worker to precache.
-- `media.json` maps exercise code → video URL, kept separate from `program.json` so a future program
+- `media.json` maps exercise code → video URL, or to a list of `{ label, url }` when a card needs two
+  (A5's Plan B rope, C1's choice of machines), kept separate from `program.json` so a future program
   version can be dropped in without losing the links. A6 and B6 share a URL by design — same exercise
   on both days. This is the only feature that needs signal; everything else works offline.
 - User logs live in IndexedDB only (`workout-log` / `logs`), keyed `"<code>:<YYYY-MM-DD>"`.
@@ -56,7 +57,7 @@ The spec was written before the PDF was available. Where they disagree, this fil
 - Date keys are built from `getFullYear/getMonth/getDate` — **never `toISOString()`**. In CEST the UTC
   date is a day behind between midnight and 02:00, which would file a session under the wrong day.
   See `todayKey()` in `src/program.js`.
-- Exercise codes `A1..B6` are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
+- Exercise codes `A1..C1` are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
   delegation attributes. v6.0 redistributed them across three days **without renumbering**, because they
   key the IndexedDB log — so the letter no longer indicates a day, and `A2` is retired (its logs survive
   in an export but are unreachable in the UI).

@@ -1,6 +1,6 @@
 import { esc } from '../dom.js';
 import { metaLine } from '../program.js';
-import { getMediaUrl } from '../media.js';
+import { getMedia } from '../media.js';
 import { logField } from './log-field.js';
 
 const BADGES = {
@@ -21,7 +21,7 @@ function badges(tags) {
 export function exerciseCard(ex) {
   const meta = metaLine(ex);
   const label = metaLabel(ex);
-  const video = getMediaUrl(ex.code);
+  const videos = getMedia(ex.code);
   const badgeHtml = badges(ex.tags ?? []);
 
   return `
@@ -43,14 +43,14 @@ export function exerciseCard(ex) {
       </ul>
 
       <div class="card-actions">
-        ${
-          video
-            ? `<a class="watch" href="${esc(video)}" target="_blank" rel="noopener noreferrer">
-                 <span class="watch-label">▶ Watch form video</span>
+        ${videos
+          .map(
+            (video) => `<a class="watch" href="${esc(video.url)}" target="_blank" rel="noopener noreferrer">
+                 <span class="watch-label">▶ ${video.label ? `Watch: ${esc(video.label)}` : 'Watch form video'}</span>
                  <span class="watch-where">↗ YouTube</span>
                </a>`
-            : ''
-        }
+          )
+          .join('')}
         <a class="history-link" href="#/history/${esc(ex.code)}">History</a>
       </div>
 

@@ -293,6 +293,10 @@ p {
   text-decoration: none;
 }
 
+.watch + .watch {
+  margin-top: 8px;
+}
+
 .watch-where {
   color: var(--text-muted);
   font-size: 0.6875rem;
