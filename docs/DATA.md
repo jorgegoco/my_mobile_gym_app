@@ -78,6 +78,8 @@ length is otherwise invisible until you are in the water.
 
 `workoutId` is `null` on non-gym days and otherwise points at `workouts[].id`, so a calendar view can join without string matching on the label.
 
+The gym weekdays here are **an example week, not a rule**: in practice Day 1, 2 and 3 rotate with roughly a two-day gap and drift across weekdays. That is why the app does not render this table. The swim, by contrast, *is* fixed to the weekday - see `swim.schedule`.
+
 ---
 
 ## What changed in v7.0
@@ -86,6 +88,7 @@ length is otherwise invisible until you are in the water.
 - **A5** is the Seated Triceps Pressdown Machine (rope kept as Plan B); **C1** (Machine Preacher Curl or Machine Shrug) joins Day 2. Both carry `"updated"`.
 - B6 gained `"logAs": "A6"`.
 - `dailyProtocol` gained a `10:00+` work row; the fuel's pinch of salt is no longer optional.
+- `tools/make-program-doc.py` now writes `docs/SWIM.md` and `docs/GYM.md` next to `docs/PROGRAM.md`: each half standalone, with the athlete profile and daily timing, so either can be handed to a coach or an LLM on its own.
 
 ## What changed in v6.1
 
