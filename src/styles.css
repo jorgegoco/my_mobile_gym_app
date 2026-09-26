@@ -602,6 +602,47 @@ p {
   overflow: hidden;
 }
 
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.grid th {
+  padding: 9px 12px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  text-align: left;
+}
+
+.grid td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+
+.grid .col-time {
+  white-space: nowrap;
+  color: var(--navy);
+}
+
+.grid .col-activity {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.option-tag {
+  display: block;
+  color: var(--reps-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 /* Under 700px the 3-column table stacks into labelled blocks rather than
    scrolling sideways - a horizontal scroll inside a phone page is a trap. */
 @media (max-width: 699px) {
@@ -645,56 +686,15 @@ p {
     letter-spacing: 0.07em;
   }
 
-  .col-time {
+  .grid .col-time {
     white-space: normal;
     font-size: 0.875rem;
   }
 
-  .col-activity {
+  .grid .col-activity {
     margin-top: 1px;
     font-size: 0.9375rem;
   }
-}
-
-.grid {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8125rem;
-}
-
-.grid th {
-  padding: 9px 12px;
-  background: var(--navy);
-  color: #fff;
-  font-size: 0.625rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  text-align: left;
-}
-
-.grid td {
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  color: var(--text-muted);
-  vertical-align: top;
-}
-
-.col-time {
-  white-space: nowrap;
-  color: var(--navy);
-}
-
-.col-activity {
-  color: var(--blue);
-  font-weight: 600;
-}
-
-.option-tag {
-  display: block;
-  color: var(--reps-text);
-  font-size: 0.75rem;
-  font-weight: 600;
 }
 
 .note {
