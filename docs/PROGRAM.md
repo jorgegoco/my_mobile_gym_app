@@ -17,7 +17,7 @@ Last updated 2026-09-26.
 | Time Window | Activity / Event | Nutritional & Recovery Strategy |
 | --- | --- | --- |
 | 06:45 | Pre-Swim Prep | Hydrate with 500ml water + electrolytes. Swim is kept 100% fasted. |
-| 07:00-08:30 | 2,500m Fasted Swim (90 mins) | Today's routine from the Swim tab: 100 lengths of a 25m pool, 2-stroke alternating breathing, floor-free open turns. Doubles as the full thermal and joint warm-up for the gym. |
+| 07:00-08:30 | 2,500m Fasted Swim (90 mins) | The weekday's routine from the swim programme: 100 lengths of a 25m pool, 2-stroke alternating breathing, floor-free open turns. Doubles as the full thermal and joint warm-up for the gym. |
 | 08:30-08:35 | Locker-Room Transition Fuel | 200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt. Drink it while changing - it restores blood glucose without sitting heavy in the stomach. |
 | 08:35-09:00 | Gym Micro-Session (20-25 mins max) | 3 to 4 exercises only. One light prep set, then straight into the first lift. Finish with the mandatory 60-second dead hang. |
 | 09:15 | Post-Workout Breakfast | Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done. |
@@ -145,7 +145,7 @@ Never step or stand on the pool floor during turns. Stepping causes sudden joint
 
 ### Warm-Up Protocol - The 2,500m Swim Is the Warm-Up
 
-The 5-8 minute rowing machine ergometer warm-up is removed. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight.
+No separate gym warm-up. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight.
 
 ### Cool-Down & Spinal Decompression - Passive Bar Dead Hangs
 
@@ -349,4 +349,4 @@ No leg exercises are performed in the gym. Lower-body volume is already fully co
 
 ## Summary Strategy
 
-The 7:00 AM swim is the untouchable physical and mental foundation, and in v6.0 it also serves as the warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool, the road and the tennis court, never in the gym.
+The 7:00 AM swim is the untouchable physical and mental foundation: 2,500m every morning on a fixed weekday rotation of four routines, and it also serves as the gym warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool and the tennis and basketball courts, never in the gym.
