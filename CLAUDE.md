@@ -119,6 +119,10 @@ The spec was written before the PDF was available. Where they disagree, this fil
     npm run dev       # http://localhost:5173
     npm test          # vitest run
     npm run build     # budget: under 50 kB gzipped
+    npm run docs      # regenerate the three programme docs after any program.json change
+
+`.githooks/pre-commit` refuses a commit touching `program.json` or a generated doc unless
+`make-program-doc.py --check` passes. Hooks are per clone: `git config core.hooksPath .githooks`.
 
 ## One pending queue, keyed by entry
 
