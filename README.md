@@ -26,7 +26,8 @@ building a small offline PWA without a framework.
   out for a 25m pool, plus a short Express set for busy days and a log for stroke counts.
 - **Keeps the screen awake** while a workout is open, so the phone does not lock between sets.
 - The programme itself — rules, post-swim fuel, cool-down, equipment-swapping matrix — is on a Guide tab,
-  and written out in full in [docs/PROGRAM.md](docs/PROGRAM.md).
+  and written out in full in [docs/PROGRAM.md](docs/PROGRAM.md). The swim and gym halves are also
+  generated standalone, as [docs/SWIM.md](docs/SWIM.md) and [docs/GYM.md](docs/GYM.md).
 
 ## Privacy
 
@@ -45,7 +46,7 @@ button exists.
 
 The app has exactly two interactive widgets — a text box and a link. React would have added a
 build-and-runtime layer that bought nothing, and this has to open instantly on a cold phone in a
-basement. It is about 1,000 lines of JavaScript plus 850 of CSS, and ships in **15 kB gzipped**.
+basement. It is about 1,400 lines of JavaScript plus 1,050 of CSS, and ships in **about 22 kB gzipped**.
 
 The only runtime dependency is [`idb-keyval`](https://github.com/jakearchibald/idb-keyval) (~1 kB) to
 take the ceremony out of IndexedDB.
@@ -67,7 +68,7 @@ Requires Node 20.19+ or 22.12+.
 ```bash
 npm ci
 npm run dev      # http://localhost:5173
-npm test         # 39 unit tests over the log/backup logic
+npm test         # 46 unit tests over the log/backup logic
 npm run build    # production build into dist/
 npm run preview  # serve the build — needed to exercise the service worker
 ```
@@ -88,9 +89,11 @@ GitHub Pages. To point it at your own repo:
 
 ## Making it your own programme
 
-`program.json` is the single read-only source of truth — exercises, sets, rep ranges, cues, the
-weekly protocol and the colour palette. The app never writes to it; you change the programme by
-editing that file and redeploying. `media.json` maps each exercise code to a reference video URL.
+`program.json` is the single read-only source of truth — exercises, sets, rep ranges, cues, the swim
+routines, the daily protocol and the colour palette. The app never writes to it; you change the
+programme by editing that file and redeploying, then run `python3 tools/make-program-doc.py` to
+regenerate the documents in `docs/`. `media.json` maps each exercise code to a reference video URL,
+or to a list of labelled ones.
 
 The full contract is documented in **[docs/DATA.md](docs/DATA.md)**.
 
@@ -98,18 +101,22 @@ The full contract is documented in **[docs/DATA.md](docs/DATA.md)**.
 
 ```
 program.json          the programme (read-only)
-media.json            exercise code -> video URL
+media.json            exercise code -> video URL(s)
 src/
   main.js             boot, hash router, event delegation
   program.js          load + validate program.json
   logs.js  db.js      IndexedDB log storage, backup, history
   wake-lock.js        keep the screen on during a workout
-  views/              workout.js, guide.js, history.js
+  views/              swim.js, workout.js, guide.js, history.js
   components/         exercise-card, log-field, tab-bar, data-tools
 docs/
+  PROGRAM.md          the whole programme, generated from program.json
+  SWIM.md  GYM.md     each half standalone, generated likewise
   DATA.md             program.json schema
   ORIGINAL-SPEC.md    the original brief (historical)
-tools/make-icons.py   regenerates the PWA icons
+tools/
+  make-program-doc.py regenerates the three programme documents
+  make-icons.py       regenerates the PWA icons
 ```
 
 Conventions and the reasoning behind the sharper edges are in **[CLAUDE.md](CLAUDE.md)**.

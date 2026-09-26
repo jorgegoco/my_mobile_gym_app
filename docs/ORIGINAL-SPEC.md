@@ -7,7 +7,7 @@
 > | This document says | What was actually built |
 > | :-- | :-- |
 > | Dark theme by default (§3.5) | **Light**, matching the printed guide, whose palette *is* `program.theme.colors` |
-> | A Week screen driven by `weeklySchedule` (§3.2) | **Dropped.** Sessions rotate with a ~2-day gap, so a fixed weekday calendar was meaningless. Three tabs instead: Workout A, Workout B, Guide |
+> | A Week screen driven by `weeklySchedule` (§3.2) | **Dropped.** Gym sessions rotate with a ~2-day gap, so a fixed weekday calendar was meaningless. Tabs instead: Swim, Day 1, Day 2, Day 3, Guide (as of v7.0) |
 > | Local `public/media/*.mp4`, ffmpeg pipeline, `MEDIA.md` (§3.4) | **Dropped.** Exercise videos are external YouTube links in `media.json`. Linking avoids re-hosting other people's clips |
 > | Cues collapsed behind a toggle (§3.2) | **Always visible**, as bullets, per the printed guide |
 > | Wake lock "nice-to-have, after Phase 3" (§3.5) | **Built** |
