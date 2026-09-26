@@ -7,9 +7,9 @@ itself — no account, no server, no sync.
 Built as a personal training app, and kept public because the approach may be useful to anyone
 building a small offline PWA without a framework.
 
-| Workout | Per-exercise history |
-| :--: | :--: |
-| ![A workout screen](docs/screenshots/workout.png) | ![The history view](docs/screenshots/history.png) |
+| Today's swim | Workout | Per-exercise history |
+| :--: | :--: | :--: |
+| ![The swim tab](docs/screenshots/swim.png) | ![A workout screen](docs/screenshots/workout.png) | ![The history view](docs/screenshots/history.png) |
 
 ## What it does
 
