@@ -48,6 +48,7 @@ The core entity of the app. Every exercise object:
 | `tempo` | string \| null | Tempo line, when the guide specifies one. |
 | `benefit` | string \| null | Shown instead of `tempo` when tempo is null. |
 | `grip` | string | Present only on B4. Treat as optional. |
+| `logAs` | string | Optional. The `code` whose log this exercise shares. B6 has `"logAs": "A6"`: the same movement on two days keeps one history. Must name another exercise that has no `logAs` of its own. |
 | `equipment` | string[] | Slugs for filtering ("what can I do if the cable station is busy?"). |
 | `priority` | `"high"` \| `"medium"` \| `"swappable"` | Matches `swappingMatrix.tiers[].priority`. |
 | `cues` | string[] | Bullet-point execution cues, in display order. |

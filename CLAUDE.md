@@ -60,6 +60,11 @@ The spec was written before the PDF was available. Where they disagree, this fil
   delegation attributes. v6.0 redistributed them across three days **without renumbering**, because they
   key the IndexedDB log — so the letter no longer indicates a day, and `A2` is retired (its logs survive
   in an export but are unreachable in the UI).
+- **B6 logs as A6.** Same movement on Day 1 and Day 3, so one log: B6 declares `"logAs": "A6"` and every
+  log read and write goes through `logCodeFor()`. The card, DOM id and `#/history/B6` route keep `B6`;
+  only `data-log` and the storage key say `A6`. `migrateSharedLogs()` moves old `B6:*` entries at boot
+  and `importAll` remaps them from old backups. It never overwrites a different same-day `A6` entry —
+  that `B6` entry stays put and still exports.
 - Saves flush on `input` (debounced 500 ms), `blur`, `visibilitychange` and `pagehide` — Android kills
   backgrounded tabs and an unsaved set is a bug.
 - Validation refuses to boot on an unknown `schemaVersion` major and shows a readable message.

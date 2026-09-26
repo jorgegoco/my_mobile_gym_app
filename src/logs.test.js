@@ -15,9 +15,11 @@ import {
   parseBackup,
   formatStamp,
   stampText,
-  deleteEntry
+  deleteEntry,
+  canonicalEntry,
+  migrateSharedLogs
 } from './logs.js';
-import { dbAll, dbDel } from './db.js';
+import { dbAll, dbDel, dbSet } from './db.js';
 
 const clear = async () => {
   for (const entry of await dbAll()) await dbDel(entry.key);
@@ -292,5 +294,64 @@ describe('storage round trip', () => {
 
   it('tolerates a payload with no entries', async () => {
     expect(await importAll({})).toEqual({ imported: 0, updated: 0 });
+  });
+});
+
+// program.json declares B6 "logAs": "A6" - the reverse pec deck on two days.
+describe('shared logs (B6 logs as A6)', () => {
+  beforeEach(clear);
+
+  const b6 = (date, text, updatedAt = 1) => ({ key: `B6:${date}`, code: 'B6', date, text, updatedAt });
+
+  it('refiles an aliased entry under the owning code', () => {
+    expect(canonicalEntry(b6('2026-09-01', '30kg x15'))).toEqual({
+      key: 'A6:2026-09-01', code: 'A6', date: '2026-09-01', text: '30kg x15', updatedAt: 1
+    });
+  });
+
+  it('leaves canonical and malformed entries alone', () => {
+    const a1 = { key: 'A1:2026-09-01', code: 'A1', date: '2026-09-01', text: 'x', updatedAt: 1 };
+    expect(canonicalEntry(a1)).toBe(a1);
+    expect(canonicalEntry({ text: 'no key' })).toEqual({ text: 'no key' });
+    expect(canonicalEntry(null)).toBeNull();
+  });
+
+  it('moves old B6 entries into A6 on migration', async () => {
+    await dbSet('B6:2026-09-03', b6('2026-09-03', '30kg x15,14'));
+    await saveEntry('A6', '2026-09-01', '30kg x15,15');
+
+    expect(await migrateSharedLogs()).toBe(1);
+    expect(await historyFor('B6')).toEqual([]);
+    expect((await historyFor('A6')).map((e) => e.text)).toEqual(['30kg x15,14', '30kg x15,15']);
+  });
+
+  it('never overwrites a different same-day A6 entry', async () => {
+    await saveEntry('A6', '2026-09-03', 'A6 text');
+    await dbSet('B6:2026-09-03', b6('2026-09-03', 'B6 text'));
+
+    expect(await migrateSharedLogs()).toBe(0);
+    expect((await getEntry('A6', '2026-09-03')).text).toBe('A6 text');
+    expect((await getEntry('B6', '2026-09-03')).text).toBe('B6 text');
+  });
+
+  it('drops the duplicate an interrupted migration left behind', async () => {
+    await saveEntry('A6', '2026-09-03', 'same');
+    await dbSet('B6:2026-09-03', b6('2026-09-03', 'same'));
+
+    expect(await migrateSharedLogs()).toBe(1);
+    expect(await historyFor('B6')).toEqual([]);
+  });
+
+  it('is a no-op once migrated', async () => {
+    await dbSet('B6:2026-09-03', b6('2026-09-03', 'x'));
+    await migrateSharedLogs();
+    expect(await migrateSharedLogs()).toBe(0);
+  });
+
+  it('imports an old backup\'s B6 entries as A6', async () => {
+    const result = await importAll({ entries: [b6('2026-09-03', 'from backup')] });
+    expect(result).toEqual({ imported: 1, updated: 0 });
+    expect((await getEntry('A6', '2026-09-03')).text).toBe('from backup');
+    expect(await getEntry('B6', '2026-09-03')).toBeNull();
   });
 });

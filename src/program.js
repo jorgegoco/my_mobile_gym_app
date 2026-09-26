@@ -41,6 +41,16 @@ export function validateProgram(p = data) {
     }
   }
 
+  // logAs must land on a real exercise that owns its log, so a lookup is
+  // always one hop and can never loop.
+  const byCode = new Map(p.workouts.flatMap((w) => w.exercises).map((ex) => [ex.code, ex]));
+  for (const ex of byCode.values()) {
+    if (ex.logAs === undefined) continue;
+    const target = byCode.get(ex.logAs);
+    if (!target || target === ex) fail(`Exercise ${ex.code} logs as ${ex.logAs}, which is not another exercise.`);
+    if (target.logAs !== undefined) fail(`Exercise ${ex.code} logs as ${ex.logAs}, which itself logs elsewhere.`);
+  }
+
   return p;
 }
 
@@ -54,7 +64,19 @@ export const getExercise = (code) =>
 export const getWorkoutForExercise = (code) =>
   program.workouts.find((w) => w.exercises.some((ex) => ex.code === code)) ?? null;
 
-export const metaLine = (ex) => ex.tempo ?? ex.benefit ?? ex.grip ?? null;
+// The same movement on two days (A6/B6) keeps one log: B6 declares
+// "logAs": "A6", and every read and write goes through the owning code.
+export const logCodeFor = (code) => getExercise(code)?.logAs ?? code;
+
+// Every other exercise writing into the same log as `code`.
+export const sharedLogWith = (code) => {
+  const owner = logCodeFor(code);
+  return program.workouts
+    .flatMap((w) => w.exercises)
+    .filter((ex) => ex.code !== code && logCodeFor(ex.code) === owner);
+};
+
+export const metaLine =(ex) => ex.tempo ?? ex.benefit ?? ex.grip ?? null;
 
 export function todayKey(date = new Date()) {
   const pad = (n) => String(n).padStart(2, '0');

@@ -1,5 +1,5 @@
 import { esc } from '../dom.js';
-import { getExercise, getWorkoutForExercise, todayKey } from '../program.js';
+import { getExercise, getWorkoutForExercise, logCodeFor, todayKey } from '../program.js';
 import { historyFor, formatShortDate } from '../logs.js';
 
 const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -35,7 +35,8 @@ function row(entry, today) {
 export async function historyView(code) {
   const exercise = getExercise(code);
   const workout = getWorkoutForExercise(code);
-  const entries = await historyFor(code);
+  // B6's history is A6's: the route keeps B6 so "back" returns to Day 3.
+  const entries = await historyFor(logCodeFor(code));
   const today = todayKey();
 
   const body = entries.length

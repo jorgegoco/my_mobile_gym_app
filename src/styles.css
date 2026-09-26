@@ -428,6 +428,13 @@ p {
   letter-spacing: 0.07em;
 }
 
+.log-shared {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
 .log-input {
   display: block;
   width: 100%;

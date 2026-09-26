@@ -1,5 +1,5 @@
 import { esc } from '../dom.js';
-import { todayKey } from '../program.js';
+import { todayKey, logCodeFor, sharedLogWith, getWorkoutForExercise } from '../program.js';
 import {
   getEntry,
   saveEntry,
@@ -14,11 +14,22 @@ const SAVE_DELAY = 500;
 const timers = new Map();
 const pending = new Map();
 
+// "shared with A6 (Day 1)" - says why a session logged on another day shows
+// up here as the last one.
+function sharedNote(ex) {
+  const others = sharedLogWith(ex.code);
+  if (!others.length) return '';
+  const names = others.map((o) => `${o.code} (${getWorkoutForExercise(o.code).name.split(':')[0]})`);
+  return ` <span class="log-shared">- shared with ${esc(names.join(', '))}</span>`;
+}
+
+// data-log carries the code that owns the log, which for B6 is A6. The DOM id
+// keeps the card's own code so both cards stay unique.
 export function logField(ex) {
   return `
-    <div class="log" data-log="${esc(ex.code)}">
+    <div class="log" data-log="${esc(logCodeFor(ex.code))}">
       <p class="log-last" data-last hidden></p>
-      <label class="log-label" for="log-${esc(ex.code)}">Log</label>
+      <label class="log-label" for="log-${esc(ex.code)}">Log${sharedNote(ex)}</label>
       <textarea
         id="log-${esc(ex.code)}"
         class="log-input"

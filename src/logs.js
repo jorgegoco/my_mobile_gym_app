@@ -1,5 +1,5 @@
 import { dbGet, dbSet, dbDel, dbAll, dbByCode, dbLastBefore } from './db.js';
-import { program } from './program.js';
+import { program, logCodeFor } from './program.js';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -117,8 +117,41 @@ export async function exportAll() {
   };
 }
 
+// Refiles an entry under the code that owns its log ("B6:..." -> "A6:...").
+// Anything already canonical, or too malformed to parse, comes back as-is.
+export function canonicalEntry(entry) {
+  const split = typeof entry?.key === 'string' ? entry.key.indexOf(':') : -1;
+  if (split < 1) return entry;
+  const code = entry.key.slice(0, split);
+  const owner = logCodeFor(code);
+  if (owner === code) return entry;
+  const date = entry.key.slice(split + 1);
+  return { ...entry, key: logKey(owner, date), code: owner };
+}
+
+// One-off move of entries written before two exercises shared a log. Safe to
+// run on every boot: once moved there is nothing left under the old code.
+// Written before deleted, so an interrupted run leaves a duplicate, not a loss.
+export async function migrateSharedLogs() {
+  const aliases = program.workouts.flatMap((w) => w.exercises).filter((ex) => ex.logAs);
+  let moved = 0;
+  for (const ex of aliases) {
+    for (const entry of await dbByCode(ex.code)) {
+      const target = canonicalEntry(entry);
+      const existing = await dbGet(target.key);
+      // Both days logged on one date with different text: never overwrite typed
+      // text. The old entry stays where it is and still goes out in an export.
+      if (existing && existing.text !== entry.text) continue;
+      if (!existing) await dbSet(target.key, target);
+      await dbDel(entry.key);
+      moved++;
+    }
+  }
+  return moved;
+}
+
 export async function importAll(payload) {
-  const incoming = Array.isArray(payload?.entries) ? payload.entries : [];
+  const incoming = (Array.isArray(payload?.entries) ? payload.entries : []).map(canonicalEntry);
   const existing = await dbAll();
   const { entries, imported, updated } = mergeEntries(existing, incoming);
 

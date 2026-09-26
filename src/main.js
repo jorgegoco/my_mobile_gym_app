@@ -12,7 +12,7 @@ import { historyView } from './views/history.js';
 import { tabBar, TABS } from './components/tab-bar.js';
 import { flushPending, handleLogInput, hydrateLogFields, copyLastInto } from './components/log-field.js';
 import { runExport, runImport } from './components/data-tools.js';
-import { deleteEntry } from './logs.js';
+import { deleteEntry, migrateSharedLogs } from './logs.js';
 import { setWakeLockWanted, watchWakeLock } from './wake-lock.js';
 
 const app = document.getElementById('app');
@@ -212,7 +212,9 @@ try {
   registerServiceWorker();
   requestPersistentStorage();
   watchWakeLock();
-  render();
+  // Before the first render, so a shared log shows its moved entries at once.
+  // A failed migration only leaves old entries where they were; never block boot.
+  migrateSharedLogs().catch(() => {}).finally(render);
 } catch (error) {
   if (error instanceof ProgramError) showBootError(error);
   else throw error;
