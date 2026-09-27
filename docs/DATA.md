@@ -41,7 +41,7 @@ The core entity of the app. Every exercise object:
 | :---- | :---- | :---- |
 | `code` | string | Stable id inside the program: `A1`, `A3`…`A6`, `B1`…`B6`, `C1`. Use as React key / DB key. Assigned in v5.x and preserved through the v6.0 restructure, so the letter no longer indicates a day. `A2` is retired. |
 | `name` | string | Display name. |
-| `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge, meaning "changed in the last revision". Empty array = no badge. As of v7.0 A5 (now the pressdown machine) and C1 (new) carry `"updated"`. |
+| `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge, meaning "changed in the last revision". Empty array = no badge. |
 | `target` | string | Muscles worked (shown under the title). |
 | `sets` | number | Working sets. |
 | `repRange` | [number, number] | Min/max reps — use for rep pickers and logging validation. |

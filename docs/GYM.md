@@ -116,7 +116,6 @@ Three sessions rotate in order - Day 1, Day 2, Day 3, then back to Day 1 - with 
 - **Tempo:** 2s Lower | 1s Squeeze
 - **Cues:**
     - Keep torso locked against the pad and push down through the heels of your hands.
-    - Backup (Plan B): If occupied, immediately swap to the Cable Rope Tricep Pushdown to avoid queuing.
     - Never do this before the pressing work - fresh triceps are what hold up the bench press.
 
 **A6 - Reverse Pec Deck (Rear Delt Fly)**
@@ -159,15 +158,13 @@ Three sessions rotate in order - Day 1, Day 2, Day 3, then back to Day 1 - with 
     - Pushes biceps upward for thicker overall arm appearance.
     - Avoid swinging; lower under complete control (2-3 seconds).
 
-**C1 - Machine Preacher Curl OR Machine Shrug**
+**C1 - Machine Preacher Curl**
 
 - **Prescription:** 3 Sets x 10-12 Reps
-- **Target:** Biceps Brachii (Preacher) OR Upper Trapezius (Shrug)
-- **Benefit:** Choose one per session
+- **Target:** Biceps Brachii (Preacher)
+- **Benefit:** Eliminates all momentum for strict biceps isolation
 - **Cues:**
-    - Execute only one of these machines to keep the session at a strict 4 exercises and stay within the 25-minute window.
-    - If Preacher Curl: Lock armpits securely into the pad to eliminate all momentum and isolate the biceps.
-    - If Machine Shrug: Elevate shoulders straight up toward the ears with zero shoulder rotation to safely build upper back thickness.
+    - Lock armpits securely into the pad to eliminate all momentum and isolate the biceps.
 
 ### Day 3: Upper Chest, Triceps & Posterior Shoulder
 
@@ -229,7 +226,7 @@ Three sessions rotate in order - Day 1, Day 2, Day 3, then back to Day 1 - with 
 
 **3. Fully Swappable (Do Anywhere Near the End)**
 
-- **A5 & B5:** For Day 1 (A5), use the Triceps Pressdown Machine as Plan A, or immediately swap to the rope if occupied. For Day 3 (B5), it needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3).
+- **A5 & B5:** For Day 1 (A5), the Triceps Pressdown Machine has no backup - wait for it or reorder around it if occupied. For Day 3 (B5), it needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3).
 - **A4, B4 & C1:** Pure arm/back isolation. These can be done in any sequence during the second half of Day 2.
 - **A6 & B6:** Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly.
 

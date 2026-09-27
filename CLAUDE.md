@@ -39,10 +39,10 @@ The spec was written before the PDF was available. Where they disagree, this fil
   editing the file and redeploying — never in-app.
 - It is a **bundled import**, not a runtime fetch: no request on the critical path, nothing extra for
   a service worker to precache.
-- `media.json` maps exercise code → video URL, or to a list of `{ label, url }` when a card needs two
-  (A5's Plan B rope, C1's choice of machines), kept separate from `program.json` so a future program
-  version can be dropped in without losing the links. A6 and B6 share a URL by design — same exercise
-  on both days. This is the only feature that needs signal; everything else works offline.
+- `media.json` maps exercise code → video URL, or to a list of `{ label, url }` when a card offers a
+  choice of machines, kept separate from `program.json` so a future program version can be dropped in
+  without losing the links. A6 and B6 share a URL by design — same exercise on both days. This is the
+  only feature that needs signal; everything else works offline.
 - User logs live in IndexedDB only (`workout-log` / `logs`), keyed `"<code>:<YYYY-MM-DD>"`.
 
 ## Hard rules

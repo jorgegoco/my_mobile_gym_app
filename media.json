@@ -3,10 +3,7 @@
   "A2": "https://www.youtube.com/shorts/nAL6iRjQT6Y",
   "A3": "https://www.youtube.com/shorts/IF4ar_sFRYU",
   "A4": "https://www.youtube.com/shorts/MKWBV29S6c0",
-  "A5": [
-    { "label": "Machine (Plan A)", "url": "https://www.youtube.com/shorts/1S6mS6KSyFE" },
-    { "label": "Rope (Plan B)", "url": "https://www.youtube.com/shorts/1FjkhpZsaxc" }
-  ],
+  "A5": "https://www.youtube.com/shorts/1S6mS6KSyFE",
   "A6": "https://www.youtube.com/shorts/7tgx6QHB0-A",
   "B1": "https://www.youtube.com/shorts/_FkbD0FhgVE",
   "B2": "https://www.youtube.com/shorts/FTwvmczf7bE",
@@ -14,8 +11,5 @@
   "B4": "https://www.youtube.com/shorts/jdYGDzCuGE4",
   "B5": "https://www.youtube.com/shorts/b_r_LW4HEcM",
   "B6": "https://www.youtube.com/shorts/7tgx6QHB0-A",
-  "C1": [
-    { "label": "Preacher Curl", "url": "https://www.youtube.com/shorts/S4dDLfp3e8w" },
-    { "label": "Machine Shrug", "url": "https://www.youtube.com/watch?v=2QLIHQarHMo" }
-  ]
+  "C1": "https://www.youtube.com/shorts/S4dDLfp3e8w"
 }
