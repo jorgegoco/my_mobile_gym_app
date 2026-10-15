@@ -199,11 +199,11 @@ Three sessions rotate in order - Day 1, Day 2, Day 3, then back to Day 1 - with 
     - Lower behind head until the long head is fully stretched (3 seconds), then press up cleanly.
     - Keep upper arms fixed next to ears and ribs down; do not let elbows flare wide.
 
-**B6 - Reverse Pec Deck (Machine Rear Delt Fly)**
+**B6 - Reverse Pec Deck (Rear Delt Fly)**
 
 - **Prescription:** 2 Sets x 12-15 Reps
-- **Target:** Posterior Deltoids & Rotator Cuff
-- **Benefit:** Posterior delt shield against swim strain
+- **Target:** Rear Deltoids & Rotator Cuff
+- **Benefit:** Essential post-swim joint safety
 - **Same movement as A6 (Day 1)** - progress carries over between the two.
 - **Cues:**
     - Sit facing the chest pad; keep chest against the pad and shoulder blades stable.

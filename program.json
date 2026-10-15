@@ -257,10 +257,10 @@
           ]
         },
         {
-          "code": "B6", "name": "Reverse Pec Deck (Machine Rear Delt Fly)", "tags": [], "logAs": "A6",
-          "target": "Posterior Deltoids & Rotator Cuff",
+          "code": "B6", "name": "Reverse Pec Deck (Rear Delt Fly)", "tags": [], "logAs": "A6",
+          "target": "Rear Deltoids & Rotator Cuff",
           "sets": 2, "repRange": [12, 15], "prescription": "2 Sets x 12-15 Reps",
-          "tempo": null, "benefit": "Posterior delt shield against swim strain",
+          "tempo": null, "benefit": "Essential post-swim joint safety",
           "equipment": ["pec-deck-machine"], "priority": "swappable",
           "cues": [
             "Sit facing the chest pad; keep chest against the pad and shoulder blades stable.",
