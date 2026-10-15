@@ -321,105 +321,9 @@ p {
   font-weight: 600;
 }
 
-.history-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--tap);
-  margin: 8px 14px 0;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-/* ---------- history view ---------- */
-
-.entries {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.entry {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-}
-
-.entry-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-  background: var(--band);
-}
-
-.entry-date {
-  color: var(--navy);
-  font-size: 0.8125rem;
-  font-weight: 800;
-}
-
-.entry-delete {
-  flex: none;
-  min-height: 32px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--card);
-  color: var(--reps-text);
-  font: inherit;
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.entry-delete:disabled {
-  opacity: 0.5;
-}
-
-.entries-empty {
-  padding: 18px 14px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  text-align: center;
-}
-
 .log {
   position: relative;
   padding: 12px 14px 14px;
-}
-
-.log-last {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin-bottom: 8px;
-  padding: 8px 10px;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--text-muted);
-  font-size: 0.8125rem;
-  cursor: pointer;
-}
-
-/* The display above would otherwise beat the hidden attribute and leave an
-   empty dashed box on an exercise with no previous session. */
-.log-last[hidden] {
-  display: none;
 }
 
 .log-label {
@@ -461,54 +365,63 @@ p {
   border-color: var(--accent);
 }
 
-.log-stamp:empty {
+.log-input[hidden] {
   display: none;
 }
 
-.log-stamp {
-  display: block;
-  width: fit-content;
-  margin: 4px 0 0 -6px;
-  padding: 2px 6px;
-  border-radius: 999px;
-  color: var(--teal);
-  font-size: 0.6875rem;
-  font-weight: 700;
+.log-value {
+  min-height: var(--tap);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 1rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-.log-stamp[data-save='saving'] {
+.log-value[data-empty] {
   color: var(--text-muted);
 }
 
-.log-stamp[data-save='saved']::before {
-  content: "\2713  ";
+.log-value[hidden] {
+  display: none;
 }
 
-/* A flash on every landed write, so a same-minute edit is still confirmed. */
-.log-stamp[data-save='saved'] {
-  animation: saved-flash 1.6s ease-out;
-}
-
-.log-stamp[data-save='error'] {
+.log-error {
+  margin-top: 6px;
   color: var(--reps-text);
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
-@keyframes saved-flash {
-  0%,
-  35% {
-    background: var(--tint-warm);
-    box-shadow: 0 0 0 1px var(--teal);
-  }
-  100% {
-    background: transparent;
-    box-shadow: 0 0 0 1px transparent;
-  }
+.log-error[hidden] {
+  display: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .log-stamp[data-save='saved'] {
-    animation: none;
-  }
+.log-btn {
+  min-height: var(--tap);
+  margin-top: 8px;
+  padding: 0 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--navy);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.log-btn[data-mode='submit'] {
+  border-color: var(--navy);
+  background: var(--navy);
+  color: #fff;
+}
+
+.log-btn:disabled {
+  opacity: 0.5;
 }
 
 /* Only shown once the browser reports the app is installable. */
@@ -882,10 +795,6 @@ p {
   color: var(--teal);
   font-size: 0.75rem;
   font-weight: 700;
-}
-
-.swim-today .history-link {
-  margin-bottom: 14px;
 }
 
 /* On the row, not the cells: stacked rows have padding the cells do not cover. */

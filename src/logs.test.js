@@ -2,43 +2,32 @@ import 'fake-indexeddb/auto';
 import { describe, expect, it, beforeEach } from 'vitest';
 import {
   logKey,
-  formatShortDate,
   parseTopWeight,
   mergeEntries,
   saveEntry,
   getEntry,
-  historyFor,
-  lastEntryBefore,
   exportAll,
   importAll,
   backupFilename,
   parseBackup,
-  formatStamp,
-  stampText,
-  deleteEntry,
   canonicalEntry,
   migrateSharedLogs
 } from './logs.js';
-import { dbAll, dbDel, dbSet } from './db.js';
+import { dbAll, dbDel, dbSet, dbByCode } from './db.js';
 
 const clear = async () => {
   for (const entry of await dbAll()) await dbDel(entry.key);
 };
 
+// An entry written before the app kept one value per exercise.
+const dated = (code, date, text, updatedAt = 1) => {
+  const entry = { key: logKey(code, date), code, date, text, updatedAt };
+  return dbSet(entry.key, entry);
+};
+
 describe('logKey', () => {
   it('joins code and date', () => {
     expect(logKey('B5', '2026-08-29')).toBe('B5:2026-08-29');
-  });
-});
-
-describe('formatShortDate', () => {
-  it('renders a short label', () => {
-    expect(formatShortDate('2026-08-22')).toBe('Aug 22');
-    expect(formatShortDate('2026-01-01')).toBe('Jan 1');
-  });
-
-  it('returns the input unchanged when unparseable', () => {
-    expect(formatShortDate('nonsense')).toBe('nonsense');
   });
 });
 
@@ -123,173 +112,81 @@ describe('parseBackup', () => {
   });
 });
 
-describe('formatStamp', () => {
-  const now = new Date(2026, 7, 30, 20, 0);
-
-  it('says "today" for an entry made today', () => {
-    expect(formatStamp(new Date(2026, 7, 30, 18, 42).getTime(), now)).toBe('Saved today - 18:42');
-  });
-
-  it('names the day for an older entry', () => {
-    expect(formatStamp(new Date(2026, 7, 22, 9, 5).getTime(), now)).toBe('Saved Aug 22 - 09:05');
-  });
-
-  it('returns empty for a bad timestamp', () => {
-    expect(formatStamp(undefined, now)).toBe('');
-  });
-});
-
-describe('stampText', () => {
-  const now = new Date(2026, 7, 31, 10, 0);
-  const today = { updatedAt: new Date(2026, 7, 31, 6, 45).getTime() };
-  const previous = { date: '2026-08-30' };
-
-  it('reports today\'s save with the time', () => {
-    expect(stampText(today, previous, now)).toBe('Saved today - 06:45');
-  });
-
-  it('falls back to the last session when nothing is logged today', () => {
-    expect(stampText(null, previous, now)).toBe('Last saved Aug 30');
-  });
-
-  it('says so when the exercise has never been logged', () => {
-    expect(stampText(null, null, now)).toBe('Not logged yet');
-  });
-
-  it('prefers today over the previous session', () => {
-    expect(stampText(today, previous, now)).not.toContain('Aug 30');
-  });
-});
-
-describe('per-exercise reads stay scoped to one exercise', () => {
-  beforeEach(clear);
-
-  it('history returns only that code, newest first', async () => {
-    await saveEntry('A1', '2026-08-10', 'a1 old');
-    await saveEntry('A1', '2026-08-20', 'a1 new');
-    await saveEntry('A2', '2026-08-15', 'a2 should not appear');
-    await saveEntry('B1', '2026-08-15', 'b1 should not appear');
-
-    const history = await historyFor('A1');
-    expect(history.map((e) => e.text)).toEqual(['a1 new', 'a1 old']);
-  });
-
-  it('does not bleed across codes that share a prefix', async () => {
-    await saveEntry('B1', '2026-08-10', 'b1');
-    await saveEntry('B5', '2026-08-10', 'b5');
-    expect((await historyFor('B1')).map((e) => e.text)).toEqual(['b1']);
-    expect((await historyFor('B5')).map((e) => e.text)).toEqual(['b5']);
-  });
-
-  it('finds the most recent entry strictly before a date', async () => {
-    await saveEntry('B1', '2026-08-01', 'oldest');
-    await saveEntry('B1', '2026-08-22', 'previous');
-    await saveEntry('B1', '2026-08-30', 'today');
-    expect((await lastEntryBefore('B1', '2026-08-30')).text).toBe('previous');
-  });
-
-  it('excludes the given date itself', async () => {
-    await saveEntry('B1', '2026-08-30', 'today only');
-    expect(await lastEntryBefore('B1', '2026-08-30')).toBeNull();
-  });
-
-  it('returns null for an exercise with no history', async () => {
-    await saveEntry('A1', '2026-08-30', 'something');
-    expect(await lastEntryBefore('A6', '2026-08-30')).toBeNull();
-    expect(await historyFor('A6')).toEqual([]);
-  });
-});
-
-describe('editing and deleting past sessions', () => {
-  beforeEach(clear);
-
-  it('deletes one entry and leaves the rest of that exercise intact', async () => {
-    await saveEntry('B1', '2026-08-10', 'first');
-    await saveEntry('B1', '2026-08-20', 'second');
-    await saveEntry('B1', '2026-08-30', 'third');
-
-    await deleteEntry('B1', '2026-08-20');
-
-    expect((await historyFor('B1')).map((e) => e.date)).toEqual(['2026-08-30', '2026-08-10']);
-    expect(await getEntry('B1', '2026-08-20')).toBeNull();
-  });
-
-  it('does not touch other exercises', async () => {
-    await saveEntry('B1', '2026-08-20', 'b1');
-    await saveEntry('B5', '2026-08-20', 'b5');
-    await deleteEntry('B1', '2026-08-20');
-    expect((await getEntry('B5', '2026-08-20')).text).toBe('b5');
-  });
-
-  it('is harmless when the entry does not exist', async () => {
-    await expect(deleteEntry('A3', '2020-01-01')).resolves.not.toThrow();
-  });
-
-  it('editing a past entry leaves today alone', async () => {
-    await saveEntry('B1', '2026-08-22', 'old value');
-    await saveEntry('B1', '2026-08-31', 'todays value');
-
-    await saveEntry('B1', '2026-08-22', 'corrected value');
-
-    expect((await getEntry('B1', '2026-08-22')).text).toBe('corrected value');
-    expect((await getEntry('B1', '2026-08-31')).text).toBe('todays value');
-  });
-});
-
-describe('storage round trip', () => {
+describe('one value per exercise', () => {
   beforeEach(clear);
 
   it('saves and reads back verbatim', async () => {
     const text = '60kg x8 / 62.5 x6 - last set grindy, keep 60 next week';
-    await saveEntry('B1', '2026-08-30', text);
-    expect((await getEntry('B1', '2026-08-30')).text).toBe(text);
+    await saveEntry('B1', text);
+    expect((await getEntry('B1')).text).toBe(text);
   });
 
-  it('deletes on blank text instead of storing an empty row', async () => {
-    await saveEntry('B1', '2026-08-30', 'something');
-    await saveEntry('B1', '2026-08-30', '   ');
-    expect(await getEntry('B1', '2026-08-30')).toBeNull();
+  it('keeps only the last value entered', async () => {
+    await saveEntry('B1', 'first');
+    await saveEntry('B1', 'second');
+    expect((await getEntry('B1')).text).toBe('second');
+    expect(await dbAll()).toHaveLength(1);
   });
 
-  it('orders history newest first and finds the previous session', async () => {
-    await saveEntry('A1', '2026-08-10', 'first');
-    await saveEntry('A1', '2026-08-20', 'second');
-    await saveEntry('A1', '2026-08-30', 'today');
-
-    expect((await historyFor('A1')).map((e) => e.date)).toEqual([
-      '2026-08-30',
-      '2026-08-20',
-      '2026-08-10'
-    ]);
-    expect((await lastEntryBefore('A1', '2026-08-30')).text).toBe('second');
+  it('is null for an exercise never logged', async () => {
+    await saveEntry('A1', 'something');
+    expect(await getEntry('A6')).toBeNull();
   });
 
-  it('returns null when there is no earlier entry', async () => {
-    await saveEntry('A4', '2026-08-30', 'only one');
-    expect(await lastEntryBefore('A4', '2026-08-30')).toBeNull();
+  it('does not bleed across codes that share a prefix', async () => {
+    await saveEntry('B1', 'b1');
+    await saveEntry('B5', 'b5');
+    expect((await getEntry('B1')).text).toBe('b1');
+    expect((await getEntry('B5')).text).toBe('b5');
+  });
+
+  it('falls back to the newest dated entry until the first save', async () => {
+    await dated('B1', '2026-08-10', 'older');
+    await dated('B1', '2026-08-30', 'newest');
+    await dated('B5', '2026-09-01', 'other exercise');
+    expect((await getEntry('B1')).text).toBe('newest');
+  });
+
+  it('prefers the saved value over any dated entry', async () => {
+    await dated('B1', '2026-08-30', 'old session');
+    await saveEntry('B1', 'current');
+    expect((await getEntry('B1')).text).toBe('current');
+  });
+
+  it('keeps a blank save blank instead of resurfacing a dated entry', async () => {
+    await dated('B1', '2026-08-30', 'old session');
+    await saveEntry('B1', '');
+    expect((await getEntry('B1')).text).toBe('');
+  });
+
+  it('leaves dated entries in place', async () => {
+    await dated('B1', '2026-08-30', 'old session');
+    await saveEntry('B1', 'current');
+    expect(await dbByCode('B1')).toHaveLength(1);
   });
 
   it('survives export then import into an empty store', async () => {
-    await saveEntry('B5', '2026-08-29', '22kg x10,10,9');
-    await saveEntry('A1', '2026-08-29', '60kg x8,8,7');
+    await saveEntry('B5', '22kg x10,10,9');
+    await saveEntry('A1', '60kg x8,8,7');
     const dump = await exportAll();
 
     await clear();
     const result = await importAll(dump);
 
     expect(result).toEqual({ imported: 2, updated: 0 });
-    expect((await getEntry('B5', '2026-08-29')).text).toBe('22kg x10,10,9');
-    expect((await getEntry('A1', '2026-08-29')).text).toBe('60kg x8,8,7');
+    expect((await getEntry('B5')).text).toBe('22kg x10,10,9');
+    expect((await getEntry('A1')).text).toBe('60kg x8,8,7');
   });
 
-  it('import does not clobber a newer local entry', async () => {
-    await saveEntry('B5', '2026-08-29', 'old');
+  it('import does not clobber a newer local value', async () => {
+    await saveEntry('B5', 'old');
     const dump = await exportAll();
-    await saveEntry('B5', '2026-08-29', 'newer local');
+    await new Promise((resolve) => setTimeout(resolve, 2));
+    await saveEntry('B5', 'newer local');
 
     const result = await importAll(dump);
     expect(result.updated).toBe(0);
-    expect((await getEntry('B5', '2026-08-29')).text).toBe('newer local');
+    expect((await getEntry('B5')).text).toBe('newer local');
   });
 
   it('tolerates a payload with no entries', async () => {
@@ -318,28 +215,29 @@ describe('shared logs (B6 logs as A6)', () => {
 
   it('moves old B6 entries into A6 on migration', async () => {
     await dbSet('B6:2026-09-03', b6('2026-09-03', '30kg x15,14'));
-    await saveEntry('A6', '2026-09-01', '30kg x15,15');
+    await dated('A6', '2026-09-01', '30kg x15,15');
 
     expect(await migrateSharedLogs()).toBe(1);
-    expect(await historyFor('B6')).toEqual([]);
-    expect((await historyFor('A6')).map((e) => e.text)).toEqual(['30kg x15,14', '30kg x15,15']);
+    expect(await dbByCode('B6')).toEqual([]);
+    expect((await dbByCode('A6')).map((e) => e.text)).toEqual(['30kg x15,15', '30kg x15,14']);
+    expect((await getEntry('A6')).text).toBe('30kg x15,14');
   });
 
   it('never overwrites a different same-day A6 entry', async () => {
-    await saveEntry('A6', '2026-09-03', 'A6 text');
+    await dated('A6', '2026-09-03', 'A6 text');
     await dbSet('B6:2026-09-03', b6('2026-09-03', 'B6 text'));
 
     expect(await migrateSharedLogs()).toBe(0);
-    expect((await getEntry('A6', '2026-09-03')).text).toBe('A6 text');
-    expect((await getEntry('B6', '2026-09-03')).text).toBe('B6 text');
+    expect((await dbByCode('A6')).map((e) => e.text)).toEqual(['A6 text']);
+    expect((await dbByCode('B6')).map((e) => e.text)).toEqual(['B6 text']);
   });
 
   it('drops the duplicate an interrupted migration left behind', async () => {
-    await saveEntry('A6', '2026-09-03', 'same');
+    await dated('A6', '2026-09-03', 'same');
     await dbSet('B6:2026-09-03', b6('2026-09-03', 'same'));
 
     expect(await migrateSharedLogs()).toBe(1);
-    expect(await historyFor('B6')).toEqual([]);
+    expect(await dbByCode('B6')).toEqual([]);
   });
 
   it('is a no-op once migrated', async () => {
@@ -351,7 +249,7 @@ describe('shared logs (B6 logs as A6)', () => {
   it('imports an old backup\'s B6 entries as A6', async () => {
     const result = await importAll({ entries: [b6('2026-09-03', 'from backup')] });
     expect(result).toEqual({ imported: 1, updated: 0 });
-    expect((await getEntry('A6', '2026-09-03')).text).toBe('from backup');
-    expect(await getEntry('B6', '2026-09-03')).toBeNull();
+    expect((await getEntry('A6')).text).toBe('from backup');
+    expect(await dbByCode('B6')).toEqual([]);
   });
 });

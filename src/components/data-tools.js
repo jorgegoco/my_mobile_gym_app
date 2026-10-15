@@ -7,7 +7,7 @@ export function dataTools() {
       <p class="data-note">
         Your logs are saved on this phone only - never on GitHub, never on a server.
         Export a backup file after training; clearing browser data or uninstalling would
-        otherwise erase your history for good.
+        otherwise erase your logs for good.
       </p>
       <div class="data-buttons">
         <button class="data-btn" type="button" data-export>Export backup</button>

@@ -51,7 +51,6 @@ export function exerciseCard(ex) {
                </a>`
           )
           .join('')}
-        <a class="history-link" href="#/history/${esc(ex.code)}">History</a>
       </div>
 
       ${logField(ex)}

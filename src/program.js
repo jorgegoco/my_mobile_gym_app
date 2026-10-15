@@ -8,8 +8,8 @@ function fail(message) {
   throw new ProgramError(message);
 }
 
-// The swim is logged like an exercise, one free-text entry per day, under a
-// code no exercise may take: "SWIM:<YYYY-MM-DD>".
+// The swim is logged like an exercise, one free-text value, under a code no
+// exercise may take.
 export const SWIM_LOG = 'SWIM';
 
 export const WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -141,8 +141,3 @@ export const swimMinutes = (meters, swim = program.swim) =>
   Math.round((meters * swim.sessionMinutes) / swim.sessionMeters / 5) * 5;
 
 export const metaLine = (ex) => ex.tempo ?? ex.benefit ?? ex.grip ?? null;
-
-export function todayKey(date = new Date()) {
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}

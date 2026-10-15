@@ -7,20 +7,18 @@ itself — no account, no server, no sync.
 Built as a personal training app, and kept public because the approach may be useful to anyone
 building a small offline PWA without a framework.
 
-| Today's swim | Workout | Per-exercise history |
-| :--: | :--: | :--: |
-| ![The swim tab](docs/screenshots/swim.png) | ![A workout screen](docs/screenshots/workout.png) | ![The history view](docs/screenshots/history.png) |
+| Today's swim | Workout |
+| :--: | :--: |
+| ![The swim tab](docs/screenshots/swim.png) | ![A workout screen](docs/screenshots/workout.png) |
 
 ## What it does
 
 - **Works offline.** A service worker precaches the whole app; after one online visit it runs in
   airplane mode.
 - **Installs like an app** — standalone window, no address bar, its own icon.
-- **Free-text logging.** One box per exercise holding whatever you type: `60kg x8 / 62.5 x6 — last
-  set grindy, keep 60 next week`. Never coerced into numbers, never rewritten.
-- **Remembers your last session** above each box; tap it to copy it down. That one interaction is
-  most of gym logging.
-- **Per-exercise history** — every past session, editable and deletable.
+- **Free-text logging.** One value per exercise, whatever you type: `60kg x8 / 62.5 x6 — last
+  set grindy, keep 60 next week`. Never coerced into numbers, never rewritten. Edit, then Submit;
+  only the last value is kept, with no history.
 - **Backup** to a JSON file and back, because the data lives in exactly one place.
 - **Today's swim** on its own tab: the routine for this weekday, block by block, with lengths worked
   out for a 25m pool, plus a short Express set for busy days and a log for stroke counts.
@@ -36,7 +34,7 @@ hosted on GitHub Pages, which is a *static* host: it can only send files out, an
 receive or store anything. Even if the app wanted to upload your training data, there is nowhere for
 it to go.
 
-The consequence is worth understanding: your history exists on one phone only. Two devices would keep
+The consequence is worth understanding: your log exists on one phone only. Two devices would keep
 two independent logs, and clearing the browser's site data would erase it — which is why the export
 button exists.
 
@@ -109,9 +107,9 @@ media.json            exercise code -> video URL(s)
 src/
   main.js             boot, hash router, event delegation
   program.js          load + validate program.json
-  logs.js  db.js      IndexedDB log storage, backup, history
+  logs.js  db.js      IndexedDB log storage, backup
   wake-lock.js        keep the screen on during a workout
-  views/              swim.js, workout.js, guide.js, history.js
+  views/              swim.js, workout.js, guide.js
   components/         exercise-card, log-field, tab-bar, data-tools
 docs/
   PROGRAM.md          the whole programme, generated from program.json

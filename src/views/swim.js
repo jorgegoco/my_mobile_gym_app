@@ -49,9 +49,6 @@ function today(swim) {
       <p class="swim-objective">${esc(todays.objective)}</p>
       ${blocks(routine)}
       ${logField({ code: SWIM_LOG }, 'Strokes L10/30/50: 18,19,20 - felt smooth')}
-      <div class="card-actions">
-        <a class="history-link" href="#/history/${SWIM_LOG}">Swim history</a>
-      </div>
     </article>
   `;
 }

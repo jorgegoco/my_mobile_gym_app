@@ -43,7 +43,11 @@ The spec was written before the PDF was available. Where they disagree, this fil
   choice of machines, kept separate from `program.json` so a future program version can be dropped in
   without losing the links. A6 and B6 share a URL by design — same exercise on both days. This is the
   only feature that needs signal; everything else works offline.
-- User logs live in IndexedDB only (`workout-log` / `logs`), keyed `"<code>:<YYYY-MM-DD>"`.
+- User logs live in IndexedDB only (`workout-log` / `logs`). **One value per exercise**, keyed by its
+  bare code (`"B5"`); saving overwrites, there is no history. Entries from before that change are keyed
+  `"<code>:<YYYY-MM-DD>"` and are never deleted: `getEntry` falls back to the newest one until the
+  exercise is first saved, and they still export. Blank text is stored rather than deleted, otherwise
+  the old dated entry would resurface as the value.
 
 ## Hard rules
 
@@ -51,24 +55,19 @@ The spec was written before the PDF was available. Where they disagree, this fil
   may read it, never edit it, and returns `null` freely.
 - **User text never goes through `innerHTML`** — `textContent` / `.value` only. Static program data
   may be interpolated into templates, but only via `esc()` from `src/dom.js`.
-- **`flushPending()` must run before any `innerHTML` swap.** `render()` awaits it first. Without that,
-  a tab switch inside the 500 ms autosave debounce silently loses the set just typed.
-- **A late IndexedDB read must never overwrite live typing.** `hydrateLogFields` fills a box only when
-  it is unfocused and `data-hydrated` is unset.
-- Date keys are built from `getFullYear/getMonth/getDate` — **never `toISOString()`**. In CEST the UTC
-  date is a day behind between midnight and 02:00, which would file a session under the wrong day.
-  See `todayKey()` in `src/program.js`.
+- **Nothing is saved until Submit.** There is no autosave, debounce or pending queue; a tab switch while
+  a box is open drops the edit. That is the deliberate cost of the Edit/Submit model.
+- **A late IndexedDB read must never overwrite an edit under way.** `hydrateLogFields` skips any box whose
+  textarea is already visible.
 - Exercise codes `A1..C1` are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
   delegation attributes. v6.0 redistributed them across three days **without renumbering**, because they
   key the IndexedDB log — so the letter no longer indicates a day, and `A2` is retired (its logs survive
   in an export but are unreachable in the UI).
 - **B6 logs as A6.** Same movement on Day 1 and Day 3, so one log: B6 declares `"logAs": "A6"` and every
-  log read and write goes through `logCodeFor()`. The card, DOM id and `#/history/B6` route keep `B6`;
+  log read and write goes through `logCodeFor()`. The card and DOM id keep `B6`;
   only `data-log` and the storage key say `A6`. `migrateSharedLogs()` moves old `B6:*` entries at boot
   and `importAll` remaps them from old backups. It never overwrites a different same-day `A6` entry —
   that `B6` entry stays put and still exports.
-- Saves flush on `input` (debounced 500 ms), `blur`, `visibilitychange` and `pagehide` — Android kills
-  backgrounded tabs and an unsaved set is a bug.
 - Validation refuses to boot on an unknown `schemaVersion` major and shows a readable message.
   `validateProgram()` is called from `main.js`, not at module load, so the error is catchable.
 - Tap targets ≥ 44 px (`--tap`).
@@ -124,18 +123,12 @@ The spec was written before the PDF was available. Where they disagree, this fil
 `.githooks/pre-commit` refuses a commit touching `program.json` or a generated doc unless
 `make-program-doc.py --check` passes. Hooks are per clone: `git config core.hooksPath .githooks`.
 
-## One pending queue, keyed by entry
+## Log box
 
-`src/components/log-field.js` keys its debounce and flush maps by **storage key** (`"B5:2026-08-30"`),
-not by exercise code. History rows are editable and carry their own date, so a code-keyed queue would
-collide. The date comes from `wrap.dataset.date || todayKey()` - today's field resolves at save time
-so an app left open past midnight still files correctly.
-
-**Never add a second write queue.** `render()` awaits `flushPending()` before replacing
-`#app.innerHTML`; anything outside that queue loses edits when the view swaps.
-
-`hydrateLogFields` handles both shapes: a row with `data-date` loads that date's entry and shows no
-"last session" reference; today's field also looks up the previous entry.
+`src/components/log-field.js`: the saved value shows as plain text (`textContent` only) with an **Edit**
+button. Edit swaps in a textarea holding the saved text and turns the button into **Submit**; Submit
+writes once and swaps back. A failed write keeps the box open with an error and Submit retries.
+`main.js` delegates the click via `[data-log-action]`; there are no per-node listeners.
 
 ## Swim tab
 
@@ -147,21 +140,12 @@ the gym, the swim **is** tied to the weekday, so `swimForDate()` picks today's r
   implied twice that pace, so they were replaced.
 - `validateSwim()` refuses to boot if a routine does not add up to `sessionMeters`, a block is not a
   whole number of lengths, a weekday is missing, or an Express total is wrong.
-- The swim is logged once per day under the reserved code `SWIM` (`SWIM:<date>`), through the same
-  pending queue as every exercise. No exercise may use that code.
-
-## History view
-
-`#/history/<CODE>` is a route, not an overlay, so Android's back gesture closes it. `resolveHash()`
-accepts it only when `getExercise(code)` resolves or the code is `SWIM`, and a history hash is never
-remembered as the last tab. The parent tab stays lit via `getWorkoutForExercise`, or Swim for `SWIM`.
-
-Delete removes the row in place rather than re-rendering, so scroll position and any other
-in-progress edit survive.
+- The swim holds one value under the reserved code `SWIM`, through the same log box as every exercise.
+  No exercise may use that code.
 
 ## Wake lock
 
-Held only on the gym tabs; released on the swim tab (the phone is in the locker), the guide, history, and when the page is hidden.
+Held only on the gym tabs; released on the swim tab (the phone is in the locker), the guide, and when the page is hidden.
 **The browser releases the lock itself when the page is hidden**, so `wake-lock.js` listens for the
 sentinel's `release` event, clears its reference, and re-requests on `visibilitychange` when visible
 again. Without that it silently stops working after the first phone call. Every call is guarded -
@@ -183,16 +167,11 @@ receive data. Two devices would keep two independent logs.
 - The blob URL for the download is revoked on the **next frame**, not synchronously — revoking
   immediately can cancel the download.
 
-## Reads stay scoped to one exercise
+## Reads
 
-Log keys are `"<CODE>:<YYYY-MM-DD>"`, so every entry for one exercise is a contiguous, date-ordered
-key range. `dbByCode` and `dbLastBefore` in `src/db.js` use `IDBKeyRange` over that range; the cursor
-runs backwards and stops at the first hit.
-
-**Never go back to `dbAll()` + filter for per-exercise reads.** It was 6 full scans per tab render -
-18,720 objects and 82 ms against 5 years of history, growing forever. The range read is 6 objects and
-1.4 ms, and is constant regardless of history size. `dbAll()` is correct only for export and import,
-which genuinely need every entry.
+`getEntry` is a point read on the bare code, plus one `dbByCode` range read (`IDBKeyRange` over
+`"<CODE>:"`) only while an exercise has never been saved since the single-value change. **Never go back
+to `dbAll()` + filter for per-exercise reads.** `dbAll()` is correct only for export and import.
 
 ## Deployed
 
@@ -202,4 +181,4 @@ tier.
 
 ## Still to do
 
-Nothing tracked right now - the per-exercise history sheet and the wake lock both shipped.
+Nothing tracked right now.

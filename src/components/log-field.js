@@ -1,21 +1,10 @@
 import { esc } from '../dom.js';
-import { todayKey, logCodeFor, sharedLogWith, getWorkoutForExercise } from '../program.js';
-import {
-  getEntry,
-  saveEntry,
-  lastEntryBefore,
-  formatShortDate,
-  stampText,
-  logKey
-} from '../logs.js';
+import { logCodeFor, sharedLogWith, getWorkoutForExercise } from '../program.js';
+import { getEntry, saveEntry } from '../logs.js';
 
-const SAVE_DELAY = 500;
+const EMPTY = 'Not logged yet';
 
-const timers = new Map();
-const pending = new Map();
-
-// "shared with A6 (Day 1)" - says why a session logged on another day shows
-// up here as the last one.
+// "shared with A6 (Day 1)" - says why a value entered on another day shows up here.
 function sharedNote(ex) {
   const others = sharedLogWith(ex.code);
   if (!others.length) return '';
@@ -28,137 +17,79 @@ function sharedNote(ex) {
 export function logField(ex, placeholder = '60kg x8,8,7 - felt strong') {
   return `
     <div class="log" data-log="${esc(logCodeFor(ex.code))}">
-      <p class="log-last" data-last hidden></p>
       <label class="log-label" for="log-${esc(ex.code)}">Log${sharedNote(ex)}</label>
+      <p class="log-value" data-value data-empty>${EMPTY}</p>
       <textarea
         id="log-${esc(ex.code)}"
         class="log-input"
         rows="2"
-        enterkeyhint="done"
         placeholder="${esc(placeholder)}"
+        hidden
       ></textarea>
-      <span class="log-stamp" data-stamp aria-live="polite"></span>
+      <p class="log-error" data-error role="alert" hidden></p>
+      <button class="log-btn" type="button" data-log-action>Edit</button>
     </div>
   `;
 }
 
-function autoGrow(textarea) {
+export function autoGrow(textarea) {
   textarea.style.height = 'auto';
   textarea.style.height = `${textarea.scrollHeight}px`;
 }
 
-function setStamp(wrap, entry, previous = null) {
-  const stamp = wrap.querySelector('[data-stamp]');
-  if (!stamp) return;
-  stamp.textContent = stampText(entry, previous);
+// textContent only: this is user text.
+function showValue(wrap, text) {
+  const value = wrap.querySelector('[data-value]');
+  const has = Boolean(text?.trim());
+  value.textContent = has ? text : EMPTY;
+  value.toggleAttribute('data-empty', !has);
+  value.dataset.text = text ?? '';
 }
 
-// The stamp is the only sign a save happened, so every edit moves it through
-// saving -> saved. The time alone has minute resolution: a second edit inside
-// the same minute would leave it unchanged and look like nothing was written.
-function showSave(wrap, state, text) {
-  const stamp = wrap.querySelector('[data-stamp]');
-  if (!stamp) return;
-  stamp.textContent = text;
-  delete stamp.dataset.save;
-  // Reading layout between the two writes restarts the flash animation.
-  void stamp.offsetWidth;
-  stamp.dataset.save = state;
-}
+// One button, two states: Edit opens the box on the saved value, Submit writes
+// it. Nothing is saved until Submit, so a tab switch while editing drops the edit.
+export async function toggleLog(button) {
+  const wrap = button.closest('[data-log]');
+  const value = wrap.querySelector('[data-value]');
+  const input = wrap.querySelector('.log-input');
+  const error = wrap.querySelector('[data-error]');
 
-// History rows carry a fixed date; today's field has none and resolves at save
-// time, so an app left open past midnight still files under the right day.
-const dateFor = (wrap) => wrap.dataset.date || todayKey();
-
-async function commit(key, code, date, text, wrap) {
-  pending.delete(key);
-  let entry;
-  try {
-    entry = await saveEntry(code, date, text);
-  } catch {
-    // Keep it queued so the next flush (blur, tab switch, backgrounding) retries.
-    if (!pending.has(key)) pending.set(key, { code, date, text, wrap });
-    if (wrap.isConnected) showSave(wrap, 'error', 'Not saved - will retry');
+  if (input.hidden) {
+    input.value = value.dataset.text ?? '';
+    input.hidden = false;
+    value.hidden = true;
+    error.hidden = true;
+    button.textContent = 'Submit';
+    button.dataset.mode = 'submit';
+    autoGrow(input);
+    input.focus();
     return;
   }
-  // Typing continued while this write ran: that newer save owns the stamp.
-  if (pending.has(key) || !wrap.isConnected) return;
-  // Clearing today's box must fall back to the previous session, not to
-  // "Not logged yet" - stampText only needs its date.
-  const previous = wrap.dataset.prevDate ? { date: wrap.dataset.prevDate } : null;
-  showSave(wrap, 'saved', stampText(entry, previous));
-}
 
-export function flushPending() {
-  const writes = [];
-  for (const [key, { code, date, text, wrap }] of pending) {
-    clearTimeout(timers.get(key));
-    timers.delete(key);
-    writes.push(commit(key, code, date, text, wrap));
+  button.disabled = true;
+  try {
+    const entry = await saveEntry(wrap.dataset.log, input.value);
+    showValue(wrap, entry.text);
+    input.hidden = true;
+    value.hidden = false;
+    error.hidden = true;
+    button.textContent = 'Edit';
+    delete button.dataset.mode;
+  } catch {
+    error.textContent = 'Not saved - tap Submit to retry';
+    error.hidden = false;
+  } finally {
+    button.disabled = false;
   }
-  return Promise.all(writes);
-}
-
-export function handleLogInput(textarea) {
-  const wrap = textarea.closest('[data-log]');
-  const code = wrap.dataset.log;
-  const date = dateFor(wrap);
-  const key = logKey(code, date);
-
-  textarea.dataset.hydrated = 'true';
-  autoGrow(textarea);
-  pending.set(key, { code, date, text: textarea.value, wrap });
-  showSave(wrap, 'saving', 'Saving...');
-
-  clearTimeout(timers.get(key));
-  timers.set(
-    key,
-    setTimeout(() => {
-      timers.delete(key);
-      commit(key, code, date, textarea.value, wrap);
-    }, SAVE_DELAY)
-  );
 }
 
 export async function hydrateLogFields(root) {
-  const today = todayKey();
-
   await Promise.all(
     [...root.querySelectorAll('[data-log]')].map(async (wrap) => {
-      const code = wrap.dataset.log;
-      const textarea = wrap.querySelector('.log-input');
-      // A history row is pinned to its own date and has no "last session"
-      // reference; today's field looks up the previous entry as well.
-      const dated = Boolean(wrap.dataset.date);
-      const [entry, previous] = await Promise.all([
-        getEntry(code, dated ? wrap.dataset.date : today),
-        dated ? null : lastEntryBefore(code, today)
-      ]);
-
-      if (!wrap.isConnected) return;
-
-      if (entry && !textarea.dataset.hydrated && document.activeElement !== textarea) {
-        textarea.value = entry.text;
-        autoGrow(textarea);
-      }
-
-      setStamp(wrap, entry, previous);
-
-      if (previous) {
-        wrap.dataset.prevDate = previous.date;
-        const last = wrap.querySelector('[data-last]');
-        last.textContent = `Last (${formatShortDate(previous.date)}): ${previous.text}`;
-        last.dataset.text = previous.text;
-        last.hidden = false;
-      }
+      const entry = await getEntry(wrap.dataset.log);
+      // A late read must never overwrite an edit already under way.
+      if (!wrap.isConnected || !wrap.querySelector('.log-input').hidden) return;
+      showValue(wrap, entry?.text);
     })
   );
-}
-
-export function copyLastInto(lastEl) {
-  const wrap = lastEl.closest('[data-log]');
-  const textarea = wrap.querySelector('.log-input');
-  textarea.value = lastEl.dataset.text ?? '';
-  textarea.focus();
-  handleLogInput(textarea);
 }
