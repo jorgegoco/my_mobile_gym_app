@@ -26,11 +26,11 @@ The spec was written before the PDF was available. Where they disagree, this fil
 
 - **§3.5 "dark theme by default" is void.** The app is light, matching the PDF. `program.theme.colors`
   is the PDF's own palette and is used verbatim — no derived values, no dark mode.
-- **§3.2's Week screen is gone.** Sessions rotate with a roughly two-day gap, so a fixed weekday
-  calendar is meaningless. `weeklySchedule` stays in `program.json` but nothing renders it, and
-  nothing validates it.
+- **§3.2's Week screen is gone.** The gym days are pinned from v7.1 (Mon Day 1, Wed Day 2, Fri Day 3,
+  Sun Day 4), but there is still no Week screen: one tab per day is enough. `weeklySchedule` is read
+  only by the docs generator and by the Swim tab's no-pool day; nothing validates it.
 - **§3.4's local media pipeline is void.** No `public/media/`, no ffmpeg, no `MEDIA.md`. Exercise
-  video references are external YouTube links in `media.json`.
+  video references are external links (YouTube and exercise sites) in `media.json`.
 - **Cues are always visible**, as bullets, per the PDF — not collapsed behind a toggle.
 
 ## Data
@@ -59,10 +59,12 @@ The spec was written before the PDF was available. Where they disagree, this fil
   a box is open drops the edit. That is the deliberate cost of the Edit/Submit model.
 - **A late IndexedDB read must never overwrite an edit under way.** `hydrateLogFields` skips any box whose
   textarea is already visible.
-- Exercise codes `A1..C1` are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
-  delegation attributes. v6.0 redistributed them across three days **without renumbering**, because they
-  key the IndexedDB log — so the letter no longer indicates a day, and `A2` is retired (its logs survive
-  in an export but are unreachable in the UI).
+- Exercise codes (`A1`, `B5`, `D1`...) are the stable keys everywhere: logs, `media.json`, DOM ids (`ex-B5`),
+  delegation attributes. v6.0 redistributed them across days **without renumbering**, because they
+  key the IndexedDB log — so the letter no longer indicates a day. `A2` and `C1` are retired (their logs
+  survive in an export but are unreachable in the UI); never reuse a retired code.
+- The travel and urge drills (`R1..R7`, `U1`) are codes for `media.json` only. They have no log, and no
+  exercise may take one of them.
 - **B6 logs as A6.** Same movement on Day 1 and Day 3, so one log: B6 declares `"logAs": "A6"` and every
   log read and write goes through `logCodeFor()`. The card and DOM id keep `B6`;
   only `data-log` and the storage key say `A6`. `migrateSharedLogs()` moves old `B6:*` entries at boot
@@ -76,7 +78,7 @@ The spec was written before the PDF was available. Where they disagree, this fil
 
 - Views and components are pure functions returning HTML strings; `main.js` owns the single
   `innerHTML` assignment and all event delegation on `#app`. No per-node listeners.
-- Routing is `location.hash` + a `render()` switch: `#/swim`, `#/day-1`, `#/day-2`, `#/day-3`, `#/guide`.
+- Routing is `location.hash` + a `render()` switch: `#/swim`, `#/day-1` … `#/day-4`, `#/guide`.
   No router library. Swim comes first because it starts every morning, which also makes it the cold-start
   default. Every other non-guide tab hash **is** a workout id, which is what lets `viewFor()` resolve it
   with a plain `getWorkout(hash.slice(2))`; `TABS` is derived from `program.workouts`, so adding a fourth
@@ -100,7 +102,7 @@ The spec was written before the PDF was available. Where they disagree, this fil
 - `index.html` is *not* in the precache list — Vite emits it after `generateBundle`. `./` is cached
   instead, and the navigate handler always serves it, which is what makes a cold start on a deep hash
   route (`#/guide`) work offline.
-- **The fetch handler ignores cross-origin requests entirely.** YouTube must pass straight through.
+- **The fetch handler ignores cross-origin requests entirely.** Video links must pass straight through.
 - **No `skipWaiting()`.** A new version activates on the next cold start, never swapping assets
   mid-session. Redeploys land the next time the app is opened.
 - Registration is `import.meta.env.PROD`-only, so the dev server is never shadowed by a stale cache.
@@ -132,14 +134,15 @@ writes once and swaps back. A failed write keeps the box open with an error and 
 
 ## Swim tab
 
-`program.swim` holds four routines, a weekday rotation, the Express set and the technique notes. Unlike
-the gym, the swim **is** tied to the weekday, so `swimForDate()` picks today's routine from `getDay()`.
+`program.swim` holds four routines, a weekday schedule, the Express set and the technique notes. The swim
+is tied to the weekday, so `swimForDate()` picks today's routine from `getDay()`. A schedule row with
+`routineId: null` is a no-pool day (Sunday): the tab shows a link to that weekday's gym session instead.
 
 - Lengths and Express times are **derived, never stored**: lengths from `poolMeters`, minutes from the
   real session pace (`sessionMeters` in `sessionMinutes`). The source PDF's 15/25/35-minute Express labels
   implied twice that pace, so they were replaced.
 - `validateSwim()` refuses to boot if a routine does not add up to `sessionMeters`, a block is not a
-  whole number of lengths, a weekday is missing, or an Express total is wrong.
+  whole number of lengths, a weekday is missing, a non-null `routineId` is unknown, or an Express total is wrong.
 - The swim holds one value under the reserved code `SWIM`, through the same log box as every exercise.
   No exercise may use that code.
 

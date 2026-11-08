@@ -725,6 +725,82 @@ p {
   margin-top: 18px;
 }
 
+.exercises + .note {
+  margin-top: 12px;
+}
+
+.banner-note {
+  margin-top: 14px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--accent);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* ---------- travel + urge drills ---------- */
+
+.drills {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.drill {
+  padding: 10px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.drill-name {
+  padding: 0 14px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.drill-name strong {
+  color: var(--navy);
+}
+
+.drill .watch {
+  margin-top: 8px;
+}
+
+.urge-steps {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+.urge-steps > li + li {
+  margin-top: 8px;
+}
+
+.urge-steps .drills {
+  margin-top: 8px;
+}
+
+/* ---------- swim tab: no-pool day ---------- */
+
+.swim-rest-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
 /* ---------- swim tab ---------- */
 
 .swim-today {
