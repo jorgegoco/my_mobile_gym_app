@@ -1,6 +1,6 @@
 # Swim & Lift — Workout PWA
 
-An offline-first workout app for a daily 2,500m swim and a three-day chest and arms programme. It installs to an Android home
+An offline-first workout app for a 2,500m swim six mornings a week and a four-day gym programme (three short post-swim sessions plus Sunday legs). It installs to an Android home
 screen, works with no signal in a basement gym, and keeps a free-text log of every set on the phone
 itself — no account, no server, no sync.
 

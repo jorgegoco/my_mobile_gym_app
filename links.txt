@@ -19,8 +19,6 @@ B2  Chest-Supported Machine Row (or Seated Cable Row) => https://www.youtube.com
 A2  Seated Cable Row (Neutral Grip) - alternative for B2 => https://www.youtube.com/shorts/nAL6iRjQT6Y
 A4  Standing Supinating Dumbbell Curls => https://www.youtube.com/shorts/MKWBV29S6c0
 B4  Dumbbell Hammer Curls => https://www.youtube.com/shorts/jdYGDzCuGE4
-C1  Machine Preacher Curl (choice 1) => https://www.youtube.com/shorts/S4dDLfp3e8w
-C1  Machine Shrug (choice 2) => https://www.youtube.com/watch?v=2QLIHQarHMo
 
 DAY 3 - Upper Chest, Triceps & Posterior Shoulder
 -------------------------------------------------
@@ -30,10 +28,36 @@ B3  Pec Deck Machine Fly => https://www.youtube.com/shorts/a9vQ_hwIksU
 B5  Seated DB Overhead Tricep Extension => https://www.youtube.com/shorts/b_r_LW4HEcM
 B6  Reverse Pec Deck (Machine Rear Delt Fly) => https://www.youtube.com/shorts/7tgx6QHB0-A
 
+DAY 4 - Legs & Reset (Sunday)
+-----------------------------
+
+D1  Leg Press => https://www.youtube.com/shorts/EotSw18oR9w
+D2  Seated Leg Curl => https://www.youtube.com/shorts/xdbEG3xGLI8
+D3  Standing Calf Raise => https://www.youtube.com/shorts/95itLfMBG40
+D4  Plank => https://www.youtube.com/shorts/y3sxQUJ3Qsk
+D5  Dead Bug => https://www.youtube.com/watch?v=o4GKiEoYClI
+
+TRAVEL - Room Routine
+---------------------
+
+R1  Push-Ups => https://www.youtube.com/shorts/4Bc1tPaYkOo
+R2  Bodyweight Squats => https://www.youtube.com/shorts/eFEVKmp3M4g
+R3  Reverse Lunges => https://www.youtube.com/shorts/38xlLGfguz4
+R4  Towel Rows => https://www.youtube.com/shorts/3tLRSIXdh7k
+R5  Side Plank => https://www.youtube.com/shorts/BFOyHDlY2UE
+R6  Towel / Band Pull-Aparts => https://www.youtube.com/shorts/Vam9WVw561k
+R7  Y-T-W Raises => https://www.youtube.com/shorts/HvdLRWBprws
+
+URGE PROTOCOL
+-------------
+
+U1  Wall Sit => https://www.youtube.com/shorts/mDdLC-yKudY
+
 
 NOTES
 -----
 
 A6 and B6 are the same machine on two different days, so they share one clip.
-A5 and C1 carry two labelled links each - a named backup and a choice of machines.
+A5 lists a named backup (Plan B).
+C1 left the programme in v7.1.
 A2 left the rotation in v6.0; the link stays because the movement survives as B2's alternative.

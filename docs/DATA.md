@@ -17,17 +17,19 @@ const dayTwo = program.workouts.find(w => w.id === 'day-2');
 
 | Key | Type | What it holds |
 | :---- | :---- | :---- |
-| `schemaVersion` | string | Version of *this* data contract (`"1.1"`). Major = breaking shape change (the app refuses to boot); minor = additive. |
-| `program` | object | Identity, athlete context, header highlights, changelog. |
+| `schemaVersion` | string | Version of *this* data contract (`"1.2"`). Major = breaking shape change (the app refuses to boot); minor = additive. |
+| `program` | object | Identity, athlete context (`athlete.note` optional, from v7.1), header highlights, changelog. |
 | `dailyProtocol` | array | Timeline of the training day (swim, food, gym windows). |
 | `warmUp` / `coolDown` | object | Session bookends with prescriptions. `warmUp.durationMinutes` is `null` from v6.0 — the swim is the warm-up, so there is no separate block to time. |
 | `fuel` | object | The 08:30 locker-room transition fuel protocol (`title`, `timeWindow`, `recipe`, `why`). Added in v6.0; renderers should tolerate its absence. |
-| `legTraining` | object | Why no leg work happens in the gym (`title`, `body`). Added in v6.0; optional. |
-| `rules` | array | The four hypertrophy / joint-safety rules. |
-| `workouts` | array | The three gym micro-sessions and their exercises. |
+| `legTraining` | object | The leg-training policy (`title`, `body`). Added in v6.0; optional. |
+| `rules` | array | The training and joint-safety rules, in order. |
+| `workouts` | array | The gym sessions and their exercises, one tab each. A workout may carry optional `before` / `after` text (Day 4's bike warm-up and stretch). |
 | `swappingMatrix` | object | Ordering logic when equipment is occupied. |
-| `swim` | object | The swim programme: routines, weekday rotation, Express set, technique. Added in v7.0 (schema 1.1); optional. See below. |
-| `weeklySchedule` | array | 7 rows, Monday-first, linked to workouts by `workoutId`. |
+| `swim` | object | The swim programme: routines, weekday schedule, Express set, technique. Added in v7.0 (schema 1.1); optional. See below. |
+| `travel` | object | Travel plan: `options[] { label, text }`, a `roomRoutine { title, warmUp, circuits[] { rounds, rest, exercises[] }, finish }` and a closing `rule`. Added in v7.1; optional. |
+| `urgeProtocol` | object | `{ title, intro, steps[] { text, exercises? } }`. Added in v7.1; optional. |
+| `weeklySchedule` | array | 7 rows, Monday-first, linked to workouts by `workoutId`. The gym day of each weekday. |
 | `summaryStrategy` | string | One-paragraph program rationale. |
 | `theme` | object | Hex palette taken from the original printed guide, used verbatim by the app. |
 
@@ -39,12 +41,13 @@ The core entity of the app. Every exercise object:
 
 | Field | Type | Notes |
 | :---- | :---- | :---- |
-| `code` | string | Stable id inside the program: `A1`, `A3`…`A6`, `B1`…`B6`, `C1`. Use as React key / DB key. Assigned in v5.x and preserved through the v6.0 restructure, so the letter no longer indicates a day. `A2` is retired. |
+| `code` | string | Stable id inside the program: `A1`, `A3`…`A6`, `B1`…`B6`, `D1`…`D5`. Use as React key / DB key. Assigned in v5.x and preserved through the v6.0 restructure, so the letter no longer indicates a day. `A2` and `C1` are retired. |
 | `name` | string | Display name. |
 | `tags` | string[] | `"key-compound"` → blue badge; `"updated"` → amber badge, meaning "changed in the last revision". Empty array = no badge. |
 | `target` | string | Muscles worked (shown under the title). |
 | `sets` | number | Working sets. |
 | `repRange` | [number, number] | Min/max reps — use for rep pickers and logging validation. |
+| `durationSeconds` | [number, number] | In place of `repRange` for a held exercise (D4 plank). Every exercise has one of the two. |
 | `prescription` | string | Pre-rendered `"3 Sets x 6-8 Reps"` label if you don't want to compose it. |
 | `tempo` | string \| null | Tempo line, when the guide specifies one. |
 | `benefit` | string \| null | Shown instead of `tempo` when tempo is null. |
@@ -65,10 +68,10 @@ Render rule, shared by the app and `docs/PROGRAM.md`: the meta line shows `tempo
 | Field | Type | Notes |
 | :---- | :---- | :---- |
 | `poolMeters` / `sessionMeters` / `sessionMinutes` | number | 25, 2500, 90. Lengths are `meters / poolMeters`; Express times are estimated from `sessionMeters` in `sessionMinutes`. Neither is stored. |
-| `schedule` | array | 7 rows `{ day, routineId, objective }`, Monday-first. Every weekday must be present. |
+| `schedule` | array | 7 rows `{ day, routineId, objective }`, Monday-first. Every weekday must be present; `routineId: null` is a day with no pool (Sunday from v7.1). |
 | `routines` | array | `{ id, name, target, rounds, blocks }`. Each block is `{ title, meters, detail, points?, rest? }`. `sum(blocks.meters) x rounds` must equal `sessionMeters`. |
 | `express` | object | `warmUp`, `mainBlock`, `coolDown` (blocks as above) and `options[] { mainBlocks, meters }`, where `meters` must equal warm-up + n main blocks + cool-down. |
-| `breathing` / `missedSessions` | object | `{ title, points[] { label, text } }`. |
+| `breathing` / `technique` / `missedSessions` | object | `{ title, points[] { label, text } }`. `technique` added in v7.1. `missedSessions` covers the gym too. |
 | `openTurn` | object | `{ title, intro, steps[] { phase, action } }`, in order. |
 
 The app validates every distance at boot and refuses to start on a mismatch, because a typo in a block
@@ -78,9 +81,16 @@ length is otherwise invisible until you are in the water.
 
 `workoutId` is `null` on non-gym days and otherwise points at `workouts[].id`, so a calendar view can join without string matching on the label.
 
-The gym weekdays here are **an example week, not a rule**: in practice Day 1, 2 and 3 rotate with roughly a two-day gap and drift across weekdays. That is why the app does not render this table. The swim, by contrast, *is* fixed to the weekday - see `swim.schedule`.
+From v7.1 the gym days are **pinned**: Monday Day 1, Wednesday Day 2, Friday Day 3, Sunday Day 4. The app does not render this table; the docs generator reads it to say which weekday each session falls on.
 
 ---
+
+## What changed in v7.1
+
+- Schema `1.2`, additive: `swim.schedule[].routineId` may be `null`, an exercise may use `durationSeconds` instead of `repRange`, and workouts may carry `before` / `after`. New `travel`, `urgeProtocol`, `swim.technique` and `program.athlete.note`.
+- Gym days pinned to the weekday; new **Day 4** (`day-4`, D1-D5) on Sunday, which has no swim.
+- **C1** removed; its logs survive in an export but are unreachable in the UI, like A2's.
+- Room routine and urge drills (`R1`-`R7`, `U1`) are not exercises: they have video links in `media.json` but no log.
 
 ## What changed in v7.0
 

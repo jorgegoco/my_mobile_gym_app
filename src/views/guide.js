@@ -1,17 +1,18 @@
 import { esc } from '../dom.js';
 import { program } from '../program.js';
 import { dataTools } from '../components/data-tools.js';
+import { watchLinks } from '../components/exercise-card.js';
 
 // A range whose ends are equal is a single value: [1, 1] is "1", not "1–1".
 const range = ([a, b]) => (a === b ? `${a}` : `${a}–${b}`);
 // Takes the already-formatted range string: "1" -> "1 set", "2–3" -> "2–3 sets".
 const plural = (n, word) => `${n} ${Number(n) === 1 ? word : `${word}s`}`;
-// ["A4", "B4", "C1"] -> "A4, B4 & C1".
+// ["A4", "B4", "B6"] -> "A4, B4 & B6".
 const codeList = (codes) =>
   codes.length < 2 ? codes.join('') : `${codes.slice(0, -1).join(', ')} & ${codes.at(-1)}`;
 
 function banner() {
-  const { title, version, subtitle, highlights } = program.program;
+  const { title, version, subtitle, highlights, athlete } = program.program;
   return `
     <header class="banner">
       <h1>${esc(title)} <span class="banner-version">(v${esc(version)})</span></h1>
@@ -21,6 +22,7 @@ function banner() {
           .map((h) => `<div><dt>${esc(h.label)}</dt><dd>${esc(h.value)}</dd></div>`)
           .join('')}
       </dl>
+      ${athlete.note ? `<p class="banner-note">${esc(athlete.note)}</p>` : ''}
     </header>
   `;
 }
@@ -45,7 +47,7 @@ function protocol() {
     .join('');
 
   return `
-    <h2 class="section-title">Fasted Swim &amp; Gym Timing Protocol</h2>
+    <h2 class="section-title">Daily Timing Protocol</h2>
     <div class="table-wrap">
       <table class="grid">
         <thead>
@@ -149,6 +151,57 @@ function matrix() {
   `;
 }
 
+// A drill is a named, coded movement with a video but no log: the travel
+// room routine and the urge protocol.
+const drill = (ex) => `
+  <li class="drill">
+    <p class="drill-name">${ex.code ? `<span class="chip">${esc(ex.code)}</span> ` : ''}<strong>${esc(ex.name)}</strong> - ${esc(ex.prescription)}</p>
+    ${ex.code ? watchLinks(ex.code) : ''}
+  </li>`;
+
+function travel() {
+  const tr = program.travel;
+  if (!tr) return '';
+  const room = tr.roomRoutine;
+  return `
+    <h2 class="section-title">${esc(tr.title)}</h2>
+    <ul class="tier">
+      ${tr.options.map((o) => `<li><strong>${esc(o.label)}:</strong> ${esc(o.text)}</li>`).join('')}
+    </ul>
+    <h3 class="tier-title">${esc(room.title)}</h3>
+    <div class="note note-warm"><p>${esc(room.warmUp)}</p></div>
+    ${room.circuits
+      .map(
+        (c) => `
+      <p class="matrix-lead">${esc(`${c.rounds} rounds${c.rest ? `, ${c.rest}` : ''}`)}</p>
+      <ul class="drills">${c.exercises.map(drill).join('')}</ul>`
+      )
+      .join('')}
+    <div class="note note-cool"><p>${esc(room.finish)}</p></div>
+    <div class="golden">${esc(tr.rule)}</div>
+  `;
+}
+
+function urge() {
+  const u = program.urgeProtocol;
+  if (!u) return '';
+  return `
+    <h2 class="section-title">${esc(u.title)}</h2>
+    <p class="matrix-lead">${esc(u.intro)}</p>
+    <ol class="urge-steps">
+      ${u.steps
+        .map(
+          (s) => `
+        <li>
+          <p>${esc(s.text)}</p>
+          ${s.exercises ? `<ul class="drills">${s.exercises.map(drill).join('')}</ul>` : ''}
+        </li>`
+        )
+        .join('')}
+    </ol>
+  `;
+}
+
 export function guideView() {
   return `
     ${banner()}
@@ -160,6 +213,8 @@ export function guideView() {
     ${rules()}
     ${matrix()}
     ${legNote()}
+    ${travel()}
+    ${urge()}
     <div class="note note-summary">
       <h3>Summary Strategy</h3>
       <p>${esc(program.summaryStrategy)}</p>

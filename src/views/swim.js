@@ -1,5 +1,5 @@
 import { esc } from '../dom.js';
-import { program, SWIM_LOG, swimForDate, swimMinutes, expressMeters } from '../program.js';
+import { program, SWIM_LOG, swimForDate, swimMinutes, expressMeters, getWorkout } from '../program.js';
 import { logField } from '../components/log-field.js';
 
 const fmt = (meters) => meters.toLocaleString('en-US');
@@ -40,6 +40,17 @@ function daysFor(routineId) {
 function today(swim) {
   const todays = swimForDate();
   const routine = todays.routine;
+  if (!routine) {
+    const gym = getWorkout(program.weeklySchedule?.find((d) => d.day === todays.day)?.workoutId);
+    const message = gym ? `No pool today - ${gym.name.split(':')[0]} in the gym` : 'No pool today';
+    return `
+      <header class="view-head">
+        <h2 class="section-title">${esc(todays.day)}: No pool today</h2>
+        <p class="section-sub">${esc(todays.objective)}</p>
+      </header>
+      ${gym ? `<a class="swim-rest-day" href="#/${esc(gym.id)}">${esc(message)} &rarr;</a>` : `<p class="swim-rest-day">${esc(message)}</p>`}
+    `;
+  }
   return `
     <header class="view-head">
       <h2 class="section-title">${esc(todays.day)}: ${esc(routine.name)}</h2>
@@ -61,13 +72,13 @@ function rotation(swim) {
       (row) => `
       <tr class="${row.day === todayDay ? 'row-today' : ''}">
         <td class="col-time" data-label="Day"><strong>${esc(row.day)}</strong></td>
-        <td class="col-activity" data-label="Routine">${esc(names.get(row.routineId))}</td>
+        <td class="col-activity" data-label="Routine">${esc(names.get(row.routineId) ?? 'No pool')}</td>
         <td class="col-strategy" data-label="Primary Training Objective">${esc(row.objective)}</td>
       </tr>`
     )
     .join('');
   return `
-    <h2 class="section-title">Weekly Rotation</h2>
+    <h2 class="section-title">Weekly Schedule</h2>
     <div class="table-wrap">
       <table class="grid">
         <thead><tr><th>Day</th><th>Routine</th><th>Primary Training Objective</th></tr></thead>
@@ -124,7 +135,7 @@ function express(swim) {
 }
 
 function technique(swim) {
-  const { breathing, openTurn, missedSessions } = swim;
+  const { breathing, openTurn, technique: cue, missedSessions } = swim;
   const points = (list) =>
     list.map((pt) => `<li><strong>${esc(pt.label)}:</strong> ${esc(pt.text)}</li>`).join('');
   return `
@@ -140,6 +151,14 @@ function technique(swim) {
         ${openTurn.steps.map((s) => `<li><strong>${esc(s.phase)}:</strong> ${esc(s.action)}</li>`).join('')}
       </ol>
     </div>
+    ${
+      cue
+        ? `<div class="note">
+      <h3>${esc(cue.title)}</h3>
+      <ul>${points(cue.points)}</ul>
+    </div>`
+        : ''
+    }
     <div class="note">
       <h3>${esc(missedSessions.title)}</h3>
       <ul>${points(missedSessions.points)}</ul>

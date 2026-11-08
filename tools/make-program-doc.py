@@ -88,8 +88,10 @@ def athlete(data):
          f"- **Age:** {a['age']}",
          f"- **Primary sport:** {a['primarySport']}",
          f"- **Training goal:** {a['trainingGoal']}",
-         f"- **Joint focus:** {a['jointFocus']}",
-         ""]
+         f"- **Joint focus:** {a['jointFocus']}"]
+    if a.get("note"):
+        L += [f"- **Note:** {a['note']}"]
+    L += [""]
     L += table([h["label"] for h in p["highlights"]],
                [[h["value"] for h in p["highlights"]]])
     return L
@@ -129,10 +131,11 @@ def swim_section(swim):
         return out
 
     names = {r["id"]: r["name"] for r in swim["routines"]}
+    names[None] = "No pool"
     L = [f"## {swim['title']}", "",
          f"*{swim['subtitle']}* - every session is {dist(swim['sessionMeters'])} "
          f"in a {pool}m pool, about {swim['sessionMinutes']} minutes with rests. "
-         "The routine is fixed to the weekday.", "", "### Weekly Rotation", ""]
+         "The routine is fixed to the weekday.", "", "### Weekly Schedule", ""]
     L += table(["Day", "Routine", "Primary Training Objective"],
                [[r["day"], names[r["routineId"]], r["objective"]] for r in swim["schedule"]])
 
@@ -157,15 +160,22 @@ def swim_section(swim):
             L += [f"{i}. **About {minutes} min - {dist(meters)}:** Warm-Up + {label} + Cool-Down."]
         L += ["", f"*{ex['note']}*"]
 
-    br, turn, missed = swim["breathing"], swim["openTurn"], swim["missedSessions"]
+    br, turn = swim["breathing"], swim["openTurn"]
     L += ["", f"### {br['title']}", ""]
     L += [f"- **{pt['label']}:** {pt['text']}" for pt in br["points"]]
     L += ["", f"### {turn['title']}", "", turn["intro"], ""]
     L += table(["Step", "Phase", "Action & Biomechanical Cue"],
                [[i, s["phase"], s["action"]] for i, s in enumerate(turn["steps"], 1)])
-    L += ["", f"### {missed['title']}", ""]
-    L += [f"- **{pt['label']}:** {pt['text']}" for pt in missed["points"]]
+    tech = swim.get("technique")
+    if tech:
+        L += ["", f"### {tech['title']}", ""]
+        L += [f"- **{pt['label']}:** {pt['text']}" for pt in tech["points"]]
     return L
+
+
+def missed(data):
+    m = data["swim"]["missedSessions"]
+    return [f"## {m['title']}", ""] + [f"- **{pt['label']}:** {pt['text']}" for pt in m["points"]]
 
 
 # ---------- gym ----------
@@ -196,13 +206,16 @@ def legs(data):
 
 
 def sessions(data):
+    days = {d["workoutId"]: d["day"] for d in data["weeklySchedule"] if d["workoutId"]}
+    pinned = ", ".join(f"{days[w['id']]} {w['name'].split(':')[0]}" for w in data["workouts"] if w["id"] in days)
     L = ["## The Sessions", "",
-         "Three sessions rotate in order - Day 1, Day 2, Day 3, then back to Day 1 - "
-         "with roughly a two-day gap between gym mornings. Exercise codes (B1, A3...) "
+         f"Each session is pinned to a weekday: {pinned}. Exercise codes (B1, A3...) "
          "are stable ids, not an order: the letter does not indicate the day."]
     by_code = {ex["code"]: ex for w in data["workouts"] for ex in w["exercises"]}
     for workout in data["workouts"]:
         L += ["", f"### {workout['name']}", "", f"*{workout['focus']}*"]
+        if workout.get("before"):
+            L += ["", f"**Before:** {workout['before']}"]
         for ex in workout["exercises"]:
             key = " **[Key Compound]**" if "key-compound" in ex.get("tags", []) else ""
             L += ["", f"**{ex['code']} - {ex['name']}**{key}", "",
@@ -217,6 +230,8 @@ def sessions(data):
                 L += [f"- **Same movement as {other['code']} ({day})** - progress carries over between the two."]
             L += ["- **Cues:**"]
             L += [f"    - {cue}" for cue in ex["cues"]]
+        if workout.get("after"):
+            L += ["", f"**After:** {workout['after']}"]
     return L
 
 
@@ -232,11 +247,40 @@ def matrix(data):
 
 def schedule(data):
     L = ["## Example Week", "",
-         "The swim routine is fixed to the weekday. The gym days are only an example: "
-         "in practice Day 1, Day 2 and Day 3 rotate with roughly a two-day gap, so "
-         "they drift across weekdays.", ""]
+         "Both the swim routine and the gym day are fixed to the weekday.", ""]
     return L + table(["Day", "Morning", "Afternoon", "Focus"],
                      [[d["day"], d["morning"], d["afternoon"], d["focus"]] for d in data["weeklySchedule"]])
+
+
+def named(ex):
+    code = f"{ex['code']} " if ex.get("code") else ""
+    return f"{code}{ex['name']} - {ex['prescription']}"
+
+
+def travel(data):
+    tr = data.get("travel")
+    if not tr:
+        return []
+    room = tr["roomRoutine"]
+    L = [f"## {tr['title']}", ""]
+    L += [f"- **{o['label']}:** {o['text']}" for o in tr["options"]]
+    L += ["", f"### {room['title']}", "", room["warmUp"]]
+    for c in room["circuits"]:
+        rest = f", {c['rest']}" if c.get("rest") else ""
+        L += ["", f"**{c['rounds']} rounds{rest}:**", ""]
+        L += [f"- {named(ex)}" for ex in c["exercises"]]
+    return L + ["", room["finish"], "", f"**{tr['rule']}**"]
+
+
+def urge(data):
+    u = data.get("urgeProtocol")
+    if not u:
+        return []
+    L = [f"## {u['title']}", "", f"*{u['intro']}*", ""]
+    for i, step in enumerate(u["steps"], 1):
+        L += [f"{i}. {step['text']}"]
+        L += [f"    - {named(ex)}" for ex in step.get("exercises", [])]
+    return L
 
 
 def summary(data):
@@ -261,22 +305,25 @@ def build(data):
     return {
         "PROGRAM.md": document([
             header(data, title,
-                   "The complete programme: a daily fasted swim followed by a short gym session. "
+                   "The complete programme: a fasted swim six mornings a week, a short gym session after "
+                   "three of them, and a Sunday gym session in place of the swim. "
                    "The same content is split into SWIM.md and GYM.md for handing on separately."),
-            athlete(data), protocol(data), fuel(data), *swim, *gym, schedule(data), summary(data),
+            athlete(data), protocol(data), fuel(data), *swim, *gym, missed(data), travel(data), urge(data),
+            schedule(data), summary(data),
         ]),
         "SWIM.md": document([
             header(data, f"{title} - Swim Programme",
-                   "The swim half of a personal programme that pairs a daily fasted swim with a "
-                   "20-25 minute gym session straight afterwards. The gym half is in GYM.md.",
+                   "The swim half of a personal programme: a fasted swim Monday to Saturday, with a "
+                   "20-25 minute gym session straight after three of them. The gym half is in GYM.md.",
                    subtitle=f"{data['swim']['subtitle']} | Swimmer Program (Age {data['program']['athlete']['age']})"),
-            athlete(data), protocol(data), *swim, fuel(data),
+            athlete(data), protocol(data), *swim, missed(data), travel(data), fuel(data),
         ]),
         "GYM.md": document([
             header(data, f"{title} - Gym Programme",
-                   "The gym half of a personal programme. Every gym session follows a 90-minute "
-                   "fasted swim, which serves as its warm-up. The swim half is in SWIM.md."),
-            athlete(data), protocol(data), fuel(data), *gym, schedule(data), summary(data),
+                   "The gym half of a personal programme. The Monday, Wednesday and Friday sessions follow a "
+                   "90-minute fasted swim, which serves as their warm-up; Sunday's has no swim before it. "
+                   "The swim half is in SWIM.md."),
+            athlete(data), protocol(data), fuel(data), *gym, missed(data), travel(data), schedule(data), summary(data),
         ]),
     }
 

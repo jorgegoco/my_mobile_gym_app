@@ -18,10 +18,21 @@ function badges(tags) {
     .join('');
 }
 
+// Shared with the Guide's travel and urge drills, which have codes and links
+// but no card of their own.
+export const watchLinks = (code) =>
+  getMedia(code)
+    .map(
+      (video) => `<a class="watch" href="${esc(video.url)}" target="_blank" rel="noopener noreferrer">
+           <span class="watch-label">▶ ${video.label ? `Watch: ${esc(video.label)}` : 'Watch form video'}</span>
+           <span class="watch-where">↗ Video</span>
+         </a>`
+    )
+    .join('');
+
 export function exerciseCard(ex) {
   const meta = metaLine(ex);
   const label = metaLabel(ex);
-  const videos = getMedia(ex.code);
   const badgeHtml = badges(ex.tags ?? []);
 
   return `
@@ -42,16 +53,7 @@ export function exerciseCard(ex) {
         ${ex.cues.map((cue) => `<li>${esc(cue)}</li>`).join('')}
       </ul>
 
-      <div class="card-actions">
-        ${videos
-          .map(
-            (video) => `<a class="watch" href="${esc(video.url)}" target="_blank" rel="noopener noreferrer">
-                 <span class="watch-label">▶ ${video.label ? `Watch: ${esc(video.label)}` : 'Watch form video'}</span>
-                 <span class="watch-where">↗ YouTube</span>
-               </a>`
-          )
-          .join('')}
-      </div>
+      <div class="card-actions">${watchLinks(ex.code)}</div>
 
       ${logField(ex)}
     </article>

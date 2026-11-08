@@ -1,20 +1,37 @@
 {
   "$schema": "./docs/DATA.md",
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "program": {
     "id": "swim-and-lift",
     "title": "Swim & Lift",
-    "version": "7.0",
-    "updatedAt": "2026-09-26",
+    "version": "7.1",
+    "updatedAt": "2026-11-08",
     "subtitle": "Chest & Arms Micro-Sessions | Swimmer Program (Age 56)",
-    "athlete": { "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection" },
+    "athlete": {
+      "age": 56, "primarySport": "swimming", "trainingGoal": "hypertrophy", "jointFocus": "rotator cuff protection",
+      "note": "On a tapering oral corticosteroid course. No load jumps while on it."
+    },
     "highlights": [
       { "label": "Fasted Swim", "value": "2,500m (07:00-08:30)" },
-      { "label": "Gym Frequency", "value": "3 Days / Week" },
+      { "label": "Gym Frequency", "value": "4 Days / Week" },
       { "label": "Session Length", "value": "20-25 min Micro-Session" },
       { "label": "Joint Safety", "value": "Rotator Cuff Focus" }
     ],
     "changelog": [
+      {
+        "version": "7.1",
+        "date": "2026-11-08",
+        "changes": [
+          "Gym days are pinned to the weekday instead of rotating: Monday Day 1, Wednesday Day 2, Friday Day 3, Sunday Day 4.",
+          "Sunday has no swim: it is Day 4, Legs & Reset (about 60 minutes, no clock). The Descending Pyramid now runs on Wednesday only.",
+          "C1 Machine Preacher Curl removed. Day 2 is B2, A4, B4 and the dead hang.",
+          "Daily timing reworked: hot shower and stretch 08:30-08:50, gym 09:00-09:25, breakfast 09:40. Afternoon tennis and basketball removed.",
+          "Gear Shift: time brisk sets 2, 6 and 10. New technique cue and measurement rules for the swim.",
+          "New rules: progression (5) and a weekly shoulder rest (6). Leg training is now one Sunday session.",
+          "Missed Session Policy rewritten. New Travel and Urge Protocol sections.",
+          "Athlete note: tapering oral corticosteroid course, no load jumps while on it."
+        ]
+      },
       {
         "version": "7.0",
         "date": "2026-09-26",
@@ -72,23 +89,25 @@
   "dailyProtocol": [
     { "id": "pre-swim", "timeWindow": "06:45", "activity": "Pre-Swim Prep", "strategy": "Hydrate with 500ml water + electrolytes. Swim is kept 100% fasted.", "optionGroup": null },
     { "id": "swim", "timeWindow": "07:00-08:30", "activity": "2,500m Fasted Swim (90 mins)", "strategy": "The weekday's routine from the swim programme: 100 lengths of a 25m pool, 2-stroke alternating breathing, floor-free open turns. Doubles as the full thermal and joint warm-up for the gym.", "optionGroup": null },
-    { "id": "locker-fuel", "timeWindow": "08:30-08:35", "activity": "Locker-Room Transition Fuel", "strategy": "200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt. Drink it while changing - it restores blood glucose without sitting heavy in the stomach.", "optionGroup": null },
-    { "id": "gym", "timeWindow": "08:35-09:00", "activity": "Gym Micro-Session (20-25 mins max)", "strategy": "3 to 4 exercises only. One light prep set, then straight into the first lift. Finish with the mandatory 60-second dead hang.", "optionGroup": null },
-    { "id": "breakfast", "timeWindow": "09:15", "activity": "Post-Workout Breakfast", "strategy": "Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done.", "optionGroup": null },
-    { "id": "work", "timeWindow": "10:00+", "activity": "Work / Afternoon Sports", "strategy": "Remote programming work. Afternoons reserved for tennis, basketball, or rest.", "optionGroup": null }
+    { "id": "locker-fuel", "timeWindow": "08:30", "activity": "Locker-Room Transition Fuel (gym days only)", "strategy": "200-250ml Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt. Drink it while changing - it restores blood glucose without sitting heavy in the stomach.", "optionGroup": null },
+    { "id": "shower", "timeWindow": "08:30-08:50", "activity": "Hot Shower & Upper-Body Stretch", "strategy": "Hot shower with an upper-body stretch and slow neck rotations.", "optionGroup": null },
+    { "id": "gym", "timeWindow": "09:00-09:25", "activity": "Gym Micro-Session (20-25 mins max, Mon / Wed / Fri)", "strategy": "3 to 4 exercises only. One light prep set, then straight into the first lift. Finish with the mandatory 60-second dead hang.", "optionGroup": null },
+    { "id": "breakfast", "timeWindow": "09:40", "activity": "Post-Workout Breakfast", "strategy": "Full recovery meal: 35g-40g protein + complex carbs (e.g., 4 eggs + oatmeal or a whey smoothie). This is the real refuel, once the training is done.", "optionGroup": null },
+    { "id": "work", "timeWindow": "10:00+", "activity": "Work", "strategy": "Remote programming work.", "optionGroup": null },
+    { "id": "sunday", "timeWindow": "Sunday 07:00", "activity": "No Pool - Day 4: Legs & Reset", "strategy": "Straight to the gym at 07:00. No fasting requirement. Breakfast after the session.", "optionGroup": null }
   ],
 
   "fuel": {
     "title": "Locker-Room Transition Fuel",
     "timeWindow": "08:30",
     "recipe": "200-250ml (0.20-0.25 L) Leche Desnatada Omega-3 + 1 tbsp Miel Pura + a pinch of salt.",
-    "why": "Restores blood glucose and halts muscle breakdown immediately following 90 minutes of fasted swimming. Small enough to drink in the five minutes it takes to change, so there is no stomach sloshing or heaviness under a loaded bar minutes later."
+    "why": "Restores blood glucose and halts muscle breakdown immediately following 90 minutes of fasted swimming. Small enough to drink while changing, so there is no stomach sloshing or heaviness under a loaded bar half an hour later."
   },
 
   "warmUp": {
     "title": "Warm-Up Protocol - The 2,500m Swim Is the Warm-Up",
     "durationMinutes": null,
-    "execution": "No separate gym warm-up. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight."
+    "execution": "No separate gym warm-up. 90 minutes of swimming has already raised core temperature and lubricated the shoulder joints, and the 25-minute window has no room to spare. Go directly to the first lift after 1 light prep set at roughly half the working weight. Sunday's Day 4 has no swim before it, so it opens with its own bike warm-up instead."
   },
 
   "coolDown": {
@@ -101,13 +120,15 @@
   "rules": [
     { "id": "rule-1", "title": "The 3-Second Eccentric Rule (Controlled Barbell Lowering)", "body": "At age 56, lowering heavy barbell weight uncontrollably increases shoulder and elbow tendon wear without extra muscle gain. Lower every bench press and curl over 3 slow seconds to maximize mechanical muscle tension while keeping joints completely safe." },
     { "id": "rule-2", "title": "Barbell Pressing Path & Scapular Retraction", "body": "Never press with flared elbows (90 degrees). On both the Flat and Incline Barbell Bench Press, tuck elbows to a 45-60 degree angle to the torso and keep shoulder blades pinched tightly together into the bench. This isolates the pecs and protects the rotator cuffs from swimmer's impingement." },
-    { "id": "rule-3", "title": "Keep 1 to 2 Reps in Reserve (RPE 8 Training Threshold)", "body": "Do not train to absolute muscle failure on barbell presses. End the set when 1 or 2 more clean reps are still possible. This preserves central nervous system recovery for the 7:00 AM daily swims - and inside a 25-minute window, a set taken to failure costs more rest time than the extra rep is worth." },
-    { "id": "rule-4", "title": "Posterior Shoulder Counter-Balance", "body": "Freestyle swimming and barbell chest pressing both tighten internal rotators (pectoralis major & lats). Never skip Rear Delt Flyes or Seated Rows - they pull the shoulder heads back into optimal joint alignment." }
+    { "id": "rule-3", "title": "Keep 1 to 2 Reps in Reserve (RPE 8 Training Threshold)", "body": "Do not train to absolute muscle failure on barbell presses. End the set when 1 or 2 more clean reps are still possible. This preserves central nervous system recovery for the 7:00 AM swims - and inside a 25-minute window, a set taken to failure costs more rest time than the extra rep is worth." },
+    { "id": "rule-4", "title": "Posterior Shoulder Counter-Balance", "body": "Freestyle swimming and barbell chest pressing both tighten internal rotators (pectoralis major & lats). Never skip Rear Delt Flyes or Seated Rows - they pull the shoulder heads back into optimal joint alignment." },
+    { "id": "rule-5", "title": "Progression", "body": "Add weight only after 8 clean reps on all 3 sets (12 on the Sunday machines), and only by the smallest plate available. Never add weight on a \"feeling strong\" day while on corticosteroids." },
+    { "id": "rule-6", "title": "Weekly Shoulder Rest", "body": "No swimming and no pulling exercises on Sunday." }
   ],
 
   "legTraining": {
-    "title": "Leg Training Is Deliberately Omitted",
-    "body": "No leg exercises are performed in the gym. Lower-body volume is already fully covered by daily swim kicks, tennis and basketball. Adding squats or leg presses to a 25-minute post-swim window would compete directly with recovery for the next morning's 2,500m swim, which is the foundation the whole program is built on."
+    "title": "Leg Training",
+    "body": "One session per week, Sunday, moderate load, never to failure, so Monday's swim is unaffected."
   },
 
   "workouts": [
@@ -202,16 +223,6 @@
             "Pushes biceps upward for thicker overall arm appearance.",
             "Avoid swinging; lower under complete control (2-3 seconds)."
           ]
-        },
-        {
-          "code": "C1", "name": "Machine Preacher Curl", "tags": [],
-          "target": "Biceps Brachii (Preacher)",
-          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
-          "tempo": null, "benefit": "Eliminates all momentum for strict biceps isolation",
-          "equipment": ["preacher-curl-machine"], "priority": "swappable",
-          "cues": [
-            "Lock armpits securely into the pad to eliminate all momentum and isolate the biceps."
-          ]
         }
       ]
     },
@@ -268,6 +279,71 @@
           ]
         }
       ]
+    },
+    {
+      "id": "day-4",
+      "code": "4",
+      "name": "Day 4: Legs & Reset",
+      "focus": "Legs and core, about 60 minutes, fresh and without a clock. Moderate load, 2 reps in reserve, nothing to failure.",
+      "before": "Warm-up: stationary bike, easy, 15-20 minutes.",
+      "after": "Stretch 10 minutes: chest in a doorway, lats, hip flexors, calves.",
+      "exercises": [
+        {
+          "code": "D1", "name": "Leg Press", "tags": [],
+          "target": "Quadriceps & Glutes",
+          "sets": 3, "repRange": [10, 12], "prescription": "3 Sets x 10-12 Reps",
+          "tempo": null, "benefit": "Leg strength with the back supported",
+          "equipment": ["leg-press-machine"], "priority": "high",
+          "cues": [
+            "Feet shoulder-width on the platform; lower until knees reach about 90 degrees.",
+            "Keep lower back flat against the pad and do not lock the knees at the top."
+          ]
+        },
+        {
+          "code": "D2", "name": "Seated Leg Curl", "tags": [],
+          "target": "Hamstrings",
+          "sets": 3, "repRange": [12, 12], "prescription": "3 Sets x 12 Reps",
+          "tempo": null, "benefit": "Balances the quads from the leg press",
+          "equipment": ["leg-curl-machine"], "priority": "swappable",
+          "cues": [
+            "Line the knee up with the machine's pivot; lap pad snug on the thighs.",
+            "Curl under control and return slowly - no swinging the weight back up."
+          ]
+        },
+        {
+          "code": "D3", "name": "Standing Calf Raise", "tags": [],
+          "target": "Calves",
+          "sets": 3, "repRange": [15, 15], "prescription": "3 Sets x 15 Reps",
+          "tempo": null, "benefit": "Ankle strength for push-offs at the wall",
+          "equipment": ["calf-raise-machine"], "priority": "swappable",
+          "cues": [
+            "Full range: heels fully down for the stretch, then up onto the balls of the feet.",
+            "Pause one second at the top."
+          ]
+        },
+        {
+          "code": "D4", "name": "Plank", "tags": [],
+          "target": "Core / Abdominals",
+          "sets": 3, "durationSeconds": [45, 45], "prescription": "3 Sets x 45 s",
+          "tempo": null, "benefit": "Trunk stability for a flat body line in the water",
+          "equipment": ["floor-mat"], "priority": "swappable",
+          "cues": [
+            "Elbows under shoulders; straight line from head to heels.",
+            "Brace the stomach and keep breathing - do not let the hips sag."
+          ]
+        },
+        {
+          "code": "D5", "name": "Dead Bug", "tags": [],
+          "target": "Deep Core & Lower Back Control",
+          "sets": 3, "repRange": [10, 10], "prescription": "3 Sets x 10 Reps each side",
+          "tempo": null, "benefit": "Core control with zero load on the spine",
+          "equipment": ["floor-mat"], "priority": "swappable",
+          "cues": [
+            "Lower back pressed into the floor the whole time.",
+            "Extend the opposite arm and leg slowly, then return and switch sides."
+          ]
+        }
+      ]
     }
   ],
 
@@ -278,7 +354,8 @@
         "priority": "high", "label": "High Priority (Do 1st)",
         "items": [
           { "codes": ["B1", "A1"], "note": "Always secure the bench rack first, while the central nervous system is still fresh from the swim." },
-          { "codes": ["B2"], "note": "Day 2's only compound pull, so it opens the session. If the chest-supported machine is occupied, switch to the seated cable row - same 8-10 prescription, no waiting." }
+          { "codes": ["B2"], "note": "Day 2's only compound pull, so it opens the session. If the chest-supported machine is occupied, switch to the seated cable row - same 8-10 prescription, no waiting." },
+          { "codes": ["D1"], "note": "Sunday has no time pressure: wait for the leg press. If it is unavailable, do goblet squats, 3 x 12." }
         ]
       },
       {
@@ -291,8 +368,9 @@
         "priority": "swappable", "label": "Fully Swappable (Do Anywhere Near the End)",
         "items": [
           { "codes": ["A5", "B5"], "note": "For Day 1 (A5), the Triceps Pressdown Machine has no backup - wait for it or reorder around it if occupied. For Day 3 (B5), it needs only a dumbbell and a backed bench, so it never waits on equipment. Golden rule: never do tricep isolation before that day's pressing (B1/A3 on Day 1, A1 on Day 3)." },
-          { "codes": ["A4", "B4", "C1"], "note": "Pure arm/back isolation. These can be done in any sequence during the second half of Day 2." },
-          { "codes": ["A6", "B6"], "note": "Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly." }
+          { "codes": ["A4", "B4"], "note": "Pure arm isolation. These can be done in either order during the second half of Day 2." },
+          { "codes": ["A6", "B6"], "note": "Day 1 and Day 3 both finish on the reverse pec deck. Low-risk, high-rep isolation that fits almost any open slot; if the machine is taken, substitute a bench-supported dumbbell rear delt fly." },
+          { "codes": ["D2", "D3", "D4", "D5"], "note": "Any order after the leg press. No rowing machine on Sunday - it is the same pulling pattern as freestyle." }
         ]
       }
     ],
@@ -301,7 +379,7 @@
 
   "swim": {
     "title": "Master Swim Program",
-    "subtitle": "2,500m Daily Routine & Efficiency Guide",
+    "subtitle": "2,500m Morning Routine & Efficiency Guide",
     "poolMeters": 25,
     "sessionMeters": 2500,
     "sessionMinutes": 90,
@@ -313,7 +391,7 @@
       { "day": "Thursday", "routineId": "interleaved", "objective": "Mid-week active joint recovery & external rotation balancing." },
       { "day": "Friday", "routineId": "gear-shift", "objective": "Distance-per-stroke maintenance under controlled aerobic fatigue." },
       { "day": "Saturday", "routineId": "cruise", "objective": "Sustained endurance & stroke count tracking across 1,500m Free block." },
-      { "day": "Sunday", "routineId": "pyramid", "objective": "Volume endurance with shrinking block structure." }
+      { "day": "Sunday", "routineId": null, "objective": "No pool - Day 4: Legs & Reset in the gym. The shoulders rest once a week." }
     ],
 
     "routines": [
@@ -337,7 +415,8 @@
             "title": "Block 2 - Main Pace Interval", "meters": 1000, "detail": "10 x 100m Freestyle (4 lengths each).",
             "points": [
               "Rest: exactly 15 seconds at wall after each 100m.",
-              "Pacing: sets 1, 3, 5, 7, 9 = Cruise pace. Sets 2, 4, 6, 8, 10 = Brisk pace (effort 7-8/10)."
+              "Pacing: sets 1, 3, 5, 7, 9 = Cruise pace. Sets 2, 4, 6, 8, 10 = Brisk pace (effort 7-8/10).",
+              "Time sets 2, 6 and 10 and record them in the log."
             ],
             "rest": "60 seconds at wall after set 10."
           },
@@ -403,26 +482,91 @@
       ]
     },
 
+    "technique": {
+      "title": "Technique Cue & Measurement",
+      "points": [
+        { "label": "One Cue per Swim", "text": "One technique cue per swim, chosen before entering the water, held for the whole session." },
+        { "label": "Stroke Count", "text": "Saturday: count strokes on lengths 10, 30 and 50 of the long freestyle block." },
+        { "label": "Timed Brisk 100s", "text": "Tuesday and Friday: time brisk sets 2, 6 and 10 and record them." },
+        { "label": "Goal", "text": "Over 2-3 months, 1-2 seconds faster on the timed brisk 100s and one stroke fewer per length, at the same effort." }
+      ]
+    },
+
     "missedSessions": {
       "title": "Missed Session Policy",
       "points": [
-        { "label": "Immediate Resumption", "text": "If you miss one or several days, resume immediately on the workout scheduled for the day you return. Never attempt to make up missed volume or stack workouts." },
-        { "label": "Extended Absences (>5 Days)", "text": "Keep intensity at 70% effort for the first two sessions upon return to allow shoulder internal/external rotators to re-acclimate safely." }
+        { "label": "1-4 Days", "text": "Resume on the weekday's routine. Nothing is made up; same weights." },
+        { "label": "5-7 Days", "text": "First two swims at 70% effort, no brisk sets. First gym session 10% lighter, 2 reps in reserve. Normal from day 3." },
+        { "label": "Longer", "text": "Rebuild the first two weeks deliberately." },
+        { "label": "The Chain", "text": "The chain is \"I did my 7:00 thing\", not \"I did 2,500m\"." }
       ]
     }
   },
 
+  "travel": {
+    "title": "Travel",
+    "options": [
+      { "label": "Pool Available", "text": "Modular Express Set, 30, 45 or 60 minutes. If a gym is attached and it is a gym weekday, do that day's session, shorter if needed." },
+      { "label": "No Pool", "text": "Room Routine at 07:00, 25-30 minutes, repeatable daily." }
+    ],
+    "roomRoutine": {
+      "title": "Room Routine",
+      "warmUp": "Wake-up, 5 minutes: arm circles, cat-cow, hip hinges, overhead wall reach.",
+      "circuits": [
+        {
+          "rounds": 3, "rest": "60 seconds between rounds",
+          "exercises": [
+            { "code": "R1", "name": "Push-Ups", "prescription": "10-15 (3 s down, elbows tucked)" },
+            { "code": "R2", "name": "Bodyweight Squats", "prescription": "15-20 (3 s down)" },
+            { "code": "R3", "name": "Reverse Lunges", "prescription": "10 each leg" },
+            { "code": "R4", "name": "Towel Rows", "prescription": "15" },
+            { "code": "R5", "name": "Side Plank", "prescription": "30 s each side" }
+          ]
+        },
+        {
+          "rounds": 2, "rest": null,
+          "exercises": [
+            { "code": "R6", "name": "Towel / Band Pull-Aparts", "prescription": "15" },
+            { "code": "R7", "name": "Y-T-W Raises", "prescription": "10" }
+          ]
+        }
+      ],
+      "finish": "Dead hang 60 seconds on a door frame if it holds you, otherwise a doorway chest stretch. Then 5 minutes of stretching."
+    },
+    "rule": "Every travel day counts as a full day."
+  },
+
+  "urgeProtocol": {
+    "title": "Urge Protocol",
+    "intro": "Not training: a 5-minute state change, usable several times a day, inside the room.",
+    "steps": [
+      { "text": "Stand up." },
+      {
+        "text": "1 minute of movement in place, rotating through:",
+        "exercises": [
+          { "name": "Squats", "prescription": "20" },
+          { "name": "Push-Ups", "prescription": "10" },
+          { "code": "U1", "name": "Wall Sit", "prescription": "30 s" },
+          { "name": "Calf Raises", "prescription": "20" }
+        ]
+      },
+      { "text": "10 breaths: 4 seconds in through the nose, 8 seconds out through the mouth. Same every time." },
+      { "text": "Glass of water." },
+      { "text": "Decide." }
+    ]
+  },
+
   "weeklySchedule": [
-    { "day": "Monday", "morning": "2,500m Swim (Fasted) + GYM: DAY 1", "afternoon": "Rest / Light Mobility", "workoutId": "day-1", "focus": "Flat Barbell Chest, Machine Press Volume, Outer Tricep, Rear Delts" },
-    { "day": "Tuesday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Wednesday", "morning": "2,500m Swim (Fasted) + GYM: DAY 2", "afternoon": "Rest / Light Mobility", "workoutId": "day-2", "focus": "Upper Back Thickness, Biceps Peak, Brachialis" },
-    { "day": "Thursday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Friday", "morning": "2,500m Swim (Fasted) + GYM: DAY 3", "afternoon": "Rest / Light Mobility", "workoutId": "day-3", "focus": "Upper Chest, Inner Chest, Tricep Long Head, Posterior Delts" },
-    { "day": "Saturday", "morning": "2,500m Swim (Fasted)", "afternoon": "Optional Tennis / Basketball", "workoutId": null, "focus": "Cardio & Agility Focus" },
-    { "day": "Sunday", "morning": "2,500m Swim (Fasted)", "afternoon": "Full Rest & Reset", "workoutId": null, "focus": "Systemic Recovery & Repair" }
+    { "day": "Monday", "morning": "2,500m Swim (Fasted) + GYM: DAY 1", "afternoon": "Walk optional", "workoutId": "day-1", "focus": "Flat Barbell Chest, Machine Press Volume, Outer Tricep, Rear Delts" },
+    { "day": "Tuesday", "morning": "2,500m Swim (Fasted)", "afternoon": "Walk optional", "workoutId": null, "focus": "Swim only" },
+    { "day": "Wednesday", "morning": "2,500m Swim (Fasted) + GYM: DAY 2", "afternoon": "Walk optional", "workoutId": "day-2", "focus": "Upper Back Thickness, Biceps Peak, Brachialis" },
+    { "day": "Thursday", "morning": "2,500m Swim (Fasted)", "afternoon": "Walk optional", "workoutId": null, "focus": "Swim only" },
+    { "day": "Friday", "morning": "2,500m Swim (Fasted) + GYM: DAY 3", "afternoon": "Walk optional", "workoutId": "day-3", "focus": "Upper Chest, Inner Chest, Tricep Long Head, Posterior Delts" },
+    { "day": "Saturday", "morning": "2,500m Swim (Fasted)", "afternoon": "Walk optional", "workoutId": null, "focus": "Swim only" },
+    { "day": "Sunday", "morning": "No pool, Day 4 Legs & Reset", "afternoon": "Full rest", "workoutId": "day-4", "focus": "Legs & Core, Weekly Shoulder Rest" }
   ],
 
-  "summaryStrategy": "The 7:00 AM swim is the untouchable physical and mental foundation: 2,500m every morning on a fixed weekday rotation of four routines, and it also serves as the gym warm-up. Five minutes of locker-room fuel bridges it to a 20-25 minute gym micro-session three mornings a week, so all eleven exercises still get their full volume in sessions short enough to sustain on top of daily swimming. Heavy compound barbell pressing drives upper body mass, strict upper back pulling and posterior shoulder isolation keep the joints aligned against swimmer's forward posture, and every session closes with a 60-second passive dead hang. Legs are trained by the pool and the tennis and basketball courts, never in the gym.",
+  "summaryStrategy": "7:00 AM is the untouchable foundation. Six mornings a week it is a 2,500m swim; on Sunday it is a fresh gym session, so the shoulders rest once a week without breaking the daily ritual. Three post-swim micro-sessions build chest, arms and back. Sunday trains legs and core without a clock. Technique improves through one cue per swim and two measurements. Missed days are skipped, never made up, and travel days and urges have a written plan.",
 
   "theme": {
     "colors": {
