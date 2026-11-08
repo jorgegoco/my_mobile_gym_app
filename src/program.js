@@ -40,8 +40,9 @@ function validateSwim(swim) {
 
   const days = new Set((schedule ?? []).map((row) => row.day));
   for (const day of WEEKDAYS) if (!days.has(day)) fail(`Swim schedule has no ${day}.`);
+  // A null routineId is a day with no pool.
   for (const row of schedule) {
-    if (!ids.has(row.routineId)) fail(`Swim schedule ${row.day} names unknown routine ${row.routineId}.`);
+    if (row.routineId !== null && !ids.has(row.routineId)) fail(`Swim schedule ${row.day} names unknown routine ${row.routineId}.`);
   }
 
   if (express) {
@@ -82,8 +83,10 @@ export function validateProgram(p = data) {
       seen.add(ex.code);
       if (!ex.name) fail(`Exercise ${where} is missing its name.`);
       if (!Number.isFinite(ex.sets)) fail(`Exercise ${where} has a non-numeric sets value.`);
-      if (!Array.isArray(ex.repRange) || ex.repRange.length !== 2 || !ex.repRange.every(Number.isFinite)) {
-        fail(`Exercise ${where} needs a repRange of two numbers.`);
+      // A held exercise (plank) is prescribed in seconds instead of reps.
+      const pair = (v) => Array.isArray(v) && v.length === 2 && v.every(Number.isFinite);
+      if (!pair(ex.repRange) && !pair(ex.durationSeconds)) {
+        fail(`Exercise ${where} needs a repRange or durationSeconds of two numbers.`);
       }
       if (!Array.isArray(ex.cues)) fail(`Exercise ${where} is missing its cues array.`);
     }
